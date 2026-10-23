@@ -1,6 +1,6 @@
 # PROGRESS — HSR-lite spec
 
-Cập nhật lần cuối: phiên v0.11.
+Cập nhật lần cuối: phiên v0.12.
 Đọc `AGENTS.md` trước file này.
 
 ---
@@ -9,43 +9,50 @@ Cập nhật lần cuối: phiên v0.11.
 
 | Hạng mục | Giá trị |
 |---|---|
-| Bản đặc tả | `docs/design.html` — **v0.11** |
+| Bản đặc tả | `docs/design.html` — **v0.12** |
 | Trạng thái | Đặc tả hoàn chỉnh, harness xanh (`ALL CHECKS PASSED`) |
 | Game | **Chưa build, chưa chạy** — đúng như yêu cầu |
-| localStorage key | `hsrlite-spec-v11` |
+| localStorage key | `hsrlite-spec-v12` |
 | Kiểm tra | `node docs/verify.js` |
 
-## Vừa xong (v0.11)
+## Vừa xong (v0.12)
 
-1. **Lumen** — Skill: đồng đội +15% SPD và +20% ATK trong 2 lượt (bỏ hồi EN). Ulti: field Grid
-   +20% hồi EN cho **cả hai đội**, 3 lượt. Talent: đồng đội dùng Ulti → Lumen +5 EN (từ 10).
-2. **Nyx** — Skill: −25% SPD một địch trong 2 lượt (bỏ đẩy AV). Ulti: 20% AV cả hai chiều (từ 15%).
-   Talent: mỗi đánh thường của đồng đội → Nyx +1 SPD, cộng dồn.
-3. **Sable** — Skill: 1 lượt, 100% đòn đơn mục tiêu của địch dồn vào một đồng đội, người đó +20%
-   ATK. Ulti: toàn bộ địch −25% DEF trong 3 lượt (bỏ damage). Talent: lần đầu mỗi tầng, một đòn
-   chí tử lên đồng đội gây 0 damage.
+1. **Sable — sửa lại hiểu nhầm.** "Ưu tiên 100%" không phải taunt mà là **hành động ngay sau lượt
+   của Sable** (đồng đội vừa được chọn hành động kế tiếp), kèm +20% ATK 1 lượt.
+2. **Bastion** — Skill: đồng đội nhận **phản đòn 2 lượt**, mỗi lần người đó bị đánh thì Bastion gây
+   6% max HP của mình lên kẻ đánh. Ulti: **shield toàn đội 30% max HP** (bỏ field). Talent: đầu
+   lượt, đồng minh **ít shield nhất** nhận shield 12% max HP của Bastion.
+3. **Shield vô hạn lượt.** Bỏ hằng số `shield_turns`; shield chỉ mất khi vỡ, shield mới thay shield
+   cũ nếu lớn hơn. §05 có thêm bước "Chuyển sát thương" trong thứ tự giải.
+4. **Mira** — Skill: hồi 18% max HP **của Mira** + xóa 1 debuff. Ulti: hồi 12% + **xóa 1 debuff mỗi
+   người** (thay vì xóa mọi debuff) + +10% ATK 2 lượt. Talent: đồng đội nhận sát thương → hồi 3%
+   max HP của Mira.
+5. **Wren** — Skill: **shield bản thân 25% max HP**. Ulti: hồi 20% max HP toàn đội (bỏ rider 3 lượt).
+   Talent: **85% sát thương đồng đội nhận chuyển sang Wren**.
 
 ## Việc tiếp theo (theo thứ tự)
 
 1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.
-   Cần harness đo DoT share; mục tiêu 15–35%. Chưa có sim nên con số này còn mở.
+   Cần harness đo DoT share; mục tiêu 15–35%.
 2. **Đo lại Vesper** sau khi đổi talent: 6 stack = 2 follow-up, cộng CRIT 18% / CDmg 60% — có thể
    vượt trần damage share 45% ở §12.
-3. **Rook hồi EN theo số mục tiêu trúng** — Ulti 8 lần trúng = 24 EN. Cần kiểm tra vòng EN có bị
-   tự nuôi (Ulti → đầy EN → Ulti) không.
-4. **Trần SPD của Nyx.** Talent cộng dồn không giới hạn; 4 người × ~10 lượt thường/tầng là +40 SPD
-   mỗi tầng. Xem §13 hàng "mở".
-5. **Sable taunt** — luật "100% đòn đơn mục tiêu dồn vào một người" phải chốt được với địch có
-   `target: single`; địch `all`/`blast`/`bounce` vẫn đánh bình thường. Cần viết rõ trong bản build.
-6. **Soát bằng mắt §10 và §12** sau khi band table tách dòng 9–11 / 12 / 13–15 / 16.
-7. **Mở rộng verify.js** nếu thêm luật mới: harness hiện phủ hình học HUD, số lượng nội dung,
+3. **Rook hồi EN theo số mục tiêu trúng** — Ulti 8 lần trúng = 24 EN. Kiểm tra vòng EN tự nuôi.
+4. **Trần SPD của Nyx** — talent cộng dồn không giới hạn (xem §13).
+5. **Sustain mới có thể quá mạnh.** Wren gánh 85% + Mira hồi 3% max HP mỗi lần đồng đội nhận đòn
+   + shield vô hạn lượt = một đội gần như không chết. Đây là chỗ harness phải đo đầu tiên:
+   win-rate trần 65% ở §12.
+6. **Sable "ưu tiên 100%"** — cần chốt thứ tự với hàng đợi: người được chọn hành động ngay, sau đó
+   AV của họ reset theo SPD. Nếu người đó đang có AV 0 thì sao? Viết rõ trong bản build.
+7. **Soát bằng mắt §10 và §12** sau khi band table tách dòng 9–11 / 12 / 13–15 / 16.
+8. **Mở rộng verify.js** nếu thêm luật mới: harness hiện phủ hình học HUD, số lượng nội dung,
    thứ tự ABC, pool ngẫu nhiên, boss tầng 12/16, hai lần bấm, lệnh xám, talent/phase không tên,
-   bộ chiêu mới của Vesper/Kaine/Rook/Lumen/Nyx/Sable, `dot_rate`.
+   bộ chiêu 6 nhân vật đã sửa, `dot_rate`, shield vô hạn, 3 field.
 
 ## Việc còn mở (chưa chốt)
 
 - `dot_rate` = 0.45 (xem §13).
 - Có nên chặn trần cộng dồn SPD của Nyx không (xem §13).
+- Field Rampart đã mất nguồn — có gắn lại vào chiêu khác hay bỏ hẳn (xem §13).
 - Chưa có quyết định về việc có nên có thêm field riêng cho boss 12 hay không.
 
 ## Nhật ký quyết định (đã chốt, không mở lại)
@@ -68,7 +75,9 @@ Cập nhật lần cuối: phiên v0.11.
 
 ## Changelog
 
-- **0.11** — viết lại Lumen / Nyx / Sable; field Grid đổi sang hồi EN; Sable thành taunt + debuff.
+- **0.12** — viết lại Bastion / Mira / Wren; shield vô hạn lượt; thêm bước chuyển sát thương;
+  Sable sửa thành ưu tiên hành động; bỏ field Rampart.
+- **0.11** — viết lại Lumen / Nyx / Sable; field Grid đổi sang hồi EN.
 - **0.10** — Curator 3%; bỏ tên phase boss và tên thiên phú; viết lại Vesper / Kaine / Rook;
   tách `dot_rate` khỏi mult chiêu.
 - **0.9** — trạng thái lệnh + hai lần bấm; ABC cho nhân vật; ô ngẫu nhiên + seed; boss 12

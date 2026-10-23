@@ -123,7 +123,7 @@
       <p class="sub">Terminal turn-based RPG. 4v4, sảnh đường 16 tầng, 9 nhân vật, 12 vũ khí, 8 bộ di vật, 16 kẻ địch, 2 boss, 5 kiểu chọn mục tiêu, 4 màn hình. Mọi con số ở đây sửa được và là nguồn số liệu duy nhất cho bản build.</p>
     </div>
     <div class="meta">
-      bản <b>0.11</b><br>
+      bản <b>0.12</b><br>
       python <b>3.9 · stdlib</b><br>
       khung <b>80×24</b><br>
       <span id="meta-count"></span>
@@ -301,7 +301,7 @@
           <tr><td>Giá Ult</td><td class="n" id="k-ult"></td><td>Bằng EN max.</td></tr>
           <tr><td>DoT stack tối đa / lượt</td><td class="n" id="k-dot"></td><td>Stack cộng dồn, thời hạn làm mới. DoT <b>chịu DEF và shield</b>, không crit.</td></tr>
           <tr><td>DoT mỗi stack</td><td class="n" id="k-dotr"></td><td>% ATK của người gây, mỗi stack, mỗi lượt. Đây là núm cân bằng DoT — đừng sửa vào từng chiêu.</td></tr>
-          <tr><td>Shield tồn tại</td><td class="n" id="k-shd"></td><td>Không cộng dồn — lấy giá trị lớn hơn.</td></tr>
+          <tr><td>Shield tồn tại</td><td class="n">vô hạn</td><td><b>Không giới hạn lượt</b> — chỉ mất khi vỡ. Shield mới thay shield cũ nếu lớn hơn; không cộng dồn.</td></tr>
           <tr><td>Hồi sau tầng</td><td class="n" id="k-amb"></td><td>% max HP mỗi tầng thắng, trước draft.</td></tr>
           <tr><td>Hồi từ thẻ draft</td><td class="n" id="k-dh"></td><td>% max HP.</td></tr>
         </table>
@@ -311,12 +311,13 @@
         <table>
           <tr><th class="n" style="width:30px">#</th><th style="width:150px">Bước</th><th>Luật</th></tr>
           <tr><td class="n">1</td><td>Damage</td><td><code>ATK × mult × K/(K+DEF) × crit</code></td></tr>
-          <tr><td class="n">2</td><td>Shield</td><td>Hấp thụ trước, phần tràn vào HP mới bị giảm damage.</td></tr>
-          <tr><td class="n">3</td><td>DoT tick</td><td>Đầu lượt người mang: <code>ATK_người_gây × dot_rate × stack × K/(K+DEF)</code>, tối đa <code>dot_max</code> stack. <b>Chịu DEF, chịu shield, không crit.</b> Không nhân theo mult của chiêu đã gắn nó — stack mới là thứ quyết định.</td></tr>
-          <tr><td class="n">4</td><td>Follow-up</td><td>Ngay sau hành động gốc. Không AV, không tick buff, tối đa 1 lần/hành động, không chain.</td></tr>
-          <tr><td class="n">5</td><td>Field</td><td>Tick đầu lượt người đặt. Field là duy nhất cho cả sân và áp dụng cho cả hai đội.</td></tr>
-          <tr><td class="n">6</td><td>Ulti</td><td>Không AV, dùng trong lượt của mình, không vào hàng đợi.</td></tr>
-          <tr><td class="n">7</td><td>Buff</td><td>Tính theo lượt người mang, trừ khi người mang kết thúc hành động.</td></tr>
+          <tr><td class="n">2</td><td>Chuyển sát thương</td><td>Hiệu ứng chuyển đòn chia số damage vừa tính: Wren nhận 85%, người bị đánh nhận 15%. Vũ khí Aegis chuyển thêm X% sang người đeo. Phần chuyển đi tính vào <b>shield của người nhận thay</b>, không tính lại DEF.</td></tr>
+          <tr><td class="n">3</td><td>Shield</td><td>Hấp thụ trước, phần tràn vào HP. <b>Không giới hạn lượt</b> — shield chỉ mất khi vỡ, shield mới thay shield cũ nếu lớn hơn.</td></tr>
+          <tr><td class="n">4</td><td>DoT tick</td><td>Đầu lượt người mang: <code>ATK_người_gây × dot_rate × stack × K/(K+DEF)</code>, tối đa <code>dot_max</code> stack. <b>Chịu DEF, chịu shield, không crit.</b> Không nhân theo mult của chiêu đã gắn nó — stack mới là thứ quyết định.</td></tr>
+          <tr><td class="n">5</td><td>Follow-up</td><td>Ngay sau hành động gốc. Không AV, không tick buff, tối đa 1 lần/hành động, không chain.</td></tr>
+          <tr><td class="n">6</td><td>Field</td><td>Tick đầu lượt người đặt. Field là duy nhất cho cả sân và áp dụng cho cả hai đội.</td></tr>
+          <tr><td class="n">7</td><td>Ulti</td><td>Không AV, dùng trong lượt của mình, không vào hàng đợi.</td></tr>
+          <tr><td class="n">8</td><td>Buff</td><td>Tính theo lượt người mang, trừ khi người mang kết thúc hành động.</td></tr>
         </table>
         <div class="call warn"><b>Đã bỏ:</b> hồi EN khi bị đánh. Năng lượng chỉ đến từ hành động của chính nhân vật.</div>
         <div class="call"><b>DoT đổi luật:</b> trước đây DoT bỏ qua DEF và shield, khiến DEF vô nghĩa trước đội DoT. Nay DoT đi qua đúng công thức damage — nó vẫn mạnh vì cộng dồn nhiều stack, nhưng stack không còn là cách xuyên giáp.</div>
@@ -333,7 +334,7 @@
         <h3>chỉ số gốc nói gì</h3>
         <table id="spread"></table>
         <div class="call"><b>Vì sao giãn rộng:</b> ATK 58–152 (2.6×), HP 740–1620 (2.2×), DEF 68–196 (2.9×), SPD 82–130 (1.6×). Nếu mọi nhân vật cùng khung 900–1350 HP thì việc chọn ai chỉ còn là chọn chiêu, không phải chọn cách chơi. Giãn rộng khiến đội hình có điểm yếu thật: đội không có Sustain thì Vesper chết trong 4 lượt.</div>
-        <div class="call"><b>Ba người mới, ba cơ chế chưa có:</b> <b>Rook</b> đánh theo <i>độ lan</i> — Basic blast, Skill all, Ulti all cộng bounce, và mỗi kẻ địch trúng đều hồi EN, nên nó càng đông địch càng nhanh có Ulti. <b>Nyx</b> đánh vào <i>hàng đợi</i> — giảm SPD một mục tiêu, cả sân đổi AV bằng Ulti; nó mạnh ở band cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — tiêu HP để hồi đội, nên nó là Sustain duy nhất có thể tự giết mình nếu đánh sai nhịp.</div>
+        <div class="call"><b>Ba người mới, ba cơ chế chưa có:</b> <b>Rook</b> đánh theo <i>độ lan</i> — Basic blast, Skill all, Ulti all cộng bounce, và mỗi kẻ địch trúng đều hồi EN, nên nó càng đông địch càng nhanh có Ulti. <b>Nyx</b> đánh vào <i>hàng đợi</i> — giảm SPD một mục tiêu, cả sân đổi AV bằng Ulti; nó mạnh ở band cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — gánh 85% sát thương của cả đội, nên nó là Sustain duy nhất chết thay người khác, và cũng là người dễ chết nhất nếu không được shield.</div>
         <div class="flags"><span>mult = hệ số ATK</span><span>SP = thay đổi skill point</span><span>EN = năng lượng nhận</span><span>target = kiểu chọn mục tiêu</span></div>
       </div>
     </section>
@@ -421,7 +422,7 @@
           <tr><td>Damage share cao nhất</td><td class="n">≤ 45%</td><td>Giảm mult hoặc tăng cost SP.</td></tr>
           <tr><td>DoT share trong đội có Kaine</td><td class="n">15–35%</td><td>Chỉnh <code>dot_rate</code>. Đừng tăng stack: 1 stack/mục tiêu là luật đã chốt.</td></tr>
           <tr><td>Đội có Nyx: số lượt địch bị đẩy lùi / tầng</td><td class="n">2–4</td><td>Dưới 2 là Nyx vô dụng; trên 4 là hàng đợi mất nghĩa.</td></tr>
-          <tr><td>Đội có Wren: HP Wren tự tiêu / tầng</td><td class="n">≤ 60% max</td><td>Trên ngưỡng là Wren tự giết mình trước khi hồi đội.</td></tr>
+          <tr><td>Đội có Wren: sát thương Wren gánh / tầng</td><td class="n">40–60%</td><td>Trên 60% là Wren chết trước khi kịp hồi; dưới 40% là talent vô dụng.</td></tr>
           <tr><td>Tỉ lệ chọn mỗi bộ</td><td class="n">≥ 8%</td><td>Dưới ngưỡng là bộ chết.</td></tr>
           <tr><td>Tỉ lệ chọn mỗi vũ khí</td><td class="n">≥ 6%</td><td>Cùng ngưỡng.</td></tr>
           <tr><td>Phân bố ô ngẫu nhiên</td><td class="n">33% ± 3</td><td>Ba lựa chọn phải đều. Lệch nghĩa là pool có con bị lỗi.</td></tr>
@@ -461,7 +462,12 @@
           <tr><td><span class="tag">đã chốt</span></td><td>Rook</td><td>Basic blast 0.8× / 0.4×. Skill all 1.0×. Ulti all 1.5× rồi 4 bounce 0.2×. Talent: mỗi kẻ địch trúng đòn +3 EN.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Lumen</td><td>Skill: +15% SPD và +20% ATK 2 lượt cho một đồng đội. Ulti: field Grid 3 lượt, cả hai đội +20% hồi EN. Talent: đồng đội dùng Ulti, Lumen +5 EN.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Nyx</td><td>Skill: −25% SPD một địch 2 lượt. Ulti: đẩy lùi 20% AV toàn bộ địch, cả đội ta +20% AV. Talent: mỗi đánh thường của đồng đội, Nyx +1 SPD cộng dồn.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Sable</td><td>Skill: 1 lượt, 100% đòn đơn mục tiêu của địch dồn vào một đồng đội, người đó +20% ATK. Ulti: toàn bộ địch −25% DEF 3 lượt. Talent: lần đầu mỗi tầng, một đòn chí tử lên đồng đội gây 0 damage.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Sable</td><td>Skill: đồng đội <b>hành động ngay sau lượt này</b> (ưu tiên 100%) và +20% ATK 1 lượt. Ulti: toàn bộ địch −25% DEF 3 lượt. Talent: lần đầu mỗi tầng, một đòn chí tử lên đồng đội gây 0 damage.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Bastion</td><td>Skill: đồng đội nhận phản đòn 2 lượt — mỗi lần người đó bị đánh, Bastion gây 6% max HP của mình lên kẻ đánh. Ulti: shield toàn đội 30% max HP của Bastion. Talent: đầu lượt, đồng minh ít shield nhất nhận shield 12% max HP của Bastion.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Mira</td><td>Skill: hồi 18% max HP <b>của Mira</b>, xóa 1 debuff. Ulti: hồi 12% max HP toàn đội, xóa 1 debuff mỗi người, +10% ATK 2 lượt. Talent: mỗi khi đồng đội nhận sát thương, hồi 3% max HP của Mira.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Wren</td><td>Skill: shield bản thân 25% max HP. Ulti: hồi 20% max HP toàn đội. Talent: 85% sát thương đồng đội nhận chuyển sang Wren.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Shield không giới hạn lượt</td><td>Shield chỉ mất khi vỡ. Shield mới thay shield cũ nếu lớn hơn, không cộng dồn. Hằng số <code>shield_turns</code> đã bỏ.</td></tr>
+          <tr><td><span class="tag warn">mở</span></td><td>Field Rampart đã bỏ</td><td>Ulti của Bastion giờ chỉ tạo shield, nên field Rampart không còn nguồn. Còn 3 field: Grid · Signal · Final Protocol. Muốn giữ Rampart thì phải gắn lại vào một chiêu khác.</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Nyx có cần trần SPD không</td><td>Talent cộng dồn không giới hạn. Nếu harness cho thấy Nyx vượt 200 SPD ở tầng 12+ thì chặn ở +40 SPD hoặc đổi thành "tối đa 10 stack".</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Công thức DoT sau khi giảm stack</td><td>Đã tách <code>dot_rate</code> = 0.45 × ATK mỗi stack. Cần harness đo lại DoT share (mục tiêu 15–35%) rồi mới chốt con số này.</td></tr>
         </table>
@@ -486,11 +492,11 @@
 <script>
 /* ============================================================ */
 const BASE = {
-  meta: { version: "0.11", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
+  meta: { version: "0.12", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
   constants: {
     def_k: 200, crit_rate: 5, crit_dmg: 50, sp_max: 5, sp_start: 3,
     en_max: 100, en_start: 50, en_basic: 20, en_skill: 30, ult_cost: 100,
-    dot_max: 5, dot_turns: 3, dot_rate: 0.45, shield_turns: 2, heal_after_battle: 8, draft_heal: 40
+    dot_max: 5, dot_turns: 3, dot_rate: 0.45, heal_after_battle: 8, draft_heal: 40
   },
   bands: [
     { label:"I",   floors:"1–4",   mult:1.00 },
@@ -525,8 +531,6 @@ const BASE = {
   fields: [
     { id:"grid", name:"Grid", turns:3, source:"Lumen — Ulti",
       effect:"Cả hai đội +20% hồi năng lượng.", cost:"Ai đánh nhiều thì hưởng nhiều — kể cả địch. Đặt field này là mở Ulti cho cả hai bên." },
-    { id:"rampart", name:"Rampart", turns:2, source:"Bastion — Ulti",
-      effect:"Cả hai đội nhận −15% sát thương.", cost:"Kéo dài trận; có lợi cho bên đang yếu hơn." },
     { id:"signal", name:"Signal", turns:3, source:"Signal Tower — mỗi 2 hành động",
       effect:"Cả hai đội +25% ATK.", cost:"Tower dùng nó để tự buff, nhưng bạn cũng được buff. Giết Tower thì field mất." },
     { id:"protocol", name:"Final Protocol", turns:3, source:"The Overseer — phase III",
@@ -551,24 +555,24 @@ const BASE = {
       skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Đồng đội +15% SPD và +20% ATK trong 2 lượt." },
       ult:{ name:"Grid", mult:0, en:100, target:"field", desc:"Đặt field Grid 3 lượt: cả hai đội +20% hồi EN." },
       talent:{ text:"Đồng đội dùng Ulti: Lumen +5 EN." } },
-    { id:"sable", name:"Sable", role:"Support", style:"Debuff / taunt",
+    { id:"sable", name:"Sable", role:"Support", style:"Debuff / AV",
       hp:890, atk:98, def:90, spd:120, crit:5, critdmg:50,
       basic:{ mult:0.95, sp:1, en:20, target:"single" },
-      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"1 lượt: 100% đòn đơn mục tiêu của địch dồn vào người này; người đó +20% ATK." },
+      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Đồng đội hành động ngay sau lượt này (ưu tiên 100%) và +20% ATK trong 1 lượt." },
       ult:{ name:"Blackout", mult:0, en:100, target:"all", desc:"Toàn bộ địch −25% DEF trong 3 lượt." },
       talent:{ text:"Lần đầu mỗi tầng một đồng đội nhận đòn chí tử: đòn đó gây 0 damage." } },
     { id:"bastion", name:"Bastion", role:"Sustain", style:"Shield",
       hp:1620, atk:58, def:196, spd:82, crit:0, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
-      skill:{ mult:0, sp:-1, en:30, target:"ally-all", desc:"Shield toàn đội 22% max HP của Bastion, 2 lượt." },
-      ult:{ name:"Rampart", mult:0, en:100, target:"field", desc:"Shield 30% max HP toàn đội + field Rampart 2 lượt." },
-      talent:{ text:"Shield do Bastion tạo thêm −8% sát thương nhận." } },
+      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Đồng đội nhận phản đòn 2 lượt: mỗi lần người đó bị đánh, Bastion gây 6% max HP của mình lên kẻ đánh." },
+      ult:{ name:"Rampart", mult:0, en:100, target:"ally-all", desc:"Shield cho toàn đội bằng 30% max HP của Bastion." },
+      talent:{ text:"Đầu lượt của Bastion: đồng minh có shield thấp nhất nhận shield bằng 12% max HP của Bastion." } },
     { id:"mira", name:"Mira", role:"Sustain", style:"Heal / cleanse",
       hp:1290, atk:80, def:128, spd:109, crit:5, critdmg:50,
       basic:{ mult:0.85, sp:1, en:20, target:"single" },
-      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Hồi 20% max HP và xóa 1 debuff." },
-      ult:{ name:"Sanctuary", mult:0, en:100, target:"ally-all", desc:"Hồi 12% max HP toàn đội, xóa mọi debuff, +10% ATK 2 lượt." },
-      talent:{ text:"Hồi máu cho người dưới 40% HP thì người đó +6 SPD 2 lượt." } },
+      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Hồi 18% max HP của Mira và xóa 1 debuff." },
+      ult:{ name:"Sanctuary", mult:0, en:100, target:"ally-all", desc:"Hồi 12% max HP toàn đội, xóa 1 debuff mỗi người, +10% ATK 2 lượt." },
+      talent:{ text:"Mỗi khi một nhân vật phe ta nhận sát thương: hồi cho người đó 3% max HP của Mira." } },
     { id:"rook", name:"Rook", role:"DPS", style:"All / bounce",
       hp:1080, atk:142, def:96, spd:96, crit:5, critdmg:50,
       basic:{ mult:0.8, sp:1, en:20, target:"blast", desc:"Chính 0.8×, hai bên 0.4×." },
@@ -581,12 +585,12 @@ const BASE = {
       skill:{ mult:0, sp:-1, en:30, target:"enemy-single", desc:"−25% SPD mục tiêu trong 2 lượt." },
       ult:{ name:"Zero Hour", mult:0, en:100, target:"all", desc:"Đẩy lùi toàn bộ địch 20% AV; toàn đội ta +20% AV." },
       talent:{ text:"Mỗi lần một đồng đội đánh thường: Nyx +1 SPD, cộng dồn đến hết trận." } },
-    { id:"wren", name:"Wren", role:"Sustain", style:"Hút máu / hiến máu",
+    { id:"wren", name:"Wren", role:"Sustain", style:"Chuyển sát thương",
       hp:1420, atk:86, def:110, spd:103, crit:5, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
-      skill:{ mult:0, sp:-1, en:30, target:"ally-all", desc:"Tiêu 15% HP hiện tại của Wren, hồi 18% max HP cho cả đội." },
-      ult:{ name:"Crimson Tithe", mult:0, en:100, target:"ally-all", desc:"Hồi 20% max HP toàn đội; 3 lượt tới mỗi đòn của Wren hồi máu cho đồng đội HP thấp nhất." },
-      talent:{ text:"Sát thương Wren gây ra hồi cho cô 25% lượng đó; đồng đội dưới 30% HP nhận thêm 40%." } }
+      skill:{ mult:0, sp:-1, en:30, target:"self", desc:"Shield cho bản thân bằng 25% max HP của Wren." },
+      ult:{ name:"Crimson Tithe", mult:0, en:100, target:"ally-all", desc:"Hồi 20% max HP toàn đội." },
+      talent:{ text:"Mỗi khi một nhân vật phe ta nhận sát thương: 85% sát thương đó chuyển sang Wren." } }
   ],
   cones: [
     { id:"razorline", name:"Razorline", role:"DPS", play:"CRIT",
@@ -734,7 +738,7 @@ const BASE = {
     { type:"Heal", desc:"Hồi 40% max HP cho toàn đội.", limit:"không giới hạn" }
   ]
 };
-const KEY = "hsrlite-spec-v11";
+const KEY = "hsrlite-spec-v12";
 
 let DATA = JSON.parse(JSON.stringify(BASE));
 let NOTES = "";
@@ -956,7 +960,6 @@ function renderConstants(){
     "k-ult": F("constants.ult_cost", 62),
     "k-dot": F("constants.dot_max", 44) + " / " + F("constants.dot_turns", 44),
     "k-dotr": F("constants.dot_rate", 62),
-    "k-shd": F("constants.shield_turns", 62),
     "k-amb": F("constants.heal_after_battle", 62),
     "k-dh": F("constants.draft_heal", 62)
   };

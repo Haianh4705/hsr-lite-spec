@@ -163,7 +163,7 @@ ok("band multiplier never exceeds 1.50", Math.max(...DATA.bands.map(b => b.mult)
 ok("enemy SPD is not scaled by band", !/spd/.test(JSON.stringify(DATA.bands)));
 ok("floors are numbered 1..16", DATA.encounters.every((e, i) => e.n === i + 1));
 ok("5 target types", DATA.targets.length === 5, `got ${DATA.targets.length}`);
-ok("4 fields", DATA.fields.length === 4, `got ${DATA.fields.length}`);
+ok("3 fields", DATA.fields.length === 3, `got ${DATA.fields.length}`);
 ok("8 effect abbreviations", DATA.effects.length === 8, `got ${DATA.effects.length}`);
 ok("5 log columns", DATA.logCols.length === 5, `got ${DATA.logCols.length}`);
 ok("only ultimates have names",
@@ -200,6 +200,21 @@ const sable = DATA.characters.find(c => c.id === "sable");
 ok("Sable skill redirects 100% single-target hits", sable.skill.target === "ally-single" && /100%/.test(sable.skill.desc) && /20% ATK/.test(sable.skill.desc));
 ok("Sable ult is a 3-turn DEF debuff on all", sable.ult.target === "all" && sable.ult.mult === 0 && /−25% DEF/.test(sable.ult.desc) && /3 lượt/.test(sable.ult.desc));
 ok("Sable talent negates the first lethal hit each floor", /0 damage/.test(sable.talent.text) && /mỗi tầng/.test(sable.talent.text));
+ok("shield has no turn limit", !("shield_turns" in DATA.constants));
+ok("Sable skill grants immediate action", /ưu tiên 100%/.test(DATA.characters.find(c => c.id === "sable").skill.desc));
+const bastion = DATA.characters.find(c => c.id === "bastion");
+ok("Bastion skill is a counter buff", /phản đòn/.test(bastion.skill.desc) && bastion.skill.target === "ally-single");
+ok("Bastion ult is a team shield only", /Shield cho toàn đội/.test(bastion.ult.desc) && bastion.ult.target === "ally-all" && !/field/.test(bastion.ult.desc));
+ok("Bastion talent shields the ally with least shield", /shield thấp nhất/.test(bastion.talent.text));
+ok("Rampart field is gone", !DATA.fields.some(f => f.id === "rampart"));
+const mira = DATA.characters.find(c => c.id === "mira");
+ok("Mira skill heals from her own max HP", /max HP của Mira/.test(mira.skill.desc));
+ok("Mira ult removes one debuff", /xóa 1 debuff mỗi người/.test(mira.ult.desc));
+ok("Mira talent heals on any ally damage", /3% max HP của Mira/.test(mira.talent.text));
+const wren = DATA.characters.find(c => c.id === "wren");
+ok("Wren skill shields herself", /Shield cho bản thân/.test(wren.skill.desc) && wren.skill.target === "self");
+ok("Wren ult only heals", /Hồi 20% max HP toàn đội/.test(wren.ult.desc) && !/3 lượt/.test(wren.ult.desc));
+ok("Wren talent redirects 85%", /85%/.test(wren.talent.text));
 ok("DoT has its own rate constant", DATA.constants.dot_rate === 0.45, String(DATA.constants.dot_rate));
 ok("every character has a unique ult name",
   new Set(DATA.characters.map(c => c.ult.name)).size === DATA.characters.length);
@@ -245,7 +260,7 @@ ok("normal enemies: 9 rows", count("enemies-normal", /<tr>/g) === 10, `got ${cou
 ok("encounters: 16 rows", count("encounters", /<tr>/g) === 17, `got ${count("encounters", /<tr>/g)} (incl. header)`);
 ok("bands: 4 rows", count("bands", /<tr>/g) === 5, `got ${count("bands", /<tr>/g)} (incl. header)`);
 ok("targets: 5 rows", count("targets", /<tr>/g) === 6, `got ${count("targets", /<tr>/g)} (incl. header)`);
-ok("fields: 4 rows", count("fields", /<tr>/g) === 5, `got ${count("fields", /<tr>/g)} (incl. header)`);
+ok("fields: 3 rows", count("fields", /<tr>/g) === 4, `got ${count("fields", /<tr>/g)} (incl. header)`);
 ok("effects: 8 rows", count("effects", /<tr>/g) === 9, `got ${count("effects", /<tr>/g)} (incl. header)`);
 ok("logcols: 5 rows", count("logcols", /<tr>/g) === 6, `got ${count("logcols", /<tr>/g)} (incl. header)`);
 ok("spread: 9 rows", count("spread", /<tr>/g) === 10, `got ${count("spread", /<tr>/g)} (incl. header)`);
@@ -269,7 +284,7 @@ const fire = (p, value) => listeners.input({ target: { dataset: { p }, value, id
 fire("constants.def_k", "120");
 ok("DEF K written to DATA", DATA.constants.def_k === 120, String(DATA.constants.def_k));
 ok("DEF curve re-rendered on edit", /<td class="n">128<\/td><td class="n">0\.484<\/td>/.test(store.defcurve));
-ok("edit persisted to localStorage", /"def_k":120/.test(localStorage.getItem("hsrlite-spec-v11") || ""));
+ok("edit persisted to localStorage", /"def_k":120/.test(localStorage.getItem("hsrlite-spec-v12") || ""));
 fire("constants.def_k", "200");
 const k0 = store["scale-3"];
 fire("cones.3.s1.base", "12");
@@ -280,13 +295,13 @@ ok("character stat is numeric, not string", DATA.characters[0].hp === 999, JSON.
 fire("characters.0.hp", "820");
 const notesHandler = listeners.input;
 notesHandler({ target: { id: "notes", value: "ghi chú thử", dataset: {} } });
-ok("notes captured", JSON.parse(localStorage.getItem("hsrlite-spec-v11")).notes === "ghi chú thử");
+ok("notes captured", JSON.parse(localStorage.getItem("hsrlite-spec-v12")).notes === "ghi chú thử");
 
 console.log("\n== payload ==");
 const p = JSON.parse(payload());
 ok("payload has characters", Array.isArray(p.characters) && p.characters.length === 9);
 ok("payload has targets", Array.isArray(p.targets) && p.targets.length === 5);
-ok("payload has fields", Array.isArray(p.fields) && p.fields.length === 4);
+ok("payload has fields", Array.isArray(p.fields) && p.fields.length === 3);
 ok("payload has 16 encounters", Array.isArray(p.encounters) && p.encounters.length === 16);
 ok("payload has bands", Array.isArray(p.meta) === false && p.meta.floors === 16);
 ok("payload has notes", typeof p.notes === "string");
