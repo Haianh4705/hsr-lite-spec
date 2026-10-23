@@ -1,6 +1,6 @@
 # PROGRESS — HSR-lite spec
 
-Cập nhật lần cuối: phiên v0.15.
+Cập nhật lần cuối: phiên v0.16.
 Đọc `AGENTS.md` trước file này.
 
 ---
@@ -9,11 +9,22 @@ Cập nhật lần cuối: phiên v0.15.
 
 | Hạng mục | Giá trị |
 |---|---|
-| Bản đặc tả | `docs/design.html` — **v0.15** |
+| Bản đặc tả | `docs/design.html` — **v0.16** |
 | Trạng thái | Đặc tả hoàn chỉnh, harness xanh (`ALL CHECKS PASSED`) |
 | Game | **Chưa build, chưa chạy** — đúng như yêu cầu |
-| localStorage key | `hsrlite-spec-v15` |
+| localStorage key | `hsrlite-spec-v16` |
 | Kiểm tra | `node docs/verify.js` |
+
+## Vừa xong (v0.16) — tầng 16 thành bài kiểm tra thật
+
+- **Tầng 16 = 2 boss + 3 elite ngẫu nhiên** (5 ô, rút không trùng từ 5 elite). Đây là tầng duy
+  nhất random 3 ô. Trung bình 7.140 HP; mục tiêu 24–32 hành động.
+- **Rook hạ**: skill 1.0× → 0.8×, Ulti 1.5× → 1.2×.
+- **Test chiến thuật** (model, tầng 16): Kaine + 2 sustain (Mira + Bastion + Lumen) thắng nhưng
+  mất **58 hành động / 14,5 vòng**; đội 2 DPS mất 29–39 hành động. Không đội nào trong model
+  thực sự chết — nghĩa là tầng 16 khó vì **dài và hao**, chưa khó vì **buộc phải tối ưu**.
+- Đội Kaine + Mira + Wren + Bastion **không bao giờ chết** (heal 623 > incoming 498) nhưng cũng
+  mất 57 hành động → chiến thuật 3 sustain là đường an toàn nhất, đây là lỗ hổng thiết kế.
 
 ## Vừa xong (v0.15) — cấu trúc sảnh mới
 
@@ -69,10 +80,12 @@ tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành đ�
 
 ## Việc tiếp theo (theo thứ tự)
 
-0. **Đợt cân bằng 3 (chưa duyệt).** Còn lệch sau v0.15: Rook chiếm ~62% damage đội ở tầng 5 ô
-   (trần 45%); Kaine tụt xuống ~28% và có thể dưới sàn 15% ở trận ngắn; tầng 1–5 vẫn ~2,6–3,0
-   hành động (mục tiêu 3–6); tầng 13 và 15 nhỉnh 2–5% trên ngưỡng; đội toàn AoE chậm gấp rưỡi
-   đội có single-target ở tầng 16.
+0. **Quyết định về "đồng hồ" cho tầng 16 (chưa làm).** Không có giới hạn lượt thì đội 3 sustain
+   luôn thắng, chỉ chậm. Ba lựa chọn: (a) boss cuối vào trạng thái cuồng nộ sau N vòng, (b) mỗi
+   vòng boss +5% ATK cộng dồn, (c) để nguyên và chấp nhận "chậm nhưng chắc" là một chiến thuật.
+1. **Rook sau khi hạ** vẫn có thể vượt trần 45% ở tầng 5 ô — đo lại khi có harness thật.
+2. **Kaine** trong đội 2 sustain chỉ chiếm ~20% damage; DoT share 56% nhưng tổng damage thấp.
+3. Tầng 1–5 vẫn ~2,6–3,0 hành động (mục tiêu 3–6); tầng 13 và 15 nhỉnh 2–5% trên ngưỡng.
 
 1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.
    Cần harness đo DoT share; mục tiêu 15–35%.
@@ -117,6 +130,8 @@ tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành đ�
 
 ## Changelog
 
+- **0.16** — tầng 16 thêm 3 elite ngẫu nhiên; Rook hạ còn 0.8× / 1.2×; test chiến thuật
+  Kaine + 2 sustain.
 - **0.15** — 5 ô địch, 8 bậc, boss 10/13/16, đổi đội sau 5 và 9, Vesper CRIT 35, Kaine
   DoT-first, Curator mạnh lên.
 - **0.14** — cân bằng đợt 1: ATK curve riêng, cắt sustain ~55%, tầng 16 gọn lại, Lumen bỏ field,

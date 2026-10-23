@@ -31,6 +31,11 @@ function totalMult(unit, slots) {
 
 function floorEnemies(e) {
   const list = e.enemies.flatMap(([id, n]) => Array(n).fill(enemies[id]));
+  if (e.eliteRoll) {
+    const pool = BASE.enemies.filter(x => x.tier === "elite");
+    const avg = k => pool.reduce((a, x) => a + x[k], 0) / pool.length;
+    for (let i = 0; i < e.eliteRoll; i++) list.push({ hp: avg("hp"), atk: avg("atk"), def: avg("def"), tier: "elite" });
+  }
   if (e.roll && e.roll.length) {
     const pick = id => enemies[id];
     const avg = k => e.roll.reduce((a, id) => a + pick(id)[k], 0) / e.roll.length;
@@ -144,4 +149,58 @@ for (const t of [TEAM, ["rook", "kaine", "vesper", "bastion"]]) {
     one(a, a.basic.mult) + (c.role !== "DPS" ? one(c, c.basic.mult) : 0) +
     dps.reduce((n, x) => n + one(x, totalMult(x.ult, slots)) * 0.25, 0)) * GEAR;
   console.log(pad(t.join("+"), 36), "hành động", num(rows[15].hp / out * 4));
+}
+
+// ---- 10. test chiến thuật ở tầng 16 ----
+const f16 = BASE.encounters[15];
+const list16 = floorEnemies(f16);
+const slots16 = list16.length;
+const def16 = list16.reduce((a, x) => a + x.def * bandOf(16).mult, 0) / slots16;
+const hp16 = list16.reduce((a, x) => a + x.hp * bandOf(16).mult, 0);
+const atk16 = list16.reduce((a, x) => a + x.atk * bandOf(16).atk, 0);
+
+function model(ids) {
+  const team = ids.map(id => chars[id]);
+  const avgDef = team.reduce((a, c) => a + c.def, 0) / team.length;
+  const incoming = atk16 * defF(avgDef) * 0.9;
+  const partyHP = team.reduce((a, c) => a + c.hp, 0);
+  let dmg = 0, ult = 0, heal = 0, dot = 0;
+  for (const c of team) {
+    if (c.role === "DPS") {
+      dmg += hit(c, totalMult(c.skill, slots16), def16);
+      ult += hit(c, totalMult(c.ult, slots16), def16) * 0.25;
+      if (c.id === "kaine") {
+        const stacks = Math.min(3, slots16) + 1;
+        dot += stacks * c.atk * BASE.constants.dot_rate * defF(def16);
+      }
+    } else {
+      dmg += hit(c, c.basic.mult, def16);
+      if (c.id === "mira") heal += c.hp * 0.10 + c.hp * 0.01 * slots16;
+      if (c.id === "bastion") heal += c.hp * 0.04 + c.hp * 0.15 * 4 / 5;
+      if (c.id === "wren") heal += c.hp * 0.15 * 4 / 5;
+    }
+  }
+  const out = (dmg + ult + dot) * GEAR;
+  const rounds = hp16 / out;
+  const net = heal - incoming;
+  return { out, rounds, actions: rounds * 4, heal, incoming, net, partyHP,
+    dieIn: net < 0 ? partyHP / -net : Infinity, avgDef };
+}
+
+console.log("\n== CHIẾN THUẬT TẦNG 16 (5 ô: 2 boss + 3 elite, DEF", num(def16), "HP", num(hp16), ") ==");
+console.log("team                              out/vòng  rounds  actions  heal  incoming  net   chết sau");
+const TEAMS = {
+  "Rook+Kaine+Lumen+Bastion": ["rook", "kaine", "lumen", "bastion"],
+  "Kaine+Vesper+Mira+Bastion": ["kaine", "vesper", "mira", "bastion"],
+  "Kaine+Mira+Bastion+Lumen": ["kaine", "mira", "bastion", "lumen"],
+  "Kaine+Mira+Wren+Bastion": ["kaine", "mira", "wren", "bastion"],
+  "Vesper+Kaine+Mira+Bastion": ["vesper", "kaine", "mira", "bastion"]
+};
+for (const [name, ids] of Object.entries(TEAMS)) {
+  const m = model(ids);
+  console.log(
+    pad(name, 33), num(m.out).padStart(8), num(m.rounds).padStart(7), num(m.actions).padStart(8),
+    num(m.heal).padStart(6), num(m.incoming).padStart(9), num(m.net).padStart(6),
+    (m.net < 0 ? num(m.dieIn) + " vòng" : "không chết").padStart(11)
+  );
 }

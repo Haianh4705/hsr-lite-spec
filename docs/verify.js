@@ -179,8 +179,8 @@ ok("no boss phase carries its own name",
 ok("Curator heals 6% per player ultimate", /hồi 6% max HP/.test(DATA.enemies.find(e => e.id === "curator").behavior));
 const rook = DATA.characters.find(c => c.id === "rook");
 ok("Rook basic is a 0.8 blast", rook.basic.target === "blast" && rook.basic.mult === 0.8);
-ok("Rook skill is 1.0 all", rook.skill.target === "all" && rook.skill.mult === 1.0);
-ok("Rook ult is 1.5 all + 4 bounce 0.2", rook.ult.mult === 1.5 && rook.ult.target === "all" && rook.ult.bounces === 4 && rook.ult.bounceMult === 0.2);
+ok("Rook skill is 0.8 all", rook.skill.target === "all" && rook.skill.mult === 0.8);
+ok("Rook ult is 1.2 all + 4 bounce 0.2", rook.ult.mult === 1.2 && rook.ult.target === "all" && rook.ult.bounces === 4 && rook.ult.bounceMult === 0.2);
 ok("Rook talent restores 3 EN per enemy hit", /3 EN/.test(rook.talent.text));
 const kaine = DATA.characters.find(c => c.id === "kaine");
 ok("Kaine skill is blast with 1 DoT stack", kaine.skill.target === "blast" && /1 stack/.test(kaine.skill.desc));
@@ -239,14 +239,16 @@ ok("every encounter enemy exists", [...used].every(id => ids.has(id)));
 ok("every enemy is used somewhere", [...ids].every(id => used.has(id)),
   [...ids].filter(id => !used.has(id)).join(", "));
 const slots = DATA.encounters.reduce((n, e) => n + e.enemies.reduce((a, [, c]) => a + c, 0), 0);
-const slotCount = e => e.enemies.reduce((a, [, c]) => a + c, 0) + (e.roll ? 1 : 0);
-ok("encounters use 2-5 slots (2 = double boss)", DATA.encounters.every(e => slotCount(e) >= 2 && slotCount(e) <= 5),
+const slotCount = e => e.enemies.reduce((a, [, c]) => a + c, 0) + (e.roll ? 1 : 0) + (e.eliteRoll || 0);
+ok("encounters use 4-5 slots", DATA.encounters.every(e => slotCount(e) >= 4 && slotCount(e) <= 5),
   JSON.stringify(DATA.encounters.filter(e => slotCount(e) < 2 || slotCount(e) > 5).map(e => e.n)));
 ok("at least one 5-slot fight exists", DATA.encounters.some(e => slotCount(e) === 5));
 ok("random slot is 1-of-3 where present",
   DATA.encounters.filter(e => e.roll).every(e => Array.isArray(e.roll) && e.roll.length === 3));
-ok("boss floors have no random slot",
-  [10, 13, 16].every(n => DATA.encounters.find(e => e.n === n).roll === null));
+ok("boss floors 10 and 13 have no random slot",
+  [10, 13].every(n => DATA.encounters.find(e => e.n === n).roll === null));
+ok("floor 16 rolls 3 random elites",
+  DATA.encounters.find(e => e.n === 16).eliteRoll === 3);
 ok("floor 16 holds two bosses",
   DATA.encounters.find(e => e.n === 16).enemies.filter(([id]) => (DATA.enemies.find(x => x.id === id) || {}).tier === "boss").length === 2);
 ok("boss floors are 10, 13 and 16", [10, 13, 16].every(n =>

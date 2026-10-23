@@ -187,7 +187,7 @@
           <tr><td class="n">8–9</td><td>V</td><td class="n">×1.30</td><td class="n">×1.75</td><td>Hai elite cùng lúc; Chorister buff cả hàng. <b>Sau tầng 9: đổi đội.</b></td><td class="n">6–8</td></tr>
           <tr><td class="n">10–12</td><td>VI</td><td class="n">×1.38</td><td class="n">×1.95</td><td><b>The Curator</b> ở tầng 10; tầng 11–12 là tường elite năm ô.</td><td class="n">8–11</td></tr>
           <tr><td class="n">13–15</td><td>VII</td><td class="n">×1.45</td><td class="n">×2.15</td><td><b>The Overseer</b> ở tầng 13; 14–15 dồn ba elite.</td><td class="n">9–12</td></tr>
-          <tr><td class="n">16</td><td>VIII</td><td class="n">×1.50</td><td class="n">×2.30</td><td><b>Hai boss cùng lúc</b> — Overseer và Curator. Đội hình cố định.</td><td class="n">12–18</td></tr>
+          <tr><td class="n">16</td><td>VIII</td><td class="n">×1.50</td><td class="n">×2.30</td><td><b>Hai boss + ba elite ngẫu nhiên</b> — Overseer, Curator, và 3 trong 5 elite. Không đội hình nào là đủ.</td><td class="n">24–32</td></tr>
         </table>
         <p class="fine">Hai hệ số độc lập: <b>HP · DEF</b> dừng ở ×1.50, còn <b>ATK</b> lên tới ×2.30. Lý do: nếu ATK cũng chỉ ×1.50 thì cuối sảnh địch đánh không đau bằng đội hồi máu, và trận chỉ dài ra chứ không căng. <b>SPD không nhân</b> — nhân SPD sẽ làm hàng đợi đổi liên tục và người chơi mất cảm giác về nhịp. Mục tiêu: 30–40 phút lần đầu, 20–25 phút khi đã biết luật.</p>
         <h3>đổi đội giữa run</h3>
@@ -393,7 +393,7 @@
           <tr><td class="n">1</td><td>Cái gì ngẫu nhiên</td><td>Đúng <b>một ô</b> mỗi tầng, rút từ nhóm 3 con cùng vai trò. Ba ô còn lại cố định — đội hình vẫn đọc được như một bài học.</td></tr>
           <tr><td class="n">2</td><td>Roll lúc nào</td><td>Một lần, ở đầu run, trước tầng 1. Không roll lại giữa run, không roll lại sau khi chết.</td></tr>
           <tr><td class="n">3</td><td>Seed</td><td>Run sinh một seed 4 ký tự hex, in ở header HUD: <code>SEED 7F2A</code>. Cùng seed + cùng lựa chọn = cùng sảnh; đổi seed = đổi cả 15 ô cùng lúc.</td></tr>
-          <tr><td class="n">4</td><td>Tầng 16 cố định</td><td>Boss cuối không có ô ngẫu nhiên. Bài kiểm tra cuối phải giống nhau cho mọi người.</td></tr>
+          <tr><td class="n">4</td><td>Tầng 16 ngẫu nhiên nhiều nhất</td><td>Hai boss cố định, cộng <b>3 elite rút từ 5 con</b> (không trùng). Đây là tầng duy nhất random 3 ô — vì nó phải là bài kiểm tra đội hình, không phải bài học thuộc lòng.</td></tr>
           <tr><td class="n">5</td><td>Không random trong trận</td><td>Ngoài ô này, chỉ CRIT và thứ tự bounce là ngẫu nhiên. Mục tiêu, hàng đợi, draft đều đã có luật riêng.</td></tr>
         </table>
       </div>
@@ -419,7 +419,7 @@
           <tr><td>Win-rate toàn run</td><td class="n">45–65%</td><td>HP địch trước, ATK địch sau.</td></tr>
           <tr><td>Hành động / tầng thường</td><td class="n">3–6</td><td>Giảm HP địch, đừng tăng damage.</td></tr>
           <tr><td>Hành động / boss (tầng 10, 13)</td><td class="n">10–14</td><td>Curator và Overseer phải dài hơn elite thường, ngắn hơn trận hai boss.</td></tr>
-          <tr><td>Hành động / hai boss (tầng 16)</td><td class="n">18–24</td><td>Đo với đội có ít nhất 1 DPS single-target. Đội toàn AoE chậm hơn ~40% — đó là bài học đội hình, không phải lỗi số.</td></tr>
+          <tr><td>Hành động / tầng 16</td><td class="n">24–32</td><td>Đo với đội có ít nhất 1 DPS single-target. Đội toàn AoE chậm hơn ~40% — đó là bài học đội hình, không phải lỗi số.</td></tr>
           <tr><td>Hành động / tầng 13–15</td><td class="n">9–12</td><td>Tầng 3 elite dài hơn tầng thường cùng bậc; đừng ép về 5–7.</td></tr>
           <tr><td>Sustain / sát thương nhận mỗi vòng</td><td class="n">1,2–1,6×</td><td>Dưới 1,0 là đội không thể sống; trên 2,0 là không thể chết. Đây là chỉ số quan trọng nhất của bản cân bằng này.</td></tr>
           <tr><td>Damage share thấp nhất</td><td class="n">≥ 15%</td><td>Tăng mult hoặc giảm cost SP.</td></tr>
@@ -456,7 +456,7 @@
           <tr><td><span class="tag">đã chốt</span></td><td>Codex mở tự do</td><td>Mở giữa trận không tốn lượt, không phạt. Không có giới hạn số lần.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Đổi đội sau tầng 5 và 9</td><td>Hai mốc. Chọn đổi thì tháo sạch vũ khí và di vật về kho, chọn lại 4/9, rồi lắp lại. Vào tầng là chốt.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>“2/5 mảnh”</td><td>Bày 5 mảnh ngẫu nhiên, người chơi <b>chọn 2</b>. Không phải nhận 2 mảnh mù.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Ba trận boss</td><td>Curator ở tầng 10, Overseer ở tầng 13, cả hai cùng lúc ở tầng 16 (không có đệ). Tổng 16 địch = 9 thường · 5 elite · 2 boss.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Ba trận boss</td><td>Curator ở tầng 10, Overseer ở tầng 13; tầng 16 là <b>hai boss + 3 elite ngẫu nhiên</b> (5 ô). Tổng 16 địch = 9 thường · 5 elite · 2 boss.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Tối đa 5 ô địch</td><td>4–5 ô tuỳ tầng, không còn 4v4 đều. 10/16 tầng có 5 ô. HUD vẫn 80×24: thêm một dòng địch thì bỏ một dòng kẻ ngăn.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Tám bậc thay bốn band</td><td>1 · 2–3 · 4–5 · 6–7 · 8–9 · 10–12 · 13–15 · 16. HP·DEF ×1.00→×1.50; ATK ×1.00→×2.30. Bậc dài ngắn khác nhau nên nhịp không còn đều.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Vesper: CRIT 35%</td><td>Tăng từ 18% để talent có đất sống: 3 stack ≈ 8,6 đòn, thay vì 16,7.</td></tr>
@@ -478,6 +478,7 @@
           <tr><td><span class="tag">đã chốt</span></td><td>Wren</td><td>Skill: shield bản thân 25% max HP. Ulti: hồi <b>15%</b> max HP toàn đội. Talent: 15% vào mục tiêu theo DEF mục tiêu, 85% sang Wren theo DEF Wren — <b>hai lần nhận sát thương</b>, nên hiệu ứng “khi đồng đội nhận đòn” kích hai lần.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Shield không giới hạn lượt</td><td>Shield chỉ mất khi vỡ. Shield mới thay shield cũ nếu lớn hơn, không cộng dồn. Hằng số <code>shield_turns</code> đã bỏ.</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Không còn field của người chơi</td><td>Rampart bỏ khi Bastion đổi Ulti; Grid bỏ khi Lumen đổi Ulti thành buff đội. Còn 2 field, đều do địch đặt: Signal · Final Protocol. Field giờ là cơ chế của địch, không phải lựa chọn của bạn.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Rook bị hạ</td><td>Skill 1.0× → <b>0.8×</b>, Ulti 1.5× → <b>1.2×</b>. Ở tầng 5 ô cậu ấy vẫn dẫn đầu nhưng không còn một mình gánh 60% damage đội.</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Nyx có cần trần SPD không</td><td>Talent cộng dồn không giới hạn. Nếu harness cho thấy Nyx vượt 200 SPD ở tầng 12+ thì chặn ở +40 SPD hoặc đổi thành "tối đa 10 stack".</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Công thức DoT sau khi giảm stack</td><td>Đã tách <code>dot_rate</code> = 0.45 × ATK mỗi stack. Cần harness đo lại DoT share (mục tiêu 15–35%) rồi mới chốt con số này.</td></tr>
         </table>
@@ -502,7 +503,7 @@
 <script>
 /* ============================================================ */
 const BASE = {
-  meta: { version: "0.15", floors: 16, tiers: 8, starters: 2, runs: 2000, letters: "A–E · F–I", seed: "7F2A" },
+  meta: { version: "0.16", floors: 16, tiers: 8, starters: 2, runs: 2000, letters: "A–E · F–I", seed: "7F2A" },
   constants: {
     def_k: 200, crit_rate: 5, crit_dmg: 50, sp_max: 5, sp_start: 3,
     en_max: 100, en_start: 50, en_basic: 20, en_skill: 30, ult_cost: 100,
@@ -588,8 +589,8 @@ const BASE = {
     { id:"rook", name:"Rook", role:"DPS", style:"All / bounce",
       hp:1080, atk:142, def:96, spd:96, crit:5, critdmg:50,
       basic:{ mult:0.8, sp:1, en:20, target:"blast", desc:"Chính 0.8×, hai bên 0.4×." },
-      skill:{ mult:1.0, sp:-1, en:30, target:"all", desc:"Toàn bộ địch 1.0×." },
-      ult:{ name:"Broadside", mult:1.5, en:100, target:"all", bounces:4, bounceMult:0.2, desc:"Toàn bộ địch 1.5×; sau đó 4 lần bounce 0.2× vào mục tiêu ngẫu nhiên." },
+      skill:{ mult:0.8, sp:-1, en:30, target:"all", desc:"Toàn bộ địch 0.8×." },
+      ult:{ name:"Broadside", mult:1.2, en:100, target:"all", bounces:4, bounceMult:0.2, desc:"Toàn bộ địch 1.2×; sau đó 4 lần bounce 0.2× vào mục tiêu ngẫu nhiên." },
       talent:{ text:"Mỗi lần đánh trúng một kẻ địch: +3 EN. Đòn càng lan, hồi càng nhiều." } },
     { id:"nyx", name:"Nyx", role:"Support", style:"AV / tốc độ",
       hp:860, atk:66, def:82, spd:126, crit:5, critdmg:50,
@@ -741,8 +742,8 @@ const BASE = {
       note:"Ba elite cùng lúc: không có mục tiêu nào là sai." },
     { n:15, enemies:[["engineer",1],["colossus",1],["tower",1],["chorister",1]], roll:["sniper","bomber","cinder"],
       note:"Tầng khó nhất trước boss: bốn nguồn áp lực, không nguồn nào chết nhanh." },
-    { n:16, enemies:[["overseer",1],["curator",1]], roll:null,
-      note:"HAI BOSS cùng lúc, không có đệ. Không ô ngẫu nhiên: bài kiểm tra cuối phải giống nhau." }
+    { n:16, enemies:[["overseer",1],["curator",1]], eliteRoll:3,
+      note:"HAI BOSS + BA ELITE rút ngẫu nhiên từ 5 con. Tầng khó nhất: không có đội hình nào là đủ." }
   ],
   draft: [
     { type:"Relic", desc:"Bày 5 mảnh ngẫu nhiên, chọn 2. Ghép đúng bộ 2 mảnh thì mở trait.", limit:"8 ô" },
@@ -1153,9 +1154,11 @@ function renderEncounters(){
       const b = bandOf(e.n);
       const isBoss = e.enemies.some(([id]) => enemyOf(id).tier === "boss");
       const fixed = e.enemies.map(([id, c]) => `<b>${c}×</b> ${esc(nameOf(id))}`).join(" &nbsp; ");
-      const roll = (e.roll && e.roll.length)
-        ? `<span class="dim">1× ${e.roll.map(nameOf).map(esc).join(" / ")}</span>`
-        : `<span class="dim">—</span>`;
+      const roll = e.eliteRoll
+        ? `<span class="dim">${e.eliteRoll}× elite bất kỳ (khác nhau)</span>`
+        : (e.roll && e.roll.length)
+          ? `<span class="dim">1× ${e.roll.map(nameOf).map(esc).join(" / ")}</span>`
+          : `<span class="dim">—</span>`;
       return `<tr><td class="n"><b>${e.n}</b>${isBoss ? " ★" : ""}</td>
       <td class="n">${esc(b.label)}</td><td class="n">×${b.mult.toFixed(2)}</td>
       <td class="fine" style="font-family:var(--mono)">${fixed}</td>
