@@ -120,7 +120,7 @@
   <header class="mast">
     <div>
       <h1>HSR-lite — bảng thông số</h1>
-      <p class="sub">Terminal turn-based RPG. 4v4, sảnh đường 16 tầng, 9 nhân vật, 12 vũ khí, 8 bộ di vật, 16 kẻ địch, 2 boss, 5 kiểu chọn mục tiêu, 4 màn hình. Mọi con số ở đây sửa được và là nguồn số liệu duy nhất cho bản build.</p>
+      <p class="sub">Terminal turn-based RPG. 4 đấu 4–5, sảnh đường 16 tầng, 9 nhân vật, 12 vũ khí, 8 bộ di vật, 16 kẻ địch, 2 boss, 5 kiểu chọn mục tiêu, 4 màn hình. Mọi con số ở đây sửa được và là nguồn số liệu duy nhất cho bản build.</p>
     </div>
     <div class="meta">
       bản <b>0.14</b><br>
@@ -157,8 +157,8 @@
         <p class="lede">Một sảnh đường mười sáu tầng, không bản đồ, không cửa hàng. Mở lên, hiểu trong 60 giây, chơi hết 30–40 phút.</p>
         <table>
           <tr><th style="width:30%">Hạng mục</th><th>Chốt</th></tr>
-          <tr><td>Run</td><td>Chọn 4 trong 9 → 2 draft mở đầu → 16 tầng (1 draft sau mỗi tầng 1–15). <b>Hai boss: tầng 12 và 16.</b> Đổi đội ở mốc 5 / 9 / 13.</td></tr>
-          <tr><td>Quy mô</td><td>4 nhân vật vs 4 địch. Boss chiếm 1 ô.</td></tr>
+          <tr><td>Run</td><td>Chọn 4 trong 9 → 2 draft mở đầu → 16 tầng (1 draft sau mỗi tầng 1–15). <b>Boss ở tầng 10, 13, và tầng 16 có hai boss.</b> Đổi đội sau tầng 5 và tầng 9.</td></tr>
+          <tr><td>Quy mô</td><td>4 nhân vật, <b>2–5 địch</b> tuỳ tầng: thường 4–5, tầng 16 chỉ có 2 boss.</td></tr>
           <tr><td>Cơ chế</td><td>AV · Skill Point · Energy/Ult · CRIT · DoT · follow-up · shield · <b>field</b></td></tr>
           <tr><td>Mục tiêu</td><td>single · blast · all · bounce · field — dùng cho cả hai phía.</td></tr>
           <tr><td>Nội dung</td><td>9 nhân vật · 12 vũ khí · 8 bộ di vật · 16 kẻ địch (9 thường · 5 elite · 2 boss).</td></tr>
@@ -176,22 +176,24 @@
       <div class="sn">01</div>
       <div class="sb">
         <h2>Một run</h2>
-        <p class="lede">Sảnh đường mười sáu tầng, chia bốn band bốn tầng. Mỗi band nhân chỉ số gốc của địch lên — và mỗi band mở một thứ mới buộc phải đổi cách chơi, không chỉ tăng máu.</p>
+        <p class="lede">Sảnh đường mười sáu tầng, chia tám bậc. Bậc càng cao thì địch càng đông — tối đa <b>5 ô</b> — và hệ số nhân tăng theo từng cụm tầng, không còn chia đều bốn tầng một bậc.</p>
         <table>
-          <tr><th class="n" style="width:70px">Tầng</th><th style="width:78px">Band</th><th class="n" style="width:74px">HP·DEF</th><th class="n" style="width:58px">ATK</th><th>Điều mới</th><th class="n" style="width:96px">Hành động</th></tr>
-          <tr><td class="n">mở đầu</td><td>—</td><td class="n">—</td><td>Chọn 4/9 ở tab Team. Hai draft trước tầng 1 — chưa có vũ khí, chưa có di vật.</td><td class="n">—</td></tr>
-          <tr><td class="n">1–4</td><td>I</td><td class="n">×1.00</td><td class="n">×1.00</td><td>AV, SP, shield. Chỉ địch thường.</td><td class="n">3–4</td></tr>
-          <tr><td class="n">5–8</td><td>II</td><td class="n">×1.15</td><td class="n">×1.35</td><td>DoT và bounce vào sân; elite đầu tiên; field đầu tiên. <b>Mốc đổi đội.</b></td><td class="n">4–5</td></tr>
-          <tr><td class="n">9–11</td><td>III</td><td class="n">×1.30</td><td class="n">×1.75</td><td>Hai elite cùng lúc. Build follow-up và DoT bắt đầu trả tiền. <b>Mốc đổi đội.</b></td><td class="n">5–6</td></tr>
-          <tr><td class="n">12</td><td>III</td><td class="n">×1.30</td><td class="n">×1.75</td><td><b>The Curator</b> — boss giữa sảnh: mỗi Ulti của bạn là một lần nó hồi máu.</td><td class="n">8–11</td></tr>
-          <tr><td class="n">13–15</td><td>IV</td><td class="n">×1.50</td><td class="n">×2.25</td><td>Ba elite. Không còn mục tiêu nào là sai. <b>Mốc đổi đội.</b></td><td class="n">5–7</td></tr>
-          <tr><td class="n">16</td><td>IV</td><td class="n">×1.50</td><td class="n">×2.25</td><td>The Overseer — ba phase, đổi nhịp hai lần. Đội hình cố định.</td><td class="n">12–16</td></tr>
+          <tr><th class="n" style="width:70px">Tầng</th><th style="width:64px">Bậc</th><th class="n" style="width:74px">HP·DEF</th><th class="n" style="width:58px">ATK</th><th>Điều mới</th><th class="n" style="width:96px">Hành động</th></tr>
+          <tr><td class="n">mở đầu</td><td>—</td><td class="n">—</td><td class="n">—</td><td>Chọn 4/9 ở tab Team. Hai draft trước tầng 1 — chưa có vũ khí, chưa có di vật.</td><td class="n">—</td></tr>
+          <tr><td class="n">1</td><td>I</td><td class="n">×1.00</td><td class="n">×1.00</td><td>Bốn ô. AV, SP, shield. Chỉ địch thường.</td><td class="n">3–5</td></tr>
+          <tr><td class="n">2–3</td><td>II</td><td class="n">×1.08</td><td class="n">×1.12</td><td>Năm ô lần đầu; Bomb và Swarm vào sân.</td><td class="n">4–6</td></tr>
+          <tr><td class="n">4–5</td><td>III</td><td class="n">×1.15</td><td class="n">×1.30</td><td>Shield và bounce. <b>Sau tầng 5: đổi đội.</b></td><td class="n">5–7</td></tr>
+          <tr><td class="n">6–7</td><td>IV</td><td class="n">×1.22</td><td class="n">×1.50</td><td>Elite đầu tiên; field Signal; Hound săn người yếu.</td><td class="n">5–7</td></tr>
+          <tr><td class="n">8–9</td><td>V</td><td class="n">×1.30</td><td class="n">×1.75</td><td>Hai elite cùng lúc; Chorister buff cả hàng. <b>Sau tầng 9: đổi đội.</b></td><td class="n">6–8</td></tr>
+          <tr><td class="n">10–12</td><td>VI</td><td class="n">×1.38</td><td class="n">×1.95</td><td><b>The Curator</b> ở tầng 10; tầng 11–12 là tường elite năm ô.</td><td class="n">8–11</td></tr>
+          <tr><td class="n">13–15</td><td>VII</td><td class="n">×1.45</td><td class="n">×2.15</td><td><b>The Overseer</b> ở tầng 13; 14–15 dồn ba elite.</td><td class="n">9–12</td></tr>
+          <tr><td class="n">16</td><td>VIII</td><td class="n">×1.50</td><td class="n">×2.30</td><td><b>Hai boss cùng lúc</b> — Overseer và Curator. Đội hình cố định.</td><td class="n">12–18</td></tr>
         </table>
-        <p class="fine">Hai hệ số độc lập: <b>HP · DEF</b> dừng ở ×1.50, còn <b>ATK</b> lên tới ×2.25. Lý do: nếu ATK cũng chỉ ×1.50 thì cuối sảnh địch đánh không đau bằng đội hồi máu, và trận chỉ dài ra chứ không căng. <b>SPD không nhân</b> — nhân SPD sẽ làm hàng đợi đổi liên tục và người chơi mất cảm giác về nhịp. Mục tiêu: 30–40 phút lần đầu, 20–25 phút khi đã biết luật.</p>
+        <p class="fine">Hai hệ số độc lập: <b>HP · DEF</b> dừng ở ×1.50, còn <b>ATK</b> lên tới ×2.30. Lý do: nếu ATK cũng chỉ ×1.50 thì cuối sảnh địch đánh không đau bằng đội hồi máu, và trận chỉ dài ra chứ không căng. <b>SPD không nhân</b> — nhân SPD sẽ làm hàng đợi đổi liên tục và người chơi mất cảm giác về nhịp. Mục tiêu: 30–40 phút lần đầu, 20–25 phút khi đã biết luật.</p>
         <h3>đổi đội giữa run</h3>
         <table>
           <tr><th class="n" style="width:30px">#</th><th style="width:150px">Luật</th><th>Chi tiết</th></tr>
-          <tr><td class="n">1</td><td>Mốc đổi đội</td><td>Đầu tầng <b>5, 9, 13</b> — tức mỗi khi sang band mới. Không có mốc nào khác.</td></tr>
+          <tr><td class="n">1</td><td>Mốc đổi đội</td><td><b>Sau khi kết thúc tầng 5 và tầng 9</b> — tức trước khi vào tầng 6 và tầng 10. Không có mốc nào khác.</td></tr>
           <tr><td class="n">2</td><td>Chọn hay không</td><td>Một dòng hỏi duy nhất ở màn hình Team: <code>[enter] giữ đội</code> / <code>[r] đổi đội</code>. Giữ đội thì vào tầng ngay.</td></tr>
           <tr><td class="n">3</td><td>Đổi thì tháo sạch</td><td>Chọn đổi: toàn bộ vũ khí và di vật của 4 nhân vật cũ được tháo ra, trả về kho. Không mất, không giảm bậc.</td></tr>
           <tr><td class="n">4</td><td>Rồi chọn lại</td><td>Chọn 4 trong 9 như đầu run, sau đó lắp lại vũ khí và di vật từ kho cho 4 người mới.</td></tr>
@@ -214,7 +216,7 @@
         <table>
           <tr><th class="n" style="width:30px">#</th><th style="width:200px">Quy tắc</th><th>Lý do</th></tr>
           <tr><td class="n">1</td><td>Thanh tab ở dòng 1</td><td>Vị trí cố định. Tab đổi bằng <code>Ctrl+1..4</code> — số <code>1–4</code> để dành cho lệnh trong trận. Tab hiện hành đảo màu; tab bị khóa mờ đi.</td></tr>
-          <tr><td class="n">2</td><td>Mỗi cá thể một chữ cái in hoa</td><td><code>A–D</code> là địch theo thứ tự ô, <code>E–H</code> là ta theo thứ tự ô. Chữ cái là định danh duy nhất — dùng ở mọi nơi: HUD, hàng đợi, log, thông báo lỗi. Không dùng chữ thường, không dùng số.</td></tr>
+          <tr><td class="n">2</td><td>Mỗi cá thể một chữ cái in hoa</td><td><code>A–E</code> là địch theo thứ tự ô, <code>F–I</code> là ta theo thứ tự ô. Chữ cái là định danh duy nhất — dùng ở mọi nơi: HUD, hàng đợi, log, thông báo lỗi. Không dùng chữ thường, không dùng số.</td></tr>
           <tr><td class="n">3</td><td>Địch trên, ta dưới, ngăn bằng dải <code>PARTY</code></td><td>Hai khối cùng một lưới cột nên so sánh được bằng mắt dọc.</td></tr>
           <tr><td class="n">4</td><td>Sau ô máu là SPD rồi hiệu ứng</td><td>Địch: <code>S 98  DOT(2) ATK-(20%)</code>. Ta thêm thanh EN trước hiệu ứng. Hiệu ứng dài quá 24 ký tự thì cắt, không đẩy cột.</td></tr>
           <tr><td class="n">5</td><td>Field là một dòng riêng, không thuộc về ai</td><td>Chỉ một field tồn tại trong trận; nó áp dụng cho cả hai đội, nên không được nằm trong dòng của ai.</td></tr>
@@ -245,7 +247,7 @@
         <p class="fine">Bốn nhóm: characters · weapons · relics · enemies. <code>[ ]</code> đổi nhóm, <code>↑ ↓</code> cuộn, danh sách dài hơn 12 dòng thì cuộn chứ không cắt.</p>
 
         <h3>3 · team — chọn 4 trong 9</h3>
-        <div class="screen"><div class="cap"><span>màn hình 3 — chỉ mở giữa các tầng, và ở mốc 5 / 9 / 13</span><span>cần đúng 4</span></div>
+        <div class="screen"><div class="cap"><span>màn hình 3 — chỉ mở giữa các tầng, và sau tầng 5 / 9</span><span>cần đúng 4</span></div>
           <pre class="hud" id="scr-team"></pre></div>
         <p class="fine">Cảnh báo vai trò hiện ngay dưới danh sách: thiếu Sustain hoặc thiếu Support thì cảnh báo, không chặn. Người chơi được phép chọn đội sai.</p>
 
@@ -265,7 +267,7 @@
         <h3>luật chi tiết</h3>
         <table>
           <tr><th class="n" style="width:30px">#</th><th style="width:120px">Kiểu</th><th>Luật</th></tr>
-          <tr><td class="n">1</td><td>single</td><td>Một mục tiêu. Chọn bằng <code>[4] Retarget</code> hoặc bấm chữ cái của mục tiêu (<code>A–D</code>).</td></tr>
+          <tr><td class="n">1</td><td>single</td><td>Một mục tiêu. Chọn bằng <code>[4] Retarget</code> hoặc bấm chữ cái của mục tiêu (<code>A–E</code>).</td></tr>
           <tr><td class="n">2</td><td>blast</td><td>Mục tiêu chính 100%, hai bên 50%. Bên cạnh đã chết thì bỏ qua, không dồn sang mục tiêu khác.</td></tr>
           <tr><td class="n">3</td><td>all</td><td>Mọi mục tiêu còn sống nhận đúng hệ số ghi trên đòn (hệ số đã được hạ sẵn).</td></tr>
           <tr><td class="n">4</td><td>bounce</td><td>N lần đánh, mỗi lần chọn ngẫu nhiên một mục tiêu còn sống; được trúng lại mục tiêu cũ. Crit và shield tính riêng từng lần. Mục tiêu chết giữa chừng thì lần sau nhắm lại; hết mục tiêu thì lần đó mất.</td></tr>
@@ -371,7 +373,7 @@
         <div class="specs" id="enemies-elite"></div>
         <h3>boss</h3>
         <div id="enemies-boss"></div>
-        <div class="call"><b>Hai boss, hai câu hỏi khác nhau:</b> <b>The Curator</b> ở tầng 12 phạt việc đốt Ulti — mỗi Ulti của bạn cho nó 3% max HP. <b>The Overseer</b> ở tầng 16 phạt việc đánh chậm — phase 3 tự hồi máu và đặt field. Con đầu dạy tiết kiệm tài nguyên; con sau dạy dồn tài nguyên đúng lúc.</div>
+        <div class="call"><b>Hai boss, hai câu hỏi khác nhau:</b> <b>The Curator</b> ở tầng 10 (và lần nữa ở tầng 16) phạt việc đốt Ulti — mỗi Ulti của bạn cho nó 6% max HP. <b>The Overseer</b> ở tầng 16 phạt việc đánh chậm — phase 3 tự hồi máu và đặt field. Con đầu dạy tiết kiệm tài nguyên; con sau dạy dồn tài nguyên đúng lúc.</div>
       </div>
     </section>
 
@@ -379,8 +381,8 @@
       <div class="sn">10</div>
       <div class="sb">
         <h2>Sảnh đường 16 tầng</h2>
-        <p class="lede">Bốn tầng một band; sang band mới, toàn bộ chỉ số gốc của địch nhân lên. <b>Mỗi tầng có ba ô cố định và một ô ngẫu nhiên</b> — đủ để lần chơi thứ hai không giống lần đầu, nhưng không đủ để bạn mất dạy dỗ.</p>
-        <h3>hệ số theo band</h3>
+        <p class="lede">Tám bậc, độ dài khác nhau: bậc đầu một tầng, bậc cuối một tầng, ở giữa hai tới ba tầng. <b>Địch đông dần</b> — tối đa 5 ô — và nhiều tầng còn một ô ngẫu nhiên, đủ để lần chơi thứ hai không giống lần đầu nhưng không đủ để bạn mất dạy dỗ.</p>
+        <h3>hệ số theo bậc</h3>
         <table id="bands"></table>
         <h3>16 tầng</h3>
         <table id="encounters"></table>
@@ -415,22 +417,23 @@
         <table>
           <tr><th style="width:300px">Chỉ số</th><th class="n" style="width:100px">Mục tiêu</th><th>Lệch thì sửa</th></tr>
           <tr><td>Win-rate toàn run</td><td class="n">45–65%</td><td>HP địch trước, ATK địch sau.</td></tr>
-          <tr><td>Hành động / tầng thường</td><td class="n">3–5</td><td>Giảm HP địch, đừng tăng damage.</td></tr>
-          <tr><td>Hành động / boss giữa (tầng 12)</td><td class="n">8–11</td><td>Curator phải ngắn hơn Overseer nhưng dài hơn elite thường.</td></tr>
-          <tr><td>Hành động / boss cuối (tầng 16)</td><td class="n">12–16</td><td>Đo với đội ≥2 DPS. Đội 1 DPS chậm hơn 30–40% — chấp nhận.</td></tr>
-          <tr><td>Hành động / band IV</td><td class="n">5–7</td><td>Tầng 3 elite dài hơn: 10–14 hành động, không tính vào ngưỡng này.</td></tr>
+          <tr><td>Hành động / tầng thường</td><td class="n">3–6</td><td>Giảm HP địch, đừng tăng damage.</td></tr>
+          <tr><td>Hành động / boss (tầng 10, 13)</td><td class="n">10–14</td><td>Curator và Overseer phải dài hơn elite thường, ngắn hơn trận hai boss.</td></tr>
+          <tr><td>Hành động / hai boss (tầng 16)</td><td class="n">18–24</td><td>Đo với đội có ít nhất 1 DPS single-target. Đội toàn AoE chậm hơn ~40% — đó là bài học đội hình, không phải lỗi số.</td></tr>
+          <tr><td>Hành động / tầng 13–15</td><td class="n">9–12</td><td>Tầng 3 elite dài hơn tầng thường cùng bậc; đừng ép về 5–7.</td></tr>
           <tr><td>Sustain / sát thương nhận mỗi vòng</td><td class="n">1,2–1,6×</td><td>Dưới 1,0 là đội không thể sống; trên 2,0 là không thể chết. Đây là chỉ số quan trọng nhất của bản cân bằng này.</td></tr>
           <tr><td>Damage share thấp nhất</td><td class="n">≥ 15%</td><td>Tăng mult hoặc giảm cost SP.</td></tr>
           <tr><td>Damage share cao nhất</td><td class="n">≤ 45%</td><td>Giảm mult hoặc tăng cost SP.</td></tr>
-          <tr><td>DoT share trong đội có Kaine</td><td class="n">15–35%</td><td>Chỉnh <code>dot_rate</code>. Đừng tăng stack: 1 stack/mục tiêu là luật đã chốt.</td></tr>
+          <tr><td>DoT share trong đội có Kaine</td><td class="n">50–70%</td><td>DoT là nguồn chính; damage trực tiếp chỉ mở đường. Chỉnh <code>dot_rate</code>, đừng tăng stack.</td></tr>
           <tr><td>Đội có Nyx: số lượt địch bị đẩy lùi / tầng</td><td class="n">2–4</td><td>Dưới 2 là Nyx vô dụng; trên 4 là hàng đợi mất nghĩa.</td></tr>
           <tr><td>Đội có Wren: sát thương Wren gánh / tầng</td><td class="n">40–60%</td><td>Trên 60% là Wren chết trước khi kịp hồi; dưới 40% là talent vô dụng.</td></tr>
           <tr><td>Tỉ lệ chọn mỗi bộ</td><td class="n">≥ 8%</td><td>Dưới ngưỡng là bộ chết.</td></tr>
           <tr><td>Tỉ lệ chọn mỗi vũ khí</td><td class="n">≥ 6%</td><td>Cùng ngưỡng.</td></tr>
+          <tr><td>Số ô địch trung bình mỗi tầng</td><td class="n">4,4–4,8</td><td>Dưới 4,3 là sảnh lại thành 4v4 đều đều; trên 4,9 là mất nhịp thở.</td></tr>
           <tr><td>Phân bố ô ngẫu nhiên</td><td class="n">33% ± 3</td><td>Ba lựa chọn phải đều. Lệch nghĩa là pool có con bị lỗi.</td></tr>
-          <tr><td>Tỉ lệ đổi đội ở mốc 5 / 9 / 13</td><td class="n">25–50%</td><td>Dưới 25% là mốc đổi đội vô nghĩa; trên 50% là đội đầu run quá yếu.</td></tr>
-          <tr><td>Chết ở tầng 1–4</td><td class="n">&lt; 5%</td><td>Mở đầu phải an toàn.</td></tr>
-          <tr><td>Chết ở tầng 13–15</td><td class="n">20–40%</td><td>Band IV phải làm rơi người, nhưng không phải bức tường.</td></tr>
+          <tr><td>Tỉ lệ đổi đội sau tầng 5 / 9</td><td class="n">25–50%</td><td>Dưới 25% là mốc đổi đội vô nghĩa; trên 50% là đội đầu run quá yếu.</td></tr>
+          <tr><td>Chết ở tầng 1–5</td><td class="n">&lt; 5%</td><td>Mở đầu phải an toàn.</td></tr>
+          <tr><td>Chết ở tầng 13–15</td><td class="n">20–40%</td><td>Bậc VII phải làm rơi người, nhưng không phải bức tường.</td></tr>
           <tr><td>Thêm 1 nhân vật</td><td class="n">&lt; 30 phút</td><td>Lâu hơn nghĩa là engine còn hardcode.</td></tr>
         </table>
       </div>
@@ -445,15 +448,20 @@
           <tr><th style="width:80px">Trạng thái</th><th style="width:230px">Vấn đề</th><th>Chốt hiện tại</th></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>DoT chịu DEF và shield</td><td>DoT đi qua công thức damage, không crit. Không còn xuyên giáp.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Field</td><td>Một field duy nhất cho cả sân, field mới đè field cũ, hiệu ứng cho cả hai đội, hết hạn theo lượt người đặt, người đặt chết thì mất.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Sảnh đường 16 tầng</td><td>Bốn band × bốn tầng. HP·DEF ×1.00 / ×1.15 / ×1.30 / ×1.50; <b>ATK riêng</b> ×1.00 / ×1.35 / ×1.75 / ×2.25. SPD không nhân.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>SPD địch không nhân hệ số</td><td>SPD giữ nguyên ở mọi band. Độ khó đến từ đội hình và phase, không từ hàng đợi bị bóp méo.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Sảnh đường 16 tầng</td><td>Tám bậc theo cụm tầng 1 · 2–3 · 4–5 · 6–7 · 8–9 · 10–12 · 13–15 · 16. HP·DEF ×1.00 → ×1.50; <b>ATK riêng</b> ×1.00 → ×2.30. SPD không nhân.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>SPD địch không nhân hệ số</td><td>SPD giữ nguyên ở mọi bậc. Độ khó đến từ đội hình và phase, không từ hàng đợi bị bóp méo.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Chỉ Ulti có tên riêng</td><td>Basic, Skill là hành động chung; phase boss đánh số 1–2–3; thiên phú chỉ ghi “TALENT”, không đặt tên. Ulti vẫn có tên riêng và log ghi tên đó thay cho chữ “Ulti”.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Chữ cái in hoa A–Z</td><td>Mỗi cá thể một chữ in hoa: A–D là địch theo ô, E–H là ta theo ô. Dùng thống nhất ở HUD, hàng đợi, log.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Chữ cái in hoa A–Z</td><td>Mỗi cá thể một chữ in hoa: A–E là địch theo ô, F–I là ta theo ô. Dùng thống nhất ở HUD, hàng đợi, log.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Log 6 dòng</td><td>Sáu hành động gần nhất của cả hai đội: đòn, DoT, buff/debuff, FUA, hồi máu, shield. Mới nhất ở dưới.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Codex mở tự do</td><td>Mở giữa trận không tốn lượt, không phạt. Không có giới hạn số lần.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Đổi đội mỗi 4 tầng</td><td>Mốc 5 / 9 / 13. Chọn đổi thì tháo sạch vũ khí và di vật về kho, chọn lại 4/9, rồi lắp lại. Vào tầng là chốt.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Đổi đội sau tầng 5 và 9</td><td>Hai mốc. Chọn đổi thì tháo sạch vũ khí và di vật về kho, chọn lại 4/9, rồi lắp lại. Vào tầng là chốt.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>“2/5 mảnh”</td><td>Bày 5 mảnh ngẫu nhiên, người chơi <b>chọn 2</b>. Không phải nhận 2 mảnh mù.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Boss thứ hai</td><td><b>The Curator</b> ở tầng 12. Tổng 16 địch = 9 thường · 5 elite · 2 boss. Không cắt elite nào.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Ba trận boss</td><td>Curator ở tầng 10, Overseer ở tầng 13, cả hai cùng lúc ở tầng 16 (không có đệ). Tổng 16 địch = 9 thường · 5 elite · 2 boss.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Tối đa 5 ô địch</td><td>4–5 ô tuỳ tầng, không còn 4v4 đều. 10/16 tầng có 5 ô. HUD vẫn 80×24: thêm một dòng địch thì bỏ một dòng kẻ ngăn.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Tám bậc thay bốn band</td><td>1 · 2–3 · 4–5 · 6–7 · 8–9 · 10–12 · 13–15 · 16. HP·DEF ×1.00→×1.50; ATK ×1.00→×2.30. Bậc dài ngắn khác nhau nên nhịp không còn đều.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Vesper: CRIT 35%</td><td>Tăng từ 18% để talent có đất sống: 3 stack ≈ 8,6 đòn, thay vì 16,7.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Kaine: DoT là nguồn chính</td><td>Skill 1.2× → <b>0.7×</b>, Ulti 1.5× → <b>0.8×</b>. Địch không có giải hiệu ứng nên DoT tích luỹ là áp lực chính; damage trực tiếp chỉ để mở đường.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Curator mạnh lên</td><td>ATK 86→<b>105</b>, DEF 105→<b>120</b>, SPD 96→102; thuế Ulti 3%→<b>6%</b>; MARK tối đa 3→5 stack. HP 1700→1600, và Overseer 1900→1600: trận hai boss ở tầng 16 không thể dài hơn 24 hành động nếu mỗi con còn 1.900 HP.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Lệnh không dùng được</td><td>Tô xám tại chỗ, không giấu. Người chơi thấy ngay mình thiếu SP, thiếu EN hay thiếu mục tiêu.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Hai lần bấm</td><td>Lần 1 hiện trước (đảo màu + dòng prompt đổi), lần 2 chốt. Bấm phím khác thì đổi lựa chọn; <code>esc</code> huỷ.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Thứ tự liệt kê</td><td>Nhân vật xếp theo bảng chữ cái ở mọi danh sách. Vũ khí và di vật vẫn xếp theo vai để bốn cây cùng vai nằm cạnh nhau; địch xếp theo tier để giữ đường dạy.</td></tr>
@@ -494,17 +502,21 @@
 <script>
 /* ============================================================ */
 const BASE = {
-  meta: { version: "0.14", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
+  meta: { version: "0.15", floors: 16, tiers: 8, starters: 2, runs: 2000, letters: "A–E · F–I", seed: "7F2A" },
   constants: {
     def_k: 200, crit_rate: 5, crit_dmg: 50, sp_max: 5, sp_start: 3,
     en_max: 100, en_start: 50, en_basic: 20, en_skill: 30, ult_cost: 100,
     dot_max: 5, dot_turns: 3, dot_rate: 0.45, heal_after_battle: 8, draft_heal: 40
   },
   bands: [
-    { label:"I",   floors:"1–4",   mult:1.00, atk:1.00 },
-    { label:"II",  floors:"5–8",   mult:1.15, atk:1.35 },
-    { label:"III", floors:"9–12",  mult:1.30, atk:1.75 },
-    { label:"IV",  floors:"13–16", mult:1.50, atk:2.25 }
+    { label:"I",    floors:"1",     from:1,  to:1,  mult:1.00, atk:1.00 },
+    { label:"II",   floors:"2–3",   from:2,  to:3,  mult:1.08, atk:1.12 },
+    { label:"III",  floors:"4–5",   from:4,  to:5,  mult:1.15, atk:1.30 },
+    { label:"IV",   floors:"6–7",   from:6,  to:7,  mult:1.22, atk:1.50 },
+    { label:"V",    floors:"8–9",   from:8,  to:9,  mult:1.30, atk:1.75 },
+    { label:"VI",   floors:"10–12", from:10, to:12, mult:1.38, atk:1.95 },
+    { label:"VII",  floors:"13–15", from:13, to:15, mult:1.45, atk:2.15 },
+    { label:"VIII", floors:"16",    from:16, to:16, mult:1.50, atk:2.30 }
   ],
   effects: [
     { kind:"stack",  abbr:"DOT(2)",    full:"2 stack DoT đang chịu." },
@@ -517,7 +529,7 @@ const BASE = {
     { kind:"unique", abbr:"C(2)",      full:"2 stack hiệu ứng riêng của cá thể C — chữ cái là người đã gắn nó." }
   ],
   logCols: [
-    { col:"1–11",  name:"nguồn",     note:"chữ cái + tên ngắn. Địch A–D, ta E–H." },
+    { col:"1–11",  name:"nguồn",     note:"chữ cái + tên ngắn. Địch A–E, ta F–I." },
     { col:"12–27", name:"hành động", note:"Basic · Skill · tên riêng của Ulti · FUA · DoT · Heal · Shield · Field · SP · SYS" },
     { col:"28",    name:">",         note:"dấu phân cách, luôn có." },
     { col:"29–39", name:"mục tiêu",  note:"cùng dạng tên; không có mục tiêu thì ghi —" },
@@ -538,7 +550,7 @@ const BASE = {
   ],
   characters: [
     { id:"vesper", name:"Vesper", role:"DPS", style:"CRIT / follow-up",
-      hp:820, atk:152, def:68, spd:114, crit:18, critdmg:60,
+      hp:820, atk:152, def:68, spd:114, crit:35, critdmg:60,
       basic:{ mult:1.0, sp:1, en:20, target:"single" },
       skill:{ mult:1.6, sp:-1, en:30, target:"single", desc:"Sát thương đơn mục tiêu." },
       ult:{ name:"Final Cut", mult:0.55, hits:6, en:100, target:"bounce", desc:"6 lần đánh ngẫu nhiên, mỗi lần 0.55×; mỗi lần CRIT cho 1 stack, tối đa 6." },
@@ -546,8 +558,8 @@ const BASE = {
     { id:"kaine", name:"Kaine", role:"DPS", style:"DoT",
       hp:1010, atk:136, def:84, spd:101, crit:0, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
-      skill:{ mult:1.2, sp:-1, en:30, target:"blast", desc:"Chính 1.2×, hai bên 0.6×; mỗi mục tiêu trúng +1 stack DoT." },
-      ult:{ name:"Ashfall", mult:1.5, en:100, target:"all", desc:"Toàn bộ địch 1.5×; mỗi mục tiêu +1 stack DoT." },
+      skill:{ mult:0.7, sp:-1, en:30, target:"blast", desc:"Chính 0.7×, hai bên 0.35×; mỗi mục tiêu trúng +1 stack DoT." },
+      ult:{ name:"Ashfall", mult:0.8, en:100, target:"all", desc:"Toàn bộ địch 0.8×; mỗi mục tiêu +1 stack DoT." },
       talent:{ text:"Mỗi khi Kaine gây DoT, một địch khác ngẫu nhiên nhận thêm 1 stack." } },
     { id:"lumen", name:"Lumen", role:"Support", style:"Energy",
       hp:740, atk:72, def:74, spd:130, crit:5, critdmg:50,
@@ -682,17 +694,17 @@ const BASE = {
     { id:"colossus", name:"Colossus", tier:"elite", hp:900, atk:96, def:170, spd:74, target:"single",
       behavior:"Rất chậm, rất trâu. Mỗi hành động: 2.6× ATK vào một mục tiêu, bỏ qua 40% DEF. Mỗi 2 lượt tự hồi 10% max HP.",
       teaches:"Nó đánh ít lần, nhưng mỗi lần là một mạng người." },
-    { id:"overseer", name:"The Overseer", tier:"boss", hp:1900, atk:98, def:120, spd:108, target:"varies",
+    { id:"overseer", name:"The Overseer", tier:"boss", hp:1600, atk:105, def:130, spd:108, target:"varies",
       behavior:"Ba phase. Mỗi lần mất 25% HP thì tự xóa 1 debuff trên bản thân.",
       phases:[
         { range:"100–60%", text:"Mỗi hành động thứ 3: all 1.0× ATK. Gắn 2 stack DoT lên nhân vật ATK cao nhất." },
         { range:"60–25%", text:"Vào phase: +20% SPD và shield 20% max HP. Mỗi hành động thứ 2: single 2.2× ATK, bỏ qua 30% DEF." },
         { range:"dưới 25%", text:"Vào phase: xóa mọi debuff của mình, đặt field Final Protocol 3 lượt. Mỗi lượt xen kẽ all 1.2× ATK và tự hồi 8% max HP." }
       ] },
-    { id:"curator", name:"The Curator", tier:"boss", hp:1700, atk:86, def:105, spd:96, target:"single",
-      behavior:"Boss giữa sảnh. Mỗi lần một nhân vật của bạn dùng Ulti, nó hồi 3% max HP và gắn 1 stack MARK lên người vừa dùng.",
+    { id:"curator", name:"The Curator", tier:"boss", hp:1600, atk:105, def:120, spd:102, target:"single",
+      behavior:"Boss giữa sảnh. Mỗi lần một nhân vật của bạn dùng Ulti, nó hồi 6% max HP và gắn 1 stack MARK lên người vừa dùng.",
       phases:[
-        { range:"100–55%", text:"Mỗi lượt gắn MARK(1) lên nhân vật ATK cao nhất, tối đa 3 stack. Đòn đánh lên người có MARK +25% damage mỗi stack." },
+        { range:"100–55%", text:"Mỗi lượt gắn MARK(1) lên nhân vật ATK cao nhất, tối đa 5 stack. Đòn đánh lên người có MARK +25% damage mỗi stack." },
         { range:"55–20%", text:"Vào phase: shield 25% max HP. Mỗi hành động thứ 2: blast 1.4× ATK. Khi shield vỡ: cả đội bạn nhận 6% max HP damage." },
         { range:"dưới 20%", text:"Vào phase: +25% SPD, xoá mọi MARK trên người bạn — mỗi MARK bị xoá hồi cho nó 3% max HP. Đòn all 1.1× ATK." }
       ],
@@ -700,37 +712,37 @@ const BASE = {
   ],
   encounters: [
     { n:1,  enemies:[["grunt",3]], roll:["scout","hound","swarm"],
-      note:"Làm quen AV và Skill Point. Ô thứ tư là một con nhanh ngẫu nhiên." },
-    { n:2,  enemies:[["grunt",2],["scout",1]], roll:["scout","hound","swarm"],
-      note:"Hai mối nhanh: phải chọn thứ tự." },
-    { n:3,  enemies:[["scout",2],["sniper",1]], roll:["grunt","warden","bomber"],
-      note:"Sniper phạt carry máu giấy." },
-    { n:4,  enemies:[["sniper",2],["warden",1]], roll:["scout","hound","swarm"],
-      note:"Shield xuất hiện: damage nhỏ hết hiệu quả." },
-    { n:5,  enemies:[["swarm",2],["hound",1]], roll:["warden","bomber","cinder"],
-      note:"Bounce và Hound cùng nhắm người yếu nhất. Band II bắt đầu." },
-    { n:6,  enemies:[["engineer",1],["grunt",1],["leech",1]], roll:["grunt","bomber","cinder"],
-      note:"Elite đầu tiên: hồi máu cho địch, hút máu cho mình." },
-    { n:7,  enemies:[["tower",1],["sniper",2]], roll:["warden","bomber","cinder"],
-      note:"Field đầu tiên: một cái đồng hồ sau hai cây súng." },
-    { n:8,  enemies:[["bulwark_unit",1],["bomber",1],["cinder",1]], roll:["cinder","leech","hound"],
-      note:"Giảm sát thương, blast và DoT cùng lúc. Sai thứ tự là thua." },
-    { n:9,  enemies:[["chorister",1],["hound",2]], roll:["cinder","bomber","warden"],
-      note:"Buffer đứng sau. Giết nó trước hay dọn đàn trước? Band III." },
-    { n:10, enemies:[["colossus",1],["sniper",2]], roll:["warden","bomber","cinder"],
-      note:"Một cú đấm 2.6×, hai cây súng, một cái khiên." },
-    { n:11, enemies:[["engineer",1],["bulwark_unit",1],["tower",1]], roll:["sniper","bomber","cinder"],
-      note:"Ba elite: hồi máu, giảm sát thương, field." },
-    { n:12, enemies:[["curator",1],["bulwark_unit",1],["bomber",1]], roll:["cinder","leech","hound"],
-      note:"BOSS giữa sảnh. Đừng đốt Ulti — mỗi lần Ulti là một lần nó hồi máu." },
-    { n:13, enemies:[["tower",1],["sniper",2]], roll:["engineer","bomber","cinder"],
-      note:"Band IV. Tower buff cả hai bên, nhưng địch hưởng nhiều hơn." },
-    { n:14, enemies:[["colossus",1],["bulwark_unit",1],["chorister",1]], roll:["warden","bomber","cinder"],
-      note:"Không có mục tiêu sai: mọi thứ đều đỡ đòn hoặc đang buff." },
-    { n:15, enemies:[["engineer",1],["colossus",1],["tower",1]], roll:["chorister","bomber","cinder"],
-      note:"Tầng khó nhất trước boss: bốn nguồn áp lực, không nguồn nào giết nhanh được." },
-    { n:16, enemies:[["overseer",1],["bulwark_unit",1],["chorister",1],["tower",1]], roll:null,
-      note:"Boss cuối, đội hình cố định: không có ô ngẫu nhiên để bạn học lại." }
+      note:"Bốn ô. Làm quen AV và Skill Point; ô thứ tư là một con nhanh ngẫu nhiên." },
+    { n:2,  enemies:[["grunt",2],["scout",2]], roll:["scout","hound","swarm"],
+      note:"Năm ô lần đầu: hàng địch đông hơn hàng ta." },
+    { n:3,  enemies:[["scout",2],["sniper",1],["bomber",1]], roll:["grunt","warden","cinder"],
+      note:"Sniper phạt carry máu giấy; Bomber phạt đứng cạnh nhau." },
+    { n:4,  enemies:[["sniper",2],["warden",1],["swarm",1]], roll:["hound","leech","cinder"],
+      note:"Hai cây súng sau một cái khiên." },
+    { n:5,  enemies:[["swarm",2],["hound",2],["warden",1]], roll:null,
+      note:"Năm ô cố định: toàn địch nhanh. Chốt sổ trước mốc đổi đội." },
+    { n:6,  enemies:[["engineer",1],["grunt",1],["leech",1],["bomber",1]], roll:["cinder","warden","hound"],
+      note:"Elite đầu tiên: hồi máu cho địch, hút máu cho mình. Đổi đội được sau tầng 5." },
+    { n:7,  enemies:[["tower",1],["sniper",2],["warden",1]], roll:["bomber","cinder","leech"],
+      note:"Field Signal xuất hiện: một cái đồng hồ sau hai cây súng." },
+    { n:8,  enemies:[["bulwark_unit",1],["bomber",2],["cinder",1]], roll:["hound","leech","swarm"],
+      note:"Giảm sát thương, blast và DoT cùng lúc." },
+    { n:9,  enemies:[["chorister",1],["hound",2],["leech",1]], roll:["sniper","cinder","warden"],
+      note:"Buffer đứng sau, hai con chó săn người yếu. Chốt sổ trước mốc đổi đội." },
+    { n:10, enemies:[["curator",1],["bomber",2],["warden",1]], roll:null,
+      note:"BOSS. The Curator: mỗi Ulti của bạn cho nó hồi máu. Đổi đội được sau tầng 9." },
+    { n:11, enemies:[["engineer",1],["bulwark_unit",1],["tower",1],["sniper",2]], roll:null,
+      note:"Năm ô, không ô nào vô hại: hồi máu, giảm sát thương, buff, bắn tỉa." },
+    { n:12, enemies:[["bulwark_unit",2],["chorister",1],["cinder",1]], roll:["bomber","leech","hound"],
+      note:"Hai lớp giảm sát thương cộng buff ATK: mỗi lượt địch càng mạnh." },
+    { n:13, enemies:[["overseer",1],["tower",1],["sniper",1],["warden",1]], roll:null,
+      note:"BOSS. The Overseer, và Signal Tower đặt field cho chính nó." },
+    { n:14, enemies:[["colossus",1],["bulwark_unit",1],["chorister",1],["bomber",1]], roll:["cinder","leech","hound"],
+      note:"Ba elite cùng lúc: không có mục tiêu nào là sai." },
+    { n:15, enemies:[["engineer",1],["colossus",1],["tower",1],["chorister",1]], roll:["sniper","bomber","cinder"],
+      note:"Tầng khó nhất trước boss: bốn nguồn áp lực, không nguồn nào chết nhanh." },
+    { n:16, enemies:[["overseer",1],["curator",1]], roll:null,
+      note:"HAI BOSS cùng lúc, không có đệ. Không ô ngẫu nhiên: bài kiểm tra cuối phải giống nhau." }
   ],
   draft: [
     { type:"Relic", desc:"Bày 5 mảnh ngẫu nhiên, chọn 2. Ghép đúng bộ 2 mảnh thì mở trait.", limit:"8 ô" },
@@ -743,7 +755,7 @@ const KEY = "hsrlite-spec-v14";
 let DATA = JSON.parse(JSON.stringify(BASE));
 let NOTES = "";
 try { const raw = localStorage.getItem(KEY); if (raw) { const p = JSON.parse(raw); DATA = p.data || DATA; NOTES = p.notes || ""; } } catch (e) {}
-/* liệt kê luôn theo bảng chữ cái — thứ tự ô trong trận không đổi, chữ cái E–H vẫn theo ô */
+/* liệt kê luôn theo bảng chữ cái — thứ tự ô trong trận không đổi, chữ cái F–I vẫn theo ô */
 DATA.characters.sort((a, b) => a.name.localeCompare(b.name, "en"));
 
 const get = p => p.split(".").reduce((o, k) => o[k], DATA);
@@ -815,7 +827,7 @@ function buildBattle(){
     return p;
   };
   const next = [
-    ["G", 0], ["A", 32], ["B", 45], ["H", 48], ["C", 52], ["F", 60], ["E", 71], ["D", 88]
+    ["F", 0], ["A", 32], ["B", 45], ["I", 48], ["C", 52], ["G", 60], ["E", 71], ["D", 88], ["H", 95]
   ];
   const nextParts = [[" NEXT  ", "dim"]];
   next.forEach(([L, av], i) => {
@@ -831,23 +843,23 @@ function buildBattle(){
     fullRow(unitRow("+","B","Scout",96,150,118,null,"SHD[120]")),
     fullRow(unitRow(">","C","Cinder",190,190,108,null,null)),
     fullRow(unitRow("+","D","Sniper",61,180,106,null,"C(2)")),
+    fullRow(unitRow(" ","E","Bomber",200,200,94,null,null)),
     "├─ PARTY ".padEnd(W - 1, "─") + "┤",
-    fullRow(unitRow(" ","E","Rook",940,1080,96,60,null)),
-    fullRow(unitRow(" ","F","Kaine",880,1010,101,100,null)),
-    fullRow(unitRow(" ","G","Lumen",620,740,130,40,null)),
-    fullRow(unitRow(" ","H","Bastion",1370,1620,82,100,"DEF-(25%)")),
+    fullRow(unitRow(" ","F","Rook",940,1080,96,60,null)),
+    fullRow(unitRow(" ","G","Kaine",880,1010,101,100,null)),
+    fullRow(unitRow(" ","H","Lumen",620,740,130,40,null)),
+    fullRow(unitRow(" ","I","Bastion",1370,1620,82,100,"DEF-(25%)")),
     fullRow([[" FIELD  ", "dim"], ["—", "dim"], ["  không có field trên sân"]]),
     fullRow(nextParts),
-    hline(),
     fullRow([[" "], ["> Rook", "cur"], ["  "], ["[1] Basic 92 blast", "on"],
              ["  [2] Skill 114 all  "], ["[3] Broadside", "off"], ["  [4] Retarget"]]),
     hline(),
-    fullRow(log("E Rook","Broadside","all","172","warn")),
-    fullRow(log("F Kaine","DoT","C Cinder","49","warn")),
-    fullRow(log("G Lumen","SPD+(15%)","H Bastion","—","good")),
-    fullRow(log("H Bastion","Shield","party","297","good")),
-    fullRow(log("B Scout","Basic","G Lumen","18","bad")),
-    fullRow(log("A Grunt","ATK-(20%)","E Rook","—","dim")),
+    fullRow(log("F Rook","Broadside","all","172","warn")),
+    fullRow(log("G Kaine","DoT","C Cinder","49","warn")),
+    fullRow(log("H Lumen","SPD+(15%)","I Bastion","—","good")),
+    fullRow(log("I Bastion","Shield","party","243","good")),
+    fullRow(log("B Scout","Basic","H Lumen","18","bad")),
+    fullRow(log("A Grunt","ATK-(20%)","F Rook","—","dim")),
     "└" + "─".repeat(W - 2) + "┘",
     promptRow()
   ];
@@ -1124,10 +1136,10 @@ function renderEnemies(){
       </div>
     </div>`).join("");
 }
-const bandOf = n => DATA.bands[Math.min(DATA.bands.length - 1, Math.floor((n - 1) / (DATA.meta.band || 4)))];
+const bandOf = n => DATA.bands.find(b => n >= b.from && n <= b.to) || DATA.bands[DATA.bands.length - 1];
 function renderBands(){
   document.getElementById("bands").innerHTML =
-    `<tr><th style="width:70px">Band</th><th class="n" style="width:80px">Tầng</th><th class="n" style="width:96px">HP · DEF</th><th class="n" style="width:80px">ATK</th><th>Ý nghĩa</th></tr>` +
+    `<tr><th style="width:64px">Band</th><th class="n" style="width:80px">Tầng</th><th class="n" style="width:96px">HP · DEF</th><th class="n" style="width:80px">ATK</th><th>Ý nghĩa</th></tr>` +
     DATA.bands.map(b => `<tr><td><b>${esc(b.label)}</b></td><td class="n">${esc(b.floors)}</td>
       <td class="n">×${b.mult.toFixed(2)}</td><td class="n">×${b.atk.toFixed(2)}</td>
       <td class="dim fine">ATK tăng nhanh hơn HP để cuối sảnh có áp lực thật. SPD giữ nguyên.</td></tr>`).join("");

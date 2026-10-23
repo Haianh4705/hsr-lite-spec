@@ -1,6 +1,6 @@
 # PROGRESS — HSR-lite spec
 
-Cập nhật lần cuối: phiên v0.14.
+Cập nhật lần cuối: phiên v0.15.
 Đọc `AGENTS.md` trước file này.
 
 ---
@@ -9,11 +9,24 @@ Cập nhật lần cuối: phiên v0.14.
 
 | Hạng mục | Giá trị |
 |---|---|
-| Bản đặc tả | `docs/design.html` — **v0.14** |
+| Bản đặc tả | `docs/design.html` — **v0.15** |
 | Trạng thái | Đặc tả hoàn chỉnh, harness xanh (`ALL CHECKS PASSED`) |
 | Game | **Chưa build, chưa chạy** — đúng như yêu cầu |
-| localStorage key | `hsrlite-spec-v14` |
+| localStorage key | `hsrlite-spec-v15` |
 | Kiểm tra | `node docs/verify.js` |
+
+## Vừa xong (v0.15) — cấu trúc sảnh mới
+
+- **Tối đa 5 ô địch.** 10/16 tầng có 5 ô; HUD vẫn 80×24 bằng cách bỏ một dòng kẻ ngăn.
+  Chữ cái đổi: địch **A–E**, ta **F–I**.
+- **Tám bậc** thay bốn band: 1 · 2–3 · 4–5 · 6–7 · 8–9 · 10–12 · 13–15 · 16.
+  HP·DEF ×1.00→×1.50; ATK ×1.00→×2.30. `bandOf()` tra theo khoảng tầng.
+- **Boss ở tầng 10 (Curator), 13 (Overseer), 16 (cả hai, không đệ).**
+- **Đổi đội sau tầng 5 và tầng 9** (bỏ mốc 13).
+- **Vesper CRIT 18% → 35%**.
+- **Kaine**: skill 1.2× → 0.7×, ult 1.5× → 0.8×; DoT thành nguồn chính (mục tiêu share 50–70%).
+- **Curator mạnh lên**: ATK 105, DEF 120, SPD 102, thuế Ulti 6%, MARK tối đa 5.
+  HP 1600 và Overseer 1600 để trận hai boss không vượt 24 hành động.
 
 ## Vừa xong (v0.14) — cân bằng đợt 1 (gói A + B)
 
@@ -56,9 +69,10 @@ tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành đ�
 
 ## Việc tiếp theo (theo thứ tự)
 
-0. **Đợt cân bằng 2 (chưa duyệt).** Còn lệch sau đợt 1: tầng 1–5 chỉ ~2 hành động (mục tiêu 3–5);
-   tầng 10 ~6,8 (mục tiêu 3–5); talent Vesper vẫn gần như không kích; Curator 3%/Ulti vẫn quá nhẹ;
-   chưa có field của người chơi.
+0. **Đợt cân bằng 3 (chưa duyệt).** Còn lệch sau v0.15: Rook chiếm ~62% damage đội ở tầng 5 ô
+   (trần 45%); Kaine tụt xuống ~28% và có thể dưới sàn 15% ở trận ngắn; tầng 1–5 vẫn ~2,6–3,0
+   hành động (mục tiêu 3–6); tầng 13 và 15 nhỉnh 2–5% trên ngưỡng; đội toàn AoE chậm gấp rưỡi
+   đội có single-target ở tầng 16.
 
 1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.
    Cần harness đo DoT share; mục tiêu 15–35%.
@@ -103,6 +117,8 @@ tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành đ�
 
 ## Changelog
 
+- **0.15** — 5 ô địch, 8 bậc, boss 10/13/16, đổi đội sau 5 và 9, Vesper CRIT 35, Kaine
+  DoT-first, Curator mạnh lên.
 - **0.14** — cân bằng đợt 1: ATK curve riêng, cắt sustain ~55%, tầng 16 gọn lại, Lumen bỏ field,
   Wren hai lần nhận sát thương.
 - **0.12** — viết lại Bastion / Mira / Wren; shield vô hạn lượt; thêm bước chuyển sát thương;

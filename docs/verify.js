@@ -97,22 +97,22 @@ ok("borders close on every row", edgeBad.length === 0,
 const body = edges.filter(([n]) => n >= 3 && n <= 22);
 ok("no vertical mid rule anywhere in the box", body.every(([, l]) => l[48] !== "│"),
   body.filter(([, l]) => l[48] === "│").map(([n]) => `line ${n}`).join(", "));
-ok("enemy block rows 3-6 carry letters A-D",
-  [3, 4, 5, 6].every((n, i) => hudLines[n - 1].includes("ABCD"[i])),
-  [3, 4, 5, 6].map(n => JSON.stringify(hudLines[n - 1].slice(1, 12))).join(" "));
+ok("enemy block rows 3-7 carry letters A-E",
+  [3, 4, 5, 6, 7].every((n, i) => hudLines[n - 1].includes("ABCDE"[i])),
+  [3, 4, 5, 6, 7].map(n => JSON.stringify(hudLines[n - 1].slice(1, 12))).join(" "));
 ok("unit letters are uppercase only",
   !/\b[a-d]\b/.test(hudLines.slice(2, 12).map(l => l.slice(1, 3)).join("|")));
-ok("party divider on row 7", /PARTY/.test(hudLines[6]), JSON.stringify(hudLines[6]));
-ok("ally block rows 8-11 carry letters E-H",
-  [8, 9, 10, 11].every((n, i) => hudLines[n - 1].includes("EFGH"[i])));
-ok("field row on row 12", /FIELD/.test(hudLines[11]), JSON.stringify(hudLines[11]));
-ok("field row is honest when no field is up", /không có field/.test(hudLines[11]), JSON.stringify(hudLines[11]));
-ok("turn queue is horizontal on row 13", /NEXT/.test(hudLines[12]), JSON.stringify(hudLines[12]));
-const nextLine = hudLines[12];
+ok("party divider on row 8", /PARTY/.test(hudLines[7]), JSON.stringify(hudLines[7]));
+ok("ally block rows 9-12 carry letters F-I",
+  [9, 10, 11, 12].every((n, i) => hudLines[n - 1].includes("FGHI"[i])));
+ok("field row on row 13", /FIELD/.test(hudLines[12]), JSON.stringify(hudLines[12]));
+ok("field row is honest when no field is up", /không có field/.test(hudLines[12]), JSON.stringify(hudLines[12]));
+ok("turn queue is horizontal on row 14", /NEXT/.test(hudLines[13]), JSON.stringify(hudLines[13]));
+const nextLine = hudLines[13];
 const pairs = [...nextLine.matchAll(/([A-Z])\s+(\d{1,2})/g)].map(m => [m[1], +m[2]]);
-ok("turn queue has 8 entries", pairs.length === 8, `got ${pairs.length}: ${pairs.map(p => p.join("")).join(",")}`);
-ok("turn queue letters are the 8 units A-H",
-  pairs.map(p => p[0]).sort().join("") === "ABCDEFGH", pairs.map(p => p[0]).join(""));
+ok("turn queue has 9 entries", pairs.length === 9, `got ${pairs.length}: ${pairs.map(p => p.join("")).join(",")}`);
+ok("turn queue letters are the 9 units A-I",
+  pairs.map(p => p[0]).sort().join("") === "ABCDEFGHI", pairs.map(p => p[0]).join(""));
 const avs = pairs.map(p => p[1]);
 ok("turn queue sorted by remaining AV", avs.every((v, i) => i === 0 || avs[i - 1] <= v), avs.join(","));
 ok("command row sits directly under the queue", /\[1\] Basic/.test(hudLines[14]), JSON.stringify(hudLines[14]));
@@ -127,9 +127,9 @@ ok("log values right-aligned at col 78",
   logValues.every(l => /(\d|—)\s*$/.test(l.slice(0, 79)) && l[78] !== " "),
   logValues.map(l => JSON.stringify(l.slice(70, 79))).join(" "));
 ok("log lines follow name+action+target+number",
-  logValues.every(l => /[A-H] \S/.test(l.slice(1, 20)) && / >\S/.test(l.slice(1, 79))));
+  logValues.every(l => /[A-I] \S/.test(l.slice(1, 20)) && / >\S/.test(l.slice(1, 79))));
 ok("log shows an ultimate by its own name", /Broadside/.test(logValues.join(" ")));
-ok("log covers both teams", /E Rook/.test(logValues[0]) && /A Grunt/.test(logValues[5]));
+ok("log covers both teams", /F Rook/.test(logValues[0]) && /A Grunt/.test(logValues[5]));
 ok("prompt row shows the pending command", /^> \[1\] Basic/.test(hudLines[23]), JSON.stringify(hudLines[23]));
 ok("prompt row explains the second press", /\[1\] chốt/.test(hudLines[23]) && /esc\] huỷ/.test(hudLines[23]));
 ok("tab hint stays on the prompt row", /1-4 tab/.test(hudLines[23]));
@@ -156,7 +156,7 @@ ok("9 normal enemies", tier("normal") === 9, `got ${tier("normal")}`);
 ok("5 elite enemies", tier("elite") === 5, `got ${tier("elite")}`);
 ok("2 bosses", tier("boss") === 2, `got ${tier("boss")}`);
 ok("16 encounters", DATA.encounters.length === 16, `got ${DATA.encounters.length}`);
-ok("4 bands", DATA.bands.length === 4, `got ${DATA.bands.length}`);
+ok("8 tiers", DATA.bands.length === 8, `got ${DATA.bands.length}`);
 ok("band multipliers strictly increase", DATA.bands.every((b, i) => b.mult > (i ? DATA.bands[i - 1].mult : 0)));
 ok("HP/DEF multiplier never exceeds 1.50", Math.max(...DATA.bands.map(b => b.mult)) <= 1.5,
   String(Math.max(...DATA.bands.map(b => b.mult))));
@@ -168,7 +168,7 @@ ok("8 effect abbreviations", DATA.effects.length === 8, `got ${DATA.effects.leng
 ok("5 log columns", DATA.logCols.length === 5, `got ${DATA.logCols.length}`);
 ok("only ultimates have names",
   DATA.characters.every(c => c.ult.name && !c.basic.name && !c.skill.name));
-ok("meta says 16 floors / 4 per band", DATA.meta.floors === 16 && DATA.meta.band === 4, JSON.stringify(DATA.meta));
+ok("meta says 16 floors / 8 tiers", DATA.meta.floors === 16 && DATA.meta.tiers === 8, JSON.stringify(DATA.meta));
 ok("3 draft card types", DATA.draft.length === 3, `got ${DATA.draft.length}`);
 ok("3 chars per role", ["DPS", "Support", "Sustain"].every(r => DATA.characters.filter(c => c.role === r).length === 3));
 ok("4 weapons per role", ["DPS", "Support", "Sustain"].every(r => DATA.cones.filter(c => c.role === r).length === 4));
@@ -176,7 +176,7 @@ ok("no talent carries its own name",
   DATA.characters.every(c => !c.talent.name));
 ok("no boss phase carries its own name",
   DATA.enemies.filter(e => e.tier === "boss").every(e => (e.phases || []).every(ph => !ph.name)));
-ok("Curator heals 3% per player ultimate", /hồi 3% max HP/.test(DATA.enemies.find(e => e.id === "curator").behavior));
+ok("Curator heals 6% per player ultimate", /hồi 6% max HP/.test(DATA.enemies.find(e => e.id === "curator").behavior));
 const rook = DATA.characters.find(c => c.id === "rook");
 ok("Rook basic is a 0.8 blast", rook.basic.target === "blast" && rook.basic.mult === 0.8);
 ok("Rook skill is 1.0 all", rook.skill.target === "all" && rook.skill.mult === 1.0);
@@ -201,8 +201,10 @@ ok("Sable skill redirects 100% single-target hits", sable.skill.target === "ally
 ok("Sable ult is a 3-turn DEF debuff on all", sable.ult.target === "all" && sable.ult.mult === 0 && /−25% DEF/.test(sable.ult.desc) && /3 lượt/.test(sable.ult.desc));
 ok("Sable talent negates the first lethal hit each floor", /0 damage/.test(sable.talent.text) && /mỗi tầng/.test(sable.talent.text));
 ok("shield has no turn limit", !("shield_turns" in DATA.constants));
-ok("ATK has its own band curve", DATA.bands.map(b => b.atk).join(",") === "1,1.35,1.75,2.25",
+ok("ATK has its own band curve", DATA.bands.map(b => b.atk).join(",") === "1,1.12,1.3,1.5,1.75,1.95,2.15,2.3",
   DATA.bands.map(b => b.atk).join(","));
+ok("tiers cover floors 1..16 without gaps",
+  DATA.bands.every((b, i) => b.from === (i ? DATA.bands[i - 1].to + 1 : 1)) && DATA.bands[7].to === 16);
 ok("HP/DEF curve still capped at 1.50", Math.max(...DATA.bands.map(b => b.mult)) === 1.5);
 ok("Mira talent heals 1%", /1% max HP của Mira/.test(DATA.characters.find(c => c.id === "mira").talent.text));
 ok("Bastion shield is 15%", /15% max HP/.test(DATA.characters.find(c => c.id === "bastion").ult.desc));
@@ -238,15 +240,20 @@ ok("every enemy is used somewhere", [...ids].every(id => used.has(id)),
   [...ids].filter(id => !used.has(id)).join(", "));
 const slots = DATA.encounters.reduce((n, e) => n + e.enemies.reduce((a, [, c]) => a + c, 0), 0);
 const slotCount = e => e.enemies.reduce((a, [, c]) => a + c, 0) + (e.roll ? 1 : 0);
-ok("all encounters exactly 4 slots", DATA.encounters.every(e => slotCount(e) === 4),
-  JSON.stringify(DATA.encounters.filter(e => slotCount(e) !== 4).map(e => e.n)));
-ok("floors 1-15 roll one random slot from 3",
-  DATA.encounters.filter(e => e.n < 16).every(e => Array.isArray(e.roll) && e.roll.length === 3));
-ok("boss floor 16 is fixed", DATA.encounters.find(e => e.n === 16).roll === null);
+ok("encounters use 2-5 slots (2 = double boss)", DATA.encounters.every(e => slotCount(e) >= 2 && slotCount(e) <= 5),
+  JSON.stringify(DATA.encounters.filter(e => slotCount(e) < 2 || slotCount(e) > 5).map(e => e.n)));
+ok("at least one 5-slot fight exists", DATA.encounters.some(e => slotCount(e) === 5));
+ok("random slot is 1-of-3 where present",
+  DATA.encounters.filter(e => e.roll).every(e => Array.isArray(e.roll) && e.roll.length === 3));
+ok("boss floors have no random slot",
+  [10, 13, 16].every(n => DATA.encounters.find(e => e.n === n).roll === null));
+ok("floor 16 holds two bosses",
+  DATA.encounters.find(e => e.n === 16).enemies.filter(([id]) => (DATA.enemies.find(x => x.id === id) || {}).tier === "boss").length === 2);
+ok("boss floors are 10, 13 and 16", [10, 13, 16].every(n =>
+  DATA.encounters.find(e => e.n === n).enemies.some(([id]) => (DATA.enemies.find(x => x.id === id) || {}).tier === "boss")));
 ok("random pools reference real enemies",
   DATA.encounters.every(e => !e.roll || e.roll.every(id => ids.has(id))));
-ok("floor 12 holds a boss", DATA.encounters.find(e => e.n === 12).enemies.some(([id]) =>
-  (DATA.enemies.find(x => x.id === id) || {}).tier === "boss"));
+
 console.log(`      (total enemy slots across 16 floors: ${slots})`);
 const bossFight = DATA.encounters.find(e => e.n === 16);
 ok("floor 16 contains the boss", bossFight.enemies.some(([id]) => id === "overseer"));
@@ -264,7 +271,7 @@ ok("elites: 5 specs", count("enemies-elite", /class="spec"/g) === 5, `got ${coun
 ok("boss: 2 specs", count("enemies-boss", /class="spec"/g) === 2, `got ${count("enemies-boss", /class="spec"/g)}`);
 ok("normal enemies: 9 rows", count("enemies-normal", /<tr>/g) === 10, `got ${count("enemies-normal", /<tr>/g)} (incl. header)`);
 ok("encounters: 16 rows", count("encounters", /<tr>/g) === 17, `got ${count("encounters", /<tr>/g)} (incl. header)`);
-ok("bands: 4 rows", count("bands", /<tr>/g) === 5, `got ${count("bands", /<tr>/g)} (incl. header)`);
+ok("bands: 8 rows", count("bands", /<tr>/g) === 9, `got ${count("bands", /<tr>/g)} (incl. header)`);
 ok("targets: 5 rows", count("targets", /<tr>/g) === 6, `got ${count("targets", /<tr>/g)} (incl. header)`);
 ok("fields: 2 rows", count("fields", /<tr>/g) === 3, `got ${count("fields", /<tr>/g)} (incl. header)`);
 ok("effects: 8 rows", count("effects", /<tr>/g) === 9, `got ${count("effects", /<tr>/g)} (incl. header)`);
