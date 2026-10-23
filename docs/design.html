@@ -123,7 +123,7 @@
       <p class="sub">Terminal turn-based RPG. 4v4, sảnh đường 16 tầng, 9 nhân vật, 12 vũ khí, 8 bộ di vật, 16 kẻ địch, 2 boss, 5 kiểu chọn mục tiêu, 4 màn hình. Mọi con số ở đây sửa được và là nguồn số liệu duy nhất cho bản build.</p>
     </div>
     <div class="meta">
-      bản <b>0.9</b><br>
+      bản <b>0.10</b><br>
       python <b>3.9 · stdlib</b><br>
       khung <b>80×24</b><br>
       <span id="meta-count"></span>
@@ -220,7 +220,7 @@
           <tr><td class="n">5</td><td>Field là một dòng riêng, không thuộc về ai</td><td>Chỉ một field tồn tại trong trận; nó áp dụng cho cả hai đội, nên không được nằm trong dòng của ai.</td></tr>
           <tr><td class="n">6</td><td>Hàng đợi nằm ngang, ngay trên vùng lệnh</td><td>Chữ cái + AV còn lại, sắp tăng dần. Mắt đi từ hàng đợi xuống lệnh mà không phải quét sang phải.</td></tr>
           <tr><td class="n">7</td><td>Marker mục tiêu ở cột đầu dòng địch</td><td><code>&gt;</code> mục tiêu chính · <code>+</code> dính blast · <code>~</code> ứng viên bounce · <code>*</code> toàn bộ.</td></tr>
-          <tr><td class="n">8</td><td>Hai lần bấm mới ra đòn</td><td>Bấm <code>[2]</code> lần đầu: lệnh đảo màu, mục tiêu và damage hiện trước, dòng prompt đổi thành <code>[2] chốt · [esc] huỷ</code>. Bấm <code>[2]</code> lần nữa mới thực thi. Bấm phím khác thì đổi lựa chọn, không mất lượt.</td></tr>
+          <tr><td class="n">8</td><td>Hai lần bấm mới ra đòn</td><td>Bấm phím lệnh lần đầu: lệnh đảo màu, mục tiêu và damage hiện trước, dòng prompt đổi thành <code>[1] chốt · [esc] huỷ</code>. Bấm đúng phím đó lần nữa mới thực thi. Bấm phím khác thì đổi lựa chọn, không mất lượt.</td></tr>
           <tr><td class="n">9</td><td>Lệnh không dùng được thì tô xám</td><td>Hết SP, chưa đầy EN, không có mục tiêu hợp lệ → lệnh chuyển màu xám và bấm vào không có gì xảy ra. Không giấu lệnh: người chơi phải thấy mình còn thiếu gì. Ví dụ <code>[3] Broadside</code> xám khi EN mới 60/100.</td></tr>
           <tr><td class="n">10</td><td>Log 6 dòng, mới nhất ở dưới</td><td><code>E Rook     Broadside      &gt;all            34</code>. Đủ 6 hành động gần nhất của <b>cả hai đội</b>: đòn, DoT, buff/debuff, FUA, hồi máu, shield. Số căn phải ở cột 78.</td></tr>
         </table>
@@ -300,6 +300,7 @@
           <tr><td>EN mỗi thường / kỹ năng</td><td class="n" id="k-eng"></td><td>Chỉ khi <i>mình</i> hành động. Bị đánh không hồi.</td></tr>
           <tr><td>Giá Ult</td><td class="n" id="k-ult"></td><td>Bằng EN max.</td></tr>
           <tr><td>DoT stack tối đa / lượt</td><td class="n" id="k-dot"></td><td>Stack cộng dồn, thời hạn làm mới. DoT <b>chịu DEF và shield</b>, không crit.</td></tr>
+          <tr><td>DoT mỗi stack</td><td class="n" id="k-dotr"></td><td>% ATK của người gây, mỗi stack, mỗi lượt. Đây là núm cân bằng DoT — đừng sửa vào từng chiêu.</td></tr>
           <tr><td>Shield tồn tại</td><td class="n" id="k-shd"></td><td>Không cộng dồn — lấy giá trị lớn hơn.</td></tr>
           <tr><td>Hồi sau tầng</td><td class="n" id="k-amb"></td><td>% max HP mỗi tầng thắng, trước draft.</td></tr>
           <tr><td>Hồi từ thẻ draft</td><td class="n" id="k-dh"></td><td>% max HP.</td></tr>
@@ -311,7 +312,7 @@
           <tr><th class="n" style="width:30px">#</th><th style="width:150px">Bước</th><th>Luật</th></tr>
           <tr><td class="n">1</td><td>Damage</td><td><code>ATK × mult × K/(K+DEF) × crit</code></td></tr>
           <tr><td class="n">2</td><td>Shield</td><td>Hấp thụ trước, phần tràn vào HP mới bị giảm damage.</td></tr>
-          <tr><td class="n">3</td><td>DoT tick</td><td>Đầu lượt người mang: <code>ATK_người_gây × mult × stack × K/(K+DEF)</code>. <b>Chịu DEF, chịu shield, không crit.</b> DEF càng cao thì DoT càng nhỏ — DoT không còn là đường bỏ qua phòng thủ.</td></tr>
+          <tr><td class="n">3</td><td>DoT tick</td><td>Đầu lượt người mang: <code>ATK_người_gây × dot_rate × stack × K/(K+DEF)</code>, tối đa <code>dot_max</code> stack. <b>Chịu DEF, chịu shield, không crit.</b> Không nhân theo mult của chiêu đã gắn nó — stack mới là thứ quyết định.</td></tr>
           <tr><td class="n">4</td><td>Follow-up</td><td>Ngay sau hành động gốc. Không AV, không tick buff, tối đa 1 lần/hành động, không chain.</td></tr>
           <tr><td class="n">5</td><td>Field</td><td>Tick đầu lượt người đặt. Field là duy nhất cho cả sân và áp dụng cho cả hai đội.</td></tr>
           <tr><td class="n">6</td><td>Ulti</td><td>Không AV, dùng trong lượt của mình, không vào hàng đợi.</td></tr>
@@ -319,6 +320,7 @@
         </table>
         <div class="call warn"><b>Đã bỏ:</b> hồi EN khi bị đánh. Năng lượng chỉ đến từ hành động của chính nhân vật.</div>
         <div class="call"><b>DoT đổi luật:</b> trước đây DoT bỏ qua DEF và shield, khiến DEF vô nghĩa trước đội DoT. Nay DoT đi qua đúng công thức damage — nó vẫn mạnh vì cộng dồn nhiều stack, nhưng stack không còn là cách xuyên giáp.</div>
+        <div class="call warn"><b>Cân bằng lại ở v0.10:</b> Kaine giờ gắn 1 stack mỗi mục tiêu (trước là 2–3), nên mỗi stack phải đáng hơn. <code>dot_rate</code> là biến duy nhất để chỉnh: tăng thì DoT mạnh lên ở mọi nguồn, giảm thì ngược lại. Mốc kiểm tra: DoT share trong đội Kaine phải nằm trong 15–35%.</div>
       </div>
     </section>
 
@@ -331,7 +333,7 @@
         <h3>chỉ số gốc nói gì</h3>
         <table id="spread"></table>
         <div class="call"><b>Vì sao giãn rộng:</b> ATK 58–152 (2.6×), HP 740–1620 (2.2×), DEF 68–196 (2.9×), SPD 82–130 (1.6×). Nếu mọi nhân vật cùng khung 900–1350 HP thì việc chọn ai chỉ còn là chọn chiêu, không phải chọn cách chơi. Giãn rộng khiến đội hình có điểm yếu thật: đội không có Sustain thì Vesper chết trong 4 lượt.</div>
-        <div class="call"><b>Ba người mới, ba cơ chế chưa có:</b> <b>Rook</b> đánh theo <i>vị trí</i> — blast càng đông càng mạnh, nên nó thưởng cho việc giữ địch sống. <b>Nyx</b> đánh vào <i>hàng đợi</i> — đẩy AV thay vì trừ máu, nên nó mạnh ở band cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — tiêu HP để hồi đội, nên nó là Sustain duy nhất có thể tự giết mình nếu đánh sai nhịp.</div>
+        <div class="call"><b>Ba người mới, ba cơ chế chưa có:</b> <b>Rook</b> đánh theo <i>độ lan</i> — Basic blast, Skill all, Ulti all cộng bounce, và mỗi kẻ địch trúng đều hồi EN, nên nó càng đông địch càng nhanh có Ulti. <b>Nyx</b> đánh vào <i>hàng đợi</i> — đẩy AV thay vì trừ máu, nên nó mạnh ở band cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — tiêu HP để hồi đội, nên nó là Sustain duy nhất có thể tự giết mình nếu đánh sai nhịp.</div>
         <div class="flags"><span>mult = hệ số ATK</span><span>SP = thay đổi skill point</span><span>EN = năng lượng nhận</span><span>target = kiểu chọn mục tiêu</span></div>
       </div>
     </section>
@@ -367,7 +369,7 @@
         <div class="specs" id="enemies-elite"></div>
         <h3>boss</h3>
         <div id="enemies-boss"></div>
-        <div class="call"><b>Hai boss, hai câu hỏi khác nhau:</b> <b>The Curator</b> ở tầng 12 phạt việc đốt Ulti — mỗi Ulti của bạn cho nó 5% max HP. <b>The Overseer</b> ở tầng 16 phạt việc đánh chậm — phase 3 tự hồi máu và đặt field. Con đầu dạy tiết kiệm tài nguyên; con sau dạy dồn tài nguyên đúng lúc.</div>
+        <div class="call"><b>Hai boss, hai câu hỏi khác nhau:</b> <b>The Curator</b> ở tầng 12 phạt việc đốt Ulti — mỗi Ulti của bạn cho nó 3% max HP. <b>The Overseer</b> ở tầng 16 phạt việc đánh chậm — phase 3 tự hồi máu và đặt field. Con đầu dạy tiết kiệm tài nguyên; con sau dạy dồn tài nguyên đúng lúc.</div>
       </div>
     </section>
 
@@ -417,7 +419,7 @@
           <tr><td>Hành động / band IV</td><td class="n">5–7</td><td>Nếu vượt, sửa đội hình địch chứ đừng nâng hệ số quá 1.50.</td></tr>
           <tr><td>Damage share thấp nhất</td><td class="n">≥ 15%</td><td>Tăng mult hoặc giảm cost SP.</td></tr>
           <tr><td>Damage share cao nhất</td><td class="n">≤ 45%</td><td>Giảm mult hoặc tăng cost SP.</td></tr>
-          <tr><td>DoT share trong đội có Kaine</td><td class="n">15–35%</td><td>DoT giờ chịu DEF — nếu share tụt dưới 15% thì tăng stack, đừng bỏ DEF.</td></tr>
+          <tr><td>DoT share trong đội có Kaine</td><td class="n">15–35%</td><td>Chỉnh <code>dot_rate</code>. Đừng tăng stack: 1 stack/mục tiêu là luật đã chốt.</td></tr>
           <tr><td>Đội có Nyx: số lượt địch bị đẩy lùi / tầng</td><td class="n">2–4</td><td>Dưới 2 là Nyx vô dụng; trên 4 là hàng đợi mất nghĩa.</td></tr>
           <tr><td>Đội có Wren: HP Wren tự tiêu / tầng</td><td class="n">≤ 60% max</td><td>Trên ngưỡng là Wren tự giết mình trước khi hồi đội.</td></tr>
           <tr><td>Tỉ lệ chọn mỗi bộ</td><td class="n">≥ 8%</td><td>Dưới ngưỡng là bộ chết.</td></tr>
@@ -442,7 +444,7 @@
           <tr><td><span class="tag">đã chốt</span></td><td>Field</td><td>Một field duy nhất cho cả sân, field mới đè field cũ, hiệu ứng cho cả hai đội, hết hạn theo lượt người đặt, người đặt chết thì mất.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Sảnh đường 16 tầng</td><td>Bốn band × bốn tầng, hệ số ×1.00 / ×1.15 / ×1.30 / ×1.50 vào HP·ATK·DEF. Trần là 1.50.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>SPD địch không nhân hệ số</td><td>SPD giữ nguyên ở mọi band. Độ khó đến từ đội hình và phase, không từ hàng đợi bị bóp méo.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Chỉ Ulti có tên</td><td>Basic và Skill là hành động chung; chỉ Ulti mang tên riêng, và log ghi tên đó thay cho chữ “Ulti”.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Chỉ Ulti có tên riêng</td><td>Basic, Skill là hành động chung; phase boss đánh số 1–2–3; thiên phú chỉ ghi “TALENT”, không đặt tên. Ulti vẫn có tên riêng và log ghi tên đó thay cho chữ “Ulti”.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Chữ cái in hoa A–Z</td><td>Mỗi cá thể một chữ in hoa: A–D là địch theo ô, E–H là ta theo ô. Dùng thống nhất ở HUD, hàng đợi, log.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Log 6 dòng</td><td>Sáu hành động gần nhất của cả hai đội: đòn, DoT, buff/debuff, FUA, hồi máu, shield. Mới nhất ở dưới.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Codex mở tự do</td><td>Mở giữa trận không tốn lượt, không phạt. Không có giới hạn số lần.</td></tr>
@@ -453,7 +455,11 @@
           <tr><td><span class="tag">đã chốt</span></td><td>Hai lần bấm</td><td>Lần 1 hiện trước (đảo màu + dòng prompt đổi), lần 2 chốt. Bấm phím khác thì đổi lựa chọn; <code>esc</code> huỷ.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Thứ tự liệt kê</td><td>Nhân vật xếp theo bảng chữ cái ở mọi danh sách. Vũ khí và di vật vẫn xếp theo vai để bốn cây cùng vai nằm cạnh nhau; địch xếp theo tier để giữ đường dạy.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Ngẫu nhiên trong sảnh</td><td>Một ô địch mỗi tầng rút từ nhóm 3 con, roll một lần ở đầu run, seed in ở header. Tầng 16 cố định.</td></tr>
-          <tr><td><span class="tag warn">mở</span></td><td>Curator có quá phạt Ulti không</td><td>Mỗi Ulti cho nó 5% max HP. Nếu harness cho thấy đội nhiều Ulti thua quá 70% ở tầng 12 thì hạ xuống 3%.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Curator phạt Ulti bao nhiêu</td><td>3% max HP mỗi Ulti (hạ từ 5%). Đủ để Ulti phải có lý do, không đủ để cấm Ulti.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Vesper</td><td>Talent: mỗi CRIT +1 stack, tối đa 6; đủ 3 stack thì tiêu 3 và tung follow-up 60%. Ulti 6 lần đánh có thể nạp đủ 6 stack — 2 follow-up.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Kaine</td><td>Skill blast 1.2× / 0.6×, +1 stack DoT mỗi mục tiêu. Ulti all 1.5×, +1 stack mỗi mục tiêu. Talent: mỗi lần gây DoT, một địch ngẫu nhiên +1 stack.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Rook</td><td>Basic blast 0.8× / 0.4×. Skill all 1.0×. Ulti all 1.5× rồi 4 bounce 0.2×. Talent: mỗi kẻ địch trúng đòn +3 EN.</td></tr>
+          <tr><td><span class="tag warn">mở</span></td><td>Công thức DoT sau khi giảm stack</td><td>Đã tách <code>dot_rate</code> = 0.45 × ATK mỗi stack. Cần harness đo lại DoT share (mục tiêu 15–35%) rồi mới chốt con số này.</td></tr>
         </table>
         <h3>ghi chú của bạn</h3>
         <textarea class="f" id="notes" placeholder="Chỗ nào chưa ổn, số nào cần thử, cơ chế nào muốn thêm..."></textarea>
@@ -476,11 +482,11 @@
 <script>
 /* ============================================================ */
 const BASE = {
-  meta: { version: "0.9", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
+  meta: { version: "0.10", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
   constants: {
     def_k: 200, crit_rate: 5, crit_dmg: 50, sp_max: 5, sp_start: 3,
     en_max: 100, en_start: 50, en_basic: 20, en_skill: 30, ult_cost: 100,
-    dot_max: 5, dot_turns: 3, shield_turns: 2, heal_after_battle: 8, draft_heal: 40
+    dot_max: 5, dot_turns: 3, dot_rate: 0.45, shield_turns: 2, heal_after_battle: 8, draft_heal: 40
   },
   bands: [
     { label:"I",   floors:"1–4",   mult:1.00 },
@@ -527,56 +533,56 @@ const BASE = {
       hp:820, atk:152, def:68, spd:114, crit:18, critdmg:60,
       basic:{ mult:1.0, sp:1, en:20, target:"single" },
       skill:{ mult:1.6, sp:-1, en:30, target:"single", desc:"Sát thương đơn mục tiêu." },
-      ult:{ name:"Final Cut", mult:0.55, hits:6, en:100, target:"bounce", desc:"6 lần đánh ngẫu nhiên, mỗi lần 0.55×." },
-      talent:{ name:"Momentum", text:"Mỗi CRIT cho 1 stack (tối đa 3). Đủ 3 stack: đòn kế tiếp kích follow-up 60% damage." } },
+      ult:{ name:"Final Cut", mult:0.55, hits:6, en:100, target:"bounce", desc:"6 lần đánh ngẫu nhiên, mỗi lần 0.55×; mỗi lần CRIT cho 1 stack, tối đa 6." },
+      talent:{ text:"Mỗi CRIT +1 stack, tối đa 6. Đủ 3 stack: tiêu 3 và tung follow-up 60% damage ngay sau đòn. Ulti 6 lần đánh có thể cho đủ 6 stack — tức 2 follow-up." } },
     { id:"kaine", name:"Kaine", role:"DPS", style:"DoT",
       hp:1010, atk:136, def:84, spd:101, crit:0, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
-      skill:{ mult:1.2, sp:-1, en:30, target:"single", desc:"1.2× và 2 stack DoT." },
-      ult:{ name:"Ashfall", mult:1.5, en:100, target:"all", desc:"Toàn bộ địch, mỗi mục tiêu 3 stack DoT." },
-      talent:{ name:"Corrosion", text:"Mỗi khi Kaine gây DoT, một địch khác ngẫu nhiên nhận thêm 1 stack." } },
+      skill:{ mult:1.2, sp:-1, en:30, target:"blast", desc:"Chính 1.2×, hai bên 0.6×; mỗi mục tiêu trúng +1 stack DoT." },
+      ult:{ name:"Ashfall", mult:1.5, en:100, target:"all", desc:"Toàn bộ địch 1.5×; mỗi mục tiêu +1 stack DoT." },
+      talent:{ text:"Mỗi khi Kaine gây DoT, một địch khác ngẫu nhiên nhận thêm 1 stack." } },
     { id:"lumen", name:"Lumen", role:"Support", style:"Energy",
       hp:740, atk:72, def:74, spd:130, crit:5, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
       skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Đồng đội +25 EN và +15% ATK 2 lượt." },
       ult:{ name:"Grid", mult:0, en:100, target:"field", desc:"Đặt field Grid 3 lượt." },
-      talent:{ name:"Conduit", text:"Đồng đội dùng Ulti: Lumen +10 EN." } },
+      talent:{ text:"Đồng đội dùng Ulti: Lumen +10 EN." } },
     { id:"sable", name:"Sable", role:"Support", style:"Debuff / SP",
       hp:890, atk:98, def:90, spd:120, crit:5, critdmg:50,
       basic:{ mult:0.95, sp:1, en:20, target:"single" },
       skill:{ mult:1.3, sp:-1, en:30, target:"single", desc:"1.3× và −20% DEF mục tiêu 2 lượt." },
       ult:{ name:"Blackout", mult:1.8, en:100, target:"blast", desc:"Chính 1.8×, hai bên 0.9×; mục tiêu chính −25% damage gây ra 2 lượt." },
-      talent:{ name:"Ledger", text:"Sau khi Sable dùng Skill, Skill kế tiếp của một đồng đội tốn 0 SP (1 lần/lượt)." } },
+      talent:{ text:"Sau khi Sable dùng Skill, Skill kế tiếp của một đồng đội tốn 0 SP (1 lần/lượt)." } },
     { id:"bastion", name:"Bastion", role:"Sustain", style:"Shield",
       hp:1620, atk:58, def:196, spd:82, crit:0, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
       skill:{ mult:0, sp:-1, en:30, target:"ally-all", desc:"Shield toàn đội 22% max HP của Bastion, 2 lượt." },
       ult:{ name:"Rampart", mult:0, en:100, target:"field", desc:"Shield 30% max HP toàn đội + field Rampart 2 lượt." },
-      talent:{ name:"Ironclad", text:"Shield do Bastion tạo thêm −8% sát thương nhận." } },
+      talent:{ text:"Shield do Bastion tạo thêm −8% sát thương nhận." } },
     { id:"mira", name:"Mira", role:"Sustain", style:"Heal / cleanse",
       hp:1290, atk:80, def:128, spd:109, crit:5, critdmg:50,
       basic:{ mult:0.85, sp:1, en:20, target:"single" },
       skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Hồi 20% max HP và xóa 1 debuff." },
       ult:{ name:"Sanctuary", mult:0, en:100, target:"ally-all", desc:"Hồi 12% max HP toàn đội, xóa mọi debuff, +10% ATK 2 lượt." },
-      talent:{ name:"Triage", text:"Hồi máu cho người dưới 40% HP thì người đó +6 SPD 2 lượt." } },
-    { id:"rook", name:"Rook", role:"DPS", style:"Blast / vị trí",
+      talent:{ text:"Hồi máu cho người dưới 40% HP thì người đó +6 SPD 2 lượt." } },
+    { id:"rook", name:"Rook", role:"DPS", style:"All / bounce",
       hp:1080, atk:142, def:96, spd:96, crit:5, critdmg:50,
-      basic:{ mult:0.95, sp:1, en:20, target:"single" },
-      skill:{ mult:1.1, sp:-1, en:30, target:"blast", desc:"Chính 1.1×, hai bên 0.55×." },
-      ult:{ name:"Broadside", mult:1.0, en:100, target:"all", desc:"Toàn bộ địch 1.0×, cộng thêm 0.15× lên mục tiêu chính cho mỗi địch còn sống." },
-      talent:{ name:"Enfilade", text:"Đòn blast trúng cả 3 vị trí: +20% damage và +10 EN." } },
+      basic:{ mult:0.8, sp:1, en:20, target:"blast", desc:"Chính 0.8×, hai bên 0.4×." },
+      skill:{ mult:1.0, sp:-1, en:30, target:"all", desc:"Toàn bộ địch 1.0×." },
+      ult:{ name:"Broadside", mult:1.5, en:100, target:"all", bounces:4, bounceMult:0.2, desc:"Toàn bộ địch 1.5×; sau đó 4 lần bounce 0.2× vào mục tiêu ngẫu nhiên." },
+      talent:{ text:"Mỗi lần đánh trúng một kẻ địch: +3 EN. Đòn càng lan, hồi càng nhiều." } },
     { id:"nyx", name:"Nyx", role:"Support", style:"AV / tốc độ",
       hp:860, atk:66, def:82, spd:126, crit:5, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
       skill:{ mult:0, sp:-1, en:30, target:"enemy-single", desc:"Đẩy lùi mục tiêu 25% AV và −10% SPD 2 lượt." },
       ult:{ name:"Zero Hour", mult:0, en:100, target:"all", desc:"Đẩy lùi toàn bộ địch 15% AV; toàn đội ta +15% AV." },
-      talent:{ name:"Slipstream", text:"Đầu mỗi tầng, cá thể SPD cao nhất mỗi bên được +10% AV." } },
+      talent:{ text:"Đầu mỗi tầng, cá thể SPD cao nhất mỗi bên được +10% AV." } },
     { id:"wren", name:"Wren", role:"Sustain", style:"Hút máu / hiến máu",
       hp:1420, atk:86, def:110, spd:103, crit:5, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
       skill:{ mult:0, sp:-1, en:30, target:"ally-all", desc:"Tiêu 15% HP hiện tại của Wren, hồi 18% max HP cho cả đội." },
       ult:{ name:"Crimson Tithe", mult:0, en:100, target:"ally-all", desc:"Hồi 20% max HP toàn đội; 3 lượt tới mỗi đòn của Wren hồi máu cho đồng đội HP thấp nhất." },
-      talent:{ name:"Leech", text:"Sát thương Wren gây ra hồi cho cô 25% lượng đó; đồng đội dưới 30% HP nhận thêm 40%." } }
+      talent:{ text:"Sát thương Wren gây ra hồi cho cô 25% lượng đó; đồng đội dưới 30% HP nhận thêm 40%." } }
   ],
   cones: [
     { id:"razorline", name:"Razorline", role:"DPS", play:"CRIT",
@@ -671,16 +677,16 @@ const BASE = {
     { id:"overseer", name:"The Overseer", tier:"boss", hp:2200, atk:98, def:120, spd:108, target:"varies",
       behavior:"Ba phase. Mỗi lần mất 25% HP thì tự xóa 1 debuff trên bản thân.",
       phases:[
-        { range:"100–60%", name:"Calibration", text:"Mỗi hành động thứ 3: all 1.0× ATK. Gắn 2 stack DoT lên nhân vật ATK cao nhất." },
-        { range:"60–25%", name:"Overclock", text:"Vào phase: +20% SPD và shield 20% max HP. Mỗi hành động thứ 2: single 2.2× ATK, bỏ qua 30% DEF." },
-        { range:"dưới 25%", name:"Final Protocol", text:"Vào phase: xóa mọi debuff của mình, đặt field Final Protocol 3 lượt. Mỗi lượt xen kẽ all 1.2× ATK và tự hồi 8% max HP." }
+        { range:"100–60%", text:"Mỗi hành động thứ 3: all 1.0× ATK. Gắn 2 stack DoT lên nhân vật ATK cao nhất." },
+        { range:"60–25%", text:"Vào phase: +20% SPD và shield 20% max HP. Mỗi hành động thứ 2: single 2.2× ATK, bỏ qua 30% DEF." },
+        { range:"dưới 25%", text:"Vào phase: xóa mọi debuff của mình, đặt field Final Protocol 3 lượt. Mỗi lượt xen kẽ all 1.2× ATK và tự hồi 8% max HP." }
       ] },
     { id:"curator", name:"The Curator", tier:"boss", hp:1700, atk:86, def:105, spd:96, target:"single",
-      behavior:"Boss giữa sảnh. Mỗi lần một nhân vật của bạn dùng Ulti, nó hồi 5% max HP và gắn 1 stack MARK lên người vừa dùng.",
+      behavior:"Boss giữa sảnh. Mỗi lần một nhân vật của bạn dùng Ulti, nó hồi 3% max HP và gắn 1 stack MARK lên người vừa dùng.",
       phases:[
-        { range:"100–55%", name:"Appraisal", text:"Mỗi lượt gắn MARK(1) lên nhân vật ATK cao nhất, tối đa 3 stack. Đòn đánh lên người có MARK +25% damage mỗi stack." },
-        { range:"55–20%", name:"Exhibit", text:"Vào phase: shield 25% max HP. Mỗi hành động thứ 2: blast 1.4× ATK. Khi shield vỡ: cả đội bạn nhận 6% max HP damage." },
-        { range:"dưới 20%", name:"Disperse", text:"Vào phase: +25% SPD, xoá mọi MARK trên người bạn — mỗi MARK bị xoá hồi cho nó 3% max HP. Đòn all 1.1× ATK." }
+        { range:"100–55%", text:"Mỗi lượt gắn MARK(1) lên nhân vật ATK cao nhất, tối đa 3 stack. Đòn đánh lên người có MARK +25% damage mỗi stack." },
+        { range:"55–20%", text:"Vào phase: shield 25% max HP. Mỗi hành động thứ 2: blast 1.4× ATK. Khi shield vỡ: cả đội bạn nhận 6% max HP damage." },
+        { range:"dưới 20%", text:"Vào phase: +25% SPD, xoá mọi MARK trên người bạn — mỗi MARK bị xoá hồi cho nó 3% max HP. Đòn all 1.1× ATK." }
       ],
       teaches:"Ulti của bạn là tài nguyên của nó — đừng đốt Ulti chỉ để lấy số." }
   ],
@@ -724,7 +730,7 @@ const BASE = {
     { type:"Heal", desc:"Hồi 40% max HP cho toàn đội.", limit:"không giới hạn" }
   ]
 };
-const KEY = "hsrlite-spec-v9";
+const KEY = "hsrlite-spec-v10";
 
 let DATA = JSON.parse(JSON.stringify(BASE));
 let NOTES = "";
@@ -811,10 +817,10 @@ function buildBattle(){
   const lines = [
     tabBar(0),
     hallHead(),
-    fullRow(unitRow(">","A","Grunt",142,220,98,null,"DOT(2) ATK-(20%)")),
+    fullRow(unitRow(" ","A","Grunt",142,220,98,null,"DOT(2) ATK-(20%)")),
     fullRow(unitRow("+","B","Scout",96,150,118,null,"SHD[120]")),
-    fullRow(unitRow(" ","C","Cinder",190,190,108,null,null)),
-    fullRow(unitRow(" ","D","Sniper",61,180,106,null,"C(2)")),
+    fullRow(unitRow(">","C","Cinder",190,190,108,null,null)),
+    fullRow(unitRow("+","D","Sniper",61,180,106,null,"C(2)")),
     "├─ PARTY ".padEnd(W - 1, "─") + "┤",
     fullRow(unitRow(" ","E","Rook",940,1080,96,60,null)),
     fullRow(unitRow(" ","F","Kaine",880,1010,101,100,null)),
@@ -823,14 +829,14 @@ function buildBattle(){
     fullRow([[" FIELD  ", "dim"], ["Grid", "good"], [" · Lumen · 3 lượt · cả hai đội +15% ATK, +10% SPD"]]),
     fullRow(nextParts),
     hline(),
-    fullRow([[" "], ["> Rook", "cur"], ["  [1] Basic 12  "], ["[2] Skill 34 blast", "on"],
-             ["  "], ["[3] Broadside", "off"], ["   [4] Retarget"]]),
+    fullRow([[" "], ["> Rook", "cur"], ["  "], ["[1] Basic 92 blast", "on"],
+             ["  [2] Skill 114 all  "], ["[3] Broadside", "off"], ["  [4] Retarget"]]),
     hline(),
-    fullRow(log("E Rook","Broadside","all","34","warn")),
-    fullRow(log("F Kaine","DoT","C Cinder","21","warn")),
+    fullRow(log("E Rook","Broadside","all","172","warn")),
+    fullRow(log("F Kaine","DoT","C Cinder","49","warn")),
     fullRow(log("G Lumen","ATK+(15%)","party","—","good")),
     fullRow(log("H Bastion","Shield","party","297","good")),
-    fullRow(log("B Scout","Basic","E Rook","18","bad")),
+    fullRow(log("B Scout","Basic","G Lumen","18","bad")),
     fullRow(log("A Grunt","ATK-(20%)","E Rook","—","dim")),
     "└" + "─".repeat(W - 2) + "┘",
     promptRow()
@@ -839,8 +845,8 @@ function buildBattle(){
   document.getElementById("ruler").textContent = "0.........".repeat(8);
 }
 function promptRow(){
-  const left = "> [2] Skill → A Grunt + 2 bên";
-  const hint = "[2] chốt · [esc] huỷ · ^1-4 tab";
+  const left = "> [1] Basic → C Cinder + B, D";
+  const hint = "[1] chốt · [esc] huỷ · ^1-4 tab";
   return seg(left, "cur") + " ".repeat(W - left.length - hint.length) + seg(hint, "dim");
 }
 
@@ -874,7 +880,7 @@ function buildScreens(){
     `Basic  ${c0.basic.mult}×  ${c0.basic.target.padEnd(11)} SP+${c0.basic.sp}  EN${c0.basic.en}`,
     `Skill  ${c0.skill.mult}×  ${c0.skill.target.padEnd(11)} SP${c0.skill.sp}  EN${c0.skill.en}`,
     `Ulti   ${c0.ult.name}  ${c0.ult.mult}×${c0.ult.hits ? " ×" + c0.ult.hits : ""}  ${c0.ult.target}  EN${c0.ult.en}`,
-    `Talent ${c0.talent.name}`
+    "Talent"
   ].concat(wrap(c0.talent.text, 52).slice(0, 2));
   const list = DATA.characters.map((c, i) => twoCol(
     (i === 0 ? "> " : "  ") + c.name,
@@ -945,6 +951,7 @@ function renderConstants(){
     "k-eng": F("constants.en_basic", 44) + " / " + F("constants.en_skill", 44),
     "k-ult": F("constants.ult_cost", 62),
     "k-dot": F("constants.dot_max", 44) + " / " + F("constants.dot_turns", 44),
+    "k-dotr": F("constants.dot_rate", 62),
     "k-shd": F("constants.shield_turns", 62),
     "k-amb": F("constants.heal_after_battle", 62),
     "k-dh": F("constants.draft_heal", 62)
@@ -1025,10 +1032,10 @@ function renderChars(){
           <span>CRIT% <b>${F("characters."+i+".crit",44)}</b></span>
           <span>CDmg% <b>${F("characters."+i+".critdmg",44)}</b></span>
         </div>
-        <div class="rule"><span class="k">basic</span>${F("characters."+i+".basic.mult",46)}× · SP ${F("characters."+i+".basic.sp",34)} · EN ${F("characters."+i+".basic.en",44)} ${tgtTag(c.basic.target)}</div>
+        <div class="rule"><span class="k">basic</span>${F("characters."+i+".basic.mult",46)}× · SP ${F("characters."+i+".basic.sp",34)} · EN ${F("characters."+i+".basic.en",44)} ${tgtTag(c.basic.target)}${c.basic.desc ? `<div class="dim fine">${esc(c.basic.desc)}</div>` : ""}</div>
         <div class="rule"><span class="k">skill</span>${F("characters."+i+".skill.mult",46)}× · SP ${F("characters."+i+".skill.sp",34)} · EN ${F("characters."+i+".skill.en",44)} ${tgtTag(c.skill.target)}<div>${FAREA("characters."+i+".skill.desc",1)}</div></div>
         <div class="rule"><span class="k">ulti</span>${F("characters."+i+".ult.mult",46)}× · EN ${F("characters."+i+".ult.en",44)} ${tgtTag(c.ult.target)} — <b>${FTXT("characters."+i+".ult.name", 130)}</b><div>${FAREA("characters."+i+".ult.desc",1)}</div></div>
-        <div class="talent"><div class="tn">TALENT · ${esc(c.talent.name)}</div>${FAREA("characters."+i+".talent.text",1)}</div>
+        <div class="talent"><div class="tn">TALENT</div>${FAREA("characters."+i+".talent.text",1)}</div>
       </div>
     </div>`;
   }).join("");
@@ -1101,8 +1108,8 @@ function renderEnemies(){
         </div>
         <div class="rule">${FAREA("enemies."+i+".behavior",2)}</div>
         <table style="margin-top:10px">
-          <tr><th style="width:92px">Phase</th><th style="width:140px">Tên</th><th>Hành vi</th></tr>
-          ${e.phases.map((ph, j) => `<tr><td class="n">${esc(ph.range)}</td><td><b>${esc(ph.name)}</b></td>
+          <tr><th class="n" style="width:34px">#</th><th style="width:110px">Mốc HP</th><th>Hành vi</th></tr>
+          ${e.phases.map((ph, j) => `<tr><td class="n">${j + 1}</td><td class="n">${esc(ph.range)}</td>
             <td>${FAREA("enemies."+i+".phases."+j+".text",2)}</td></tr>`).join("")}
         </table>
       </div>

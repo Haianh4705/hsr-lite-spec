@@ -116,7 +116,7 @@ ok("turn queue letters are the 8 units A-H",
 const avs = pairs.map(p => p[1]);
 ok("turn queue sorted by remaining AV", avs.every((v, i) => i === 0 || avs[i - 1] <= v), avs.join(","));
 ok("command row sits directly under the queue", /\[1\] Basic/.test(hudLines[14]), JSON.stringify(hudLines[14]));
-ok("previewed command is inverted", /<span class="on">\[2\] Skill 34 blast<\/span>/.test(store.hud || ""),
+ok("previewed command is inverted", /<span class="on">\[1\] Basic 92 blast<\/span>/.test(store.hud || ""),
   (store.hud || "").split("\n")[14]);
 ok("unusable command is greyed out", /<span class="off">\[3\] [^<]+<\/span>/.test(store.hud || ""),
   (store.hud || "").split("\n")[14]);
@@ -130,8 +130,8 @@ ok("log lines follow name+action+target+number",
   logValues.every(l => /[A-H] \S/.test(l.slice(1, 20)) && / >\S/.test(l.slice(1, 79))));
 ok("log shows an ultimate by its own name", /Broadside/.test(logValues.join(" ")));
 ok("log covers both teams", /E Rook/.test(logValues[0]) && /A Grunt/.test(logValues[5]));
-ok("prompt row shows the pending command", /^> \[2\] Skill/.test(hudLines[23]), JSON.stringify(hudLines[23]));
-ok("prompt row explains the second press", /\[2\] chốt/.test(hudLines[23]) && /esc\] huỷ/.test(hudLines[23]));
+ok("prompt row shows the pending command", /^> \[1\] Basic/.test(hudLines[23]), JSON.stringify(hudLines[23]));
+ok("prompt row explains the second press", /\[1\] chốt/.test(hudLines[23]) && /esc\] huỷ/.test(hudLines[23]));
 ok("tab hint stays on the prompt row", /1-4 tab/.test(hudLines[23]));
 
 console.log("\n== screen mockups ==");
@@ -172,6 +172,23 @@ ok("meta says 16 floors / 4 per band", DATA.meta.floors === 16 && DATA.meta.band
 ok("3 draft card types", DATA.draft.length === 3, `got ${DATA.draft.length}`);
 ok("3 chars per role", ["DPS", "Support", "Sustain"].every(r => DATA.characters.filter(c => c.role === r).length === 3));
 ok("4 weapons per role", ["DPS", "Support", "Sustain"].every(r => DATA.cones.filter(c => c.role === r).length === 4));
+ok("no talent carries its own name",
+  DATA.characters.every(c => !c.talent.name));
+ok("no boss phase carries its own name",
+  DATA.enemies.filter(e => e.tier === "boss").every(e => (e.phases || []).every(ph => !ph.name)));
+ok("Curator heals 3% per player ultimate", /hồi 3% max HP/.test(DATA.enemies.find(e => e.id === "curator").behavior));
+const rook = DATA.characters.find(c => c.id === "rook");
+ok("Rook basic is a 0.8 blast", rook.basic.target === "blast" && rook.basic.mult === 0.8);
+ok("Rook skill is 1.0 all", rook.skill.target === "all" && rook.skill.mult === 1.0);
+ok("Rook ult is 1.5 all + 4 bounce 0.2", rook.ult.mult === 1.5 && rook.ult.target === "all" && rook.ult.bounces === 4 && rook.ult.bounceMult === 0.2);
+ok("Rook talent restores 3 EN per enemy hit", /3 EN/.test(rook.talent.text));
+const kaine = DATA.characters.find(c => c.id === "kaine");
+ok("Kaine skill is blast with 1 DoT stack", kaine.skill.target === "blast" && /1 stack/.test(kaine.skill.desc));
+ok("Kaine ult is all with 1 DoT stack", kaine.ult.target === "all" && /1 stack/.test(kaine.ult.desc));
+const vesper = DATA.characters.find(c => c.id === "vesper");
+ok("Vesper talent caps at 6 and fires every 3", /tối đa 6/.test(vesper.talent.text) && /3 stack/.test(vesper.talent.text));
+ok("Vesper ult can feed 6 stacks", /tối đa 6/.test(vesper.ult.desc));
+ok("DoT has its own rate constant", DATA.constants.dot_rate === 0.45, String(DATA.constants.dot_rate));
 ok("every character has a unique ult name",
   new Set(DATA.characters.map(c => c.ult.name)).size === DATA.characters.length);
 ok("every boss has 3 phases", DATA.enemies.filter(e => e.tier === "boss").every(e => (e.phases || []).length === 3));
@@ -240,7 +257,7 @@ const fire = (p, value) => listeners.input({ target: { dataset: { p }, value, id
 fire("constants.def_k", "120");
 ok("DEF K written to DATA", DATA.constants.def_k === 120, String(DATA.constants.def_k));
 ok("DEF curve re-rendered on edit", /<td class="n">128<\/td><td class="n">0\.484<\/td>/.test(store.defcurve));
-ok("edit persisted to localStorage", /"def_k":120/.test(localStorage.getItem("hsrlite-spec-v9") || ""));
+ok("edit persisted to localStorage", /"def_k":120/.test(localStorage.getItem("hsrlite-spec-v10") || ""));
 fire("constants.def_k", "200");
 const k0 = store["scale-3"];
 fire("cones.3.s1.base", "12");
@@ -251,7 +268,7 @@ ok("character stat is numeric, not string", DATA.characters[0].hp === 999, JSON.
 fire("characters.0.hp", "820");
 const notesHandler = listeners.input;
 notesHandler({ target: { id: "notes", value: "ghi chú thử", dataset: {} } });
-ok("notes captured", JSON.parse(localStorage.getItem("hsrlite-spec-v9")).notes === "ghi chú thử");
+ok("notes captured", JSON.parse(localStorage.getItem("hsrlite-spec-v10")).notes === "ghi chú thử");
 
 console.log("\n== payload ==");
 const p = JSON.parse(payload());

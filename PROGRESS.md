@@ -1,6 +1,6 @@
 # PROGRESS — HSR-lite spec
 
-Cập nhật lần cuối: phiên v0.9.
+Cập nhật lần cuối: phiên v0.10.
 Đọc `AGENTS.md` trước file này.
 
 ---
@@ -9,43 +9,43 @@ Cập nhật lần cuối: phiên v0.9.
 
 | Hạng mục | Giá trị |
 |---|---|
-| Bản đặc tả | `docs/design.html` — **v0.9** |
+| Bản đặc tả | `docs/design.html` — **v0.10** |
 | Trạng thái | Đặc tả hoàn chỉnh, harness xanh (`ALL CHECKS PASSED`) |
 | Game | **Chưa build, chưa chạy** — đúng như yêu cầu |
-| localStorage key | `hsrlite-spec-v9` |
+| localStorage key | `hsrlite-spec-v10` |
 | Kiểm tra | `node docs/verify.js` |
 
-## Vừa xong (v0.9)
+## Vừa xong (v0.10)
 
-1. **Vùng lệnh có trạng thái.** Lệnh không dùng được (hết SP, chưa đầy EN, không có mục tiêu)
-   chuyển màu xám `.off`, không bị giấu. Ví dụ trong HUD: `[3] Broadside` xám khi EN 60/100.
-2. **Chọn hai lần.** Bấm lần 1: lệnh đảo màu (`.on`), mục tiêu + damage hiện trước, dòng prompt
-   đổi thành `[2] chốt · [esc] huỷ`. Bấm lần 2 mới thực thi. Bấm phím khác thì đổi lựa chọn.
-3. **Sắp xếp bảng chữ cái.** `DATA.characters` sort theo `name` ngay sau khi nạp, nên mọi danh
-   sách (codex, team, bảng chỉ số) đều theo ABC. Vũ khí/di vật/địch giữ thứ tự theo vai/hướng/tier.
-4. **Ngẫu nhiên trong sảnh.** Mỗi tầng 1–15 có đúng **một ô ngẫu nhiên** rút từ nhóm 3 con, roll
-   một lần ở đầu run. Seed 4 ký tự hex in ở header HUD (`SEED 7F2A`). Tầng 16 cố định.
-5. **Boss thứ hai.** `The Curator` ở **tầng 12** (HP 1700 / ATK 86 / DEF 105 / SPD 96, 3 phase).
-   Tổng địch: 9 thường · 5 elite · 2 boss = 16. Không cắt elite nào.
-6. **Chốt "2/5 mảnh"**: bày 5 mảnh, người chơi **chọn 2**.
-7. **Dọn mock cho khớp dữ liệu.** Đội mẫu trong HUD/Team/Equip là Rook · Kaine · Lumen · Bastion
-   (2 DPS · 1 Support · 1 Sustain); HP quái trong HUD lấy đúng max HP thật; chữ cái Equip đổi
-   từ `a–d` sang `E–H`; dòng "đội hiện tại" giờ tính từ đội mẫu thay vì viết cứng.
+1. **Curator hồi 3%** max HP mỗi Ulti của người chơi (hạ từ 5%).
+2. **Bỏ tên riêng của phase boss và thiên phú.** Phase giờ đánh số 1–2–3 trong bảng
+   `# / Mốc HP / Hành vi`; thiên phú chỉ còn nhãn `TALENT`. Ulti vẫn là thứ duy nhất có tên riêng.
+3. **Vesper** — talent: mỗi CRIT +1 stack, tối đa 6; đủ 3 stack thì tiêu 3 và tung follow-up 60%.
+   Ulti 6 lần đánh có thể nạp đủ 6 stack → 2 follow-up.
+4. **Kaine** — Skill đổi sang blast 1.2× / 0.6×, +1 stack DoT mỗi mục tiêu; Ulti all 1.5×, +1
+   stack mỗi mục tiêu; talent giữ nguyên (mỗi lần gây DoT, một địch ngẫu nhiên +1 stack).
+5. **Rook** — Basic blast 0.8× / 0.4×; Skill all 1.0×; Ulti all 1.5× rồi 4 bounce 0.2×;
+   talent: mỗi kẻ địch trúng đòn +3 EN.
+6. **Công thức DoT tách biến.** Thêm `constants.dot_rate = 0.45`; tick =
+   `ATK × dot_rate × stack × K/(K+DEF)`, không nhân theo mult của chiêu gắn nó. Đây là núm cân
+   bằng duy nhất khi Kaine chỉ còn 1 stack mỗi mục tiêu.
 
 ## Việc tiếp theo (theo thứ tự)
 
-1. **Soát lại §10 và §12 sau khi thêm boss 12** — bảng band đã tách dòng 9–11 / 12 / 13–15 / 16,
-   nhưng chưa ai đọc lại toàn bộ bằng mắt trên trình duyệt.
-2. **Cân bằng Curator.** Ngưỡng đang ghi ở §13: nếu đội nhiều Ulti thua > 70% ở tầng 12 thì hạ
-   hồi máu mỗi Ulti từ 5% xuống 3%. Chưa có harness thật để đo — đây là việc của bản build.
-3. **Ô ngẫu nhiên**: 16 pool đã khai báo trong `BASE.encounters[].roll`. Cần kiểm tra bằng mắt
-   rằng mọi pool đều cùng vai trò/độ khó (hiện là đánh giá thủ công).
-4. **Mở rộng verify.js** nếu thêm luật mới: harness hiện phủ hình học HUD, số lượng nội dung,
-   thứ tự ABC, pool ngẫu nhiên, boss tầng 12/16, hai lần bấm, lệnh xám.
+1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.
+   Cần harness đo DoT share; mục tiêu 15–35%. Chưa có sim nên con số này còn mở.
+2. **Đo lại Vesper** sau khi đổi talent: 6 stack = 2 follow-up, cộng CRIT 18% / CDmg 60% — có thể
+   vượt trần damage share 45% ở §12.
+3. **Rook hồi EN theo số mục tiêu trúng** — Ulti 8 lần trúng = 24 EN. Cần kiểm tra vòng EN có bị
+   tự nuôi (Ulti → đầy EN → Ulti) không.
+4. **Soát bằng mắt §10 và §12** sau khi band table tách dòng 9–11 / 12 / 13–15 / 16.
+5. **Mở rộng verify.js** nếu thêm luật mới: harness hiện phủ hình học HUD, số lượng nội dung,
+   thứ tự ABC, pool ngẫu nhiên, boss tầng 12/16, hai lần bấm, lệnh xám, talent/phase không tên,
+   bộ chiêu mới của Vesper/Kaine/Rook, `dot_rate`.
 
 ## Việc còn mở (chưa chốt)
 
-- Con số 5% hồi máu mỗi Ulti của Curator (xem §13 hàng "mở").
+- `dot_rate` = 0.45 (xem §13 hàng "mở" duy nhất còn lại).
 - Chưa có quyết định về việc có nên có thêm field riêng cho boss 12 hay không.
 
 ## Nhật ký quyết định (đã chốt, không mở lại)
@@ -68,6 +68,8 @@ Cập nhật lần cuối: phiên v0.9.
 
 ## Changelog
 
+- **0.10** — Curator 3%; bỏ tên phase boss và tên thiên phú; viết lại Vesper / Kaine / Rook;
+  tách `dot_rate` khỏi mult chiêu.
 - **0.9** — trạng thái lệnh + hai lần bấm; ABC cho nhân vật; ô ngẫu nhiên + seed; boss 12
   (The Curator); chốt 2/5; dọn mock (đội mẫu, HP quái, chữ cái Equip). Repo chuyển public,
   kèm bản sao skill `ambition-booster` trong `skills/`.
