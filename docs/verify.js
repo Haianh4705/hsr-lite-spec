@@ -284,7 +284,7 @@ const fire = (p, value) => listeners.input({ target: { dataset: { p }, value, id
 fire("constants.def_k", "120");
 ok("DEF K written to DATA", DATA.constants.def_k === 120, String(DATA.constants.def_k));
 ok("DEF curve re-rendered on edit", /<td class="n">128<\/td><td class="n">0\.484<\/td>/.test(store.defcurve));
-ok("edit persisted to localStorage", /"def_k":120/.test(localStorage.getItem("hsrlite-spec-v12") || ""));
+ok("edit persisted to localStorage", /"def_k":120/.test(localStorage.getItem("hsrlite-spec-v13") || ""));
 fire("constants.def_k", "200");
 const k0 = store["scale-3"];
 fire("cones.3.s1.base", "12");
@@ -295,7 +295,7 @@ ok("character stat is numeric, not string", DATA.characters[0].hp === 999, JSON.
 fire("characters.0.hp", "820");
 const notesHandler = listeners.input;
 notesHandler({ target: { id: "notes", value: "ghi chú thử", dataset: {} } });
-ok("notes captured", JSON.parse(localStorage.getItem("hsrlite-spec-v12")).notes === "ghi chú thử");
+ok("notes captured", JSON.parse(localStorage.getItem("hsrlite-spec-v13")).notes === "ghi chú thử");
 
 console.log("\n== payload ==");
 const p = JSON.parse(payload());

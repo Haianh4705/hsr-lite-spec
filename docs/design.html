@@ -123,7 +123,7 @@
       <p class="sub">Terminal turn-based RPG. 4v4, sảnh đường 16 tầng, 9 nhân vật, 12 vũ khí, 8 bộ di vật, 16 kẻ địch, 2 boss, 5 kiểu chọn mục tiêu, 4 màn hình. Mọi con số ở đây sửa được và là nguồn số liệu duy nhất cho bản build.</p>
     </div>
     <div class="meta">
-      bản <b>0.12</b><br>
+      bản <b>0.13</b><br>
       python <b>3.9 · stdlib</b><br>
       khung <b>80×24</b><br>
       <span id="meta-count"></span>
@@ -311,7 +311,7 @@
         <table>
           <tr><th class="n" style="width:30px">#</th><th style="width:150px">Bước</th><th>Luật</th></tr>
           <tr><td class="n">1</td><td>Damage</td><td><code>ATK × mult × K/(K+DEF) × crit</code></td></tr>
-          <tr><td class="n">2</td><td>Chuyển sát thương</td><td>Hiệu ứng chuyển đòn chia số damage vừa tính: Wren nhận 85%, người bị đánh nhận 15%. Vũ khí Aegis chuyển thêm X% sang người đeo. Phần chuyển đi tính vào <b>shield của người nhận thay</b>, không tính lại DEF.</td></tr>
+          <tr><td class="n">2</td><td>Chuyển sát thương</td><td>Hiệu ứng chuyển đòn chia damage <b>trước DEF</b>: 15% vào mục tiêu, tính bằng <b>DEF của mục tiêu</b>; 85% vào Wren, tính bằng <b>DEF của Wren</b>. Hai phần là hai lần tính độc lập, rồi mỗi phần đi qua shield của người nhận. Vũ khí Aegis theo đúng luật này: phần chuyển sang người đeo tính bằng DEF của người đeo.</td></tr>
           <tr><td class="n">3</td><td>Shield</td><td>Hấp thụ trước, phần tràn vào HP. <b>Không giới hạn lượt</b> — shield chỉ mất khi vỡ, shield mới thay shield cũ nếu lớn hơn.</td></tr>
           <tr><td class="n">4</td><td>DoT tick</td><td>Đầu lượt người mang: <code>ATK_người_gây × dot_rate × stack × K/(K+DEF)</code>, tối đa <code>dot_max</code> stack. <b>Chịu DEF, chịu shield, không crit.</b> Không nhân theo mult của chiêu đã gắn nó — stack mới là thứ quyết định.</td></tr>
           <tr><td class="n">5</td><td>Follow-up</td><td>Ngay sau hành động gốc. Không AV, không tick buff, tối đa 1 lần/hành động, không chain.</td></tr>
@@ -492,7 +492,7 @@
 <script>
 /* ============================================================ */
 const BASE = {
-  meta: { version: "0.12", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
+  meta: { version: "0.13", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
   constants: {
     def_k: 200, crit_rate: 5, crit_dmg: 50, sp_max: 5, sp_start: 3,
     en_max: 100, en_start: 50, en_basic: 20, en_skill: 30, ult_cost: 100,
@@ -590,7 +590,7 @@ const BASE = {
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
       skill:{ mult:0, sp:-1, en:30, target:"self", desc:"Shield cho bản thân bằng 25% max HP của Wren." },
       ult:{ name:"Crimson Tithe", mult:0, en:100, target:"ally-all", desc:"Hồi 20% max HP toàn đội." },
-      talent:{ text:"Mỗi khi một nhân vật phe ta nhận sát thương: 85% sát thương đó chuyển sang Wren." } }
+      talent:{ text:"Mỗi khi một nhân vật phe ta nhận sát thương: 15% vào người đó tính theo DEF của người đó, 85% chuyển sang Wren tính theo DEF của Wren." } }
   ],
   cones: [
     { id:"razorline", name:"Razorline", role:"DPS", play:"CRIT",
@@ -738,7 +738,7 @@ const BASE = {
     { type:"Heal", desc:"Hồi 40% max HP cho toàn đội.", limit:"không giới hạn" }
   ]
 };
-const KEY = "hsrlite-spec-v12";
+const KEY = "hsrlite-spec-v13";
 
 let DATA = JSON.parse(JSON.stringify(BASE));
 let NOTES = "";

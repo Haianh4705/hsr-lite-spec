@@ -1,6 +1,6 @@
 # PROGRESS — HSR-lite spec
 
-Cập nhật lần cuối: phiên v0.12.
+Cập nhật lần cuối: phiên v0.13.
 Đọc `AGENTS.md` trước file này.
 
 ---
@@ -9,11 +9,20 @@ Cập nhật lần cuối: phiên v0.12.
 
 | Hạng mục | Giá trị |
 |---|---|
-| Bản đặc tả | `docs/design.html` — **v0.12** |
+| Bản đặc tả | `docs/design.html` — **v0.13** |
 | Trạng thái | Đặc tả hoàn chỉnh, harness xanh (`ALL CHECKS PASSED`) |
 | Game | **Chưa build, chưa chạy** — đúng như yêu cầu |
-| localStorage key | `hsrlite-spec-v12` |
+| localStorage key | `hsrlite-spec-v13` |
 | Kiểm tra | `node docs/verify.js` |
+
+## Vừa xong (v0.13)
+
+- **Wren chốt lại công thức chuyển đòn:** damage chia **trước DEF** — 15% vào mục tiêu tính bằng
+  DEF của mục tiêu, 85% vào Wren tính bằng DEF của Wren; hai lần tính độc lập, mỗi phần đi qua
+  shield của người nhận. Aegis theo đúng luật này.
+- **Thêm `docs/balance.js`** — mô hình throughput chỉ để đo (không phải combat sim): sàn địch theo
+  tầng, sản lượng từng nhân vật, sustain/vòng, các phép kiểm tra nhanh. Chạy `node docs/balance.js`.
+- **Báo cáo cân bằng v0.13** đã gửi; **chưa sửa con số nào** trong spec.
 
 ## Vừa xong (v0.12)
 
@@ -31,6 +40,9 @@ Cập nhật lần cuối: phiên v0.12.
    Talent: **85% sát thương đồng đội nhận chuyển sang Wren**.
 
 ## Việc tiếp theo (theo thứ tự)
+
+0. **Chờ duyệt báo cáo cân bằng v0.13.** Ba gói đề xuất: A (cắt sustain), B (tăng sát thương địch
+   theo band), C (sửa nhịp tầng 11/13/14/15/16). Chưa áp dụng gói nào.
 
 1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.
    Cần harness đo DoT share; mục tiêu 15–35%.
