@@ -1,0 +1,1215 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HSR-lite — bảng thông số</title>
+<style>
+  :root{
+    color-scheme:dark;
+    --paper:#0b0f11; --paper-hi:#12181b; --ink:#e4ebe7; --muted:#8fa09a; --faint:#61726c;
+    --rule:#1e262a; --rule-strong:#33414a; --accent:#4fd1b0; --warn:#e58a68; --marker:#2b2a1a;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--paper); color:var(--ink); font:15px/1.62 var(--sans); -webkit-font-smoothing:antialiased}
+  .sheet{max-width:1200px; margin:0 auto; padding:0 36px 130px; display:grid;
+         grid-template-columns:184px minmax(0,1fr); column-gap:52px}
+  .mast{grid-column:1/-1; border-bottom:2px solid var(--ink); padding:46px 0 20px; margin-bottom:8px;
+        display:flex; align-items:flex-end; justify-content:space-between; gap:40px}
+  .mast h1{margin:0; font-family:var(--mono); font-size:27px; font-weight:600; letter-spacing:-.02em; line-height:1.15}
+  .mast .sub{margin:10px 0 0; color:var(--muted); font-size:13.5px; max-width:66ch}
+  .meta{font-family:var(--mono); font-size:11px; color:var(--muted); text-align:right; line-height:1.9; white-space:nowrap}
+  .meta b{color:var(--ink); font-weight:600}
+  .rail{position:sticky; top:0; align-self:start; padding:26px 0 0; font-family:var(--mono); font-size:11.5px}
+  .rail .lbl{color:var(--faint); font-size:10px; letter-spacing:.14em; margin-bottom:10px}
+  .rail a{display:block; padding:3.5px 0; color:var(--muted); text-decoration:none;
+          border-left:2px solid transparent; padding-left:10px; margin-left:-12px}
+  .rail a:hover{color:var(--ink); border-left-color:var(--accent)}
+  .rail a .n{color:var(--faint); margin-right:9px}
+  main{min-width:0; padding-top:26px}
+  section{display:grid; grid-template-columns:38px minmax(0,1fr); column-gap:16px; padding:0 0 40px;
+          margin-bottom:44px; border-bottom:1px solid var(--rule)}
+  section:last-child{border-bottom:0}
+  .sn{font-family:var(--mono); font-size:11px; color:var(--accent); padding-top:6px; letter-spacing:.06em}
+  .sb{min-width:0}
+  h2{margin:0 0 4px; font-family:var(--mono); font-size:18px; font-weight:600; letter-spacing:-.01em}
+  .lede{margin:0 0 22px; color:var(--muted); font-size:14px; max-width:76ch}
+  h3{font-family:var(--mono); font-size:11.5px; font-weight:600; color:var(--accent); margin:30px 0 8px; letter-spacing:.02em}
+  p{max-width:76ch; margin:0 0 12px}
+  table{width:100%; border-collapse:collapse; margin:8px 0 6px; font-size:13px}
+  th{font-family:var(--mono); font-size:10.5px; font-weight:600; color:var(--muted); text-align:left;
+     border-bottom:1px solid var(--rule-strong); padding:7px 9px; vertical-align:bottom}
+  td{border-bottom:1px solid var(--rule); padding:7px 9px; vertical-align:top}
+  .n{text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums}
+  tr:hover td{background:var(--paper-hi)}
+  .dim{color:var(--muted)} .fine{font-size:12px; color:var(--muted)}
+  .specs{border-top:1px solid var(--rule-strong); margin-top:12px}
+  .spec{border-bottom:1px solid var(--rule); padding:15px 0; display:grid; grid-template-columns:186px minmax(0,1fr); gap:18px}
+  .spec .who{display:flex; flex-direction:column; gap:5px}
+  .spec .who strong{font-size:14.5px; font-weight:600}
+  .tag{font-family:var(--mono); font-size:9.5px; color:var(--accent); border:1px solid currentColor;
+       padding:1px 5px; align-self:flex-start; letter-spacing:.04em; white-space:nowrap}
+  .tag.warn{color:var(--warn)} .tag.dps{color:#e0885f} .tag.sup{color:#79b0e6} .tag.sus{color:#8fc46a}
+  .tag.tgt{color:#b3a2ea}
+  .statrow{display:flex; flex-wrap:wrap; gap:4px 14px; font-family:var(--mono); font-size:11.5px;
+           color:var(--muted); margin-bottom:6px}
+  .statrow b{color:var(--ink); font-weight:500}
+  .rule{font-size:13px; margin:2px 0}
+  .rule .k{color:var(--faint); font-family:var(--mono); font-size:10.5px; margin-right:6px}
+  .talent{margin-top:8px; border-left:2px solid var(--accent); padding:4px 0 4px 10px; font-size:13px}
+  .talent .tn{font-family:var(--mono); font-size:10.5px; color:var(--accent); letter-spacing:.04em}
+  input.f, textarea.f{font:inherit; color:var(--ink); background:transparent; border:0;
+    border-bottom:1px dotted var(--rule-strong); padding:1px 3px; outline:none; border-radius:0}
+  input.f{font-family:var(--mono); text-align:right; width:56px; font-size:12.5px; font-variant-numeric:tabular-nums}
+  input.f.txt{font-family:var(--sans); text-align:left; width:auto; min-width:80px}
+  input.f.wide{width:100%; text-align:left; font-family:var(--sans); font-size:13px}
+  input.f:focus, textarea.f:focus{background:var(--marker); border-bottom-color:var(--accent)}
+  textarea.f{width:100%; min-height:96px; text-align:left; line-height:1.6; font-family:var(--sans); font-size:13.5px}
+  textarea.f.auto{min-height:0; height:auto; overflow:hidden; resize:none; font-size:13px; line-height:1.55; padding:1px 3px}
+  .hint{font-family:var(--mono); font-size:10px; color:var(--faint); margin-top:10px}
+  .screen{background:#06090b; border:1px solid #1a2226; margin:14px 0 8px; color:#c6d2cd; overflow-x:auto; box-shadow:0 0 0 1px #0f1518, 0 18px 40px -28px #000}
+  .screen .cap{display:flex; justify-content:space-between; gap:12px; font-family:var(--mono); font-size:10px;
+    color:#6d7f79; padding:6px 12px; border-bottom:1px solid #1d262a}
+  .screen .cap b{color:#7fd3bd; font-weight:500}
+  pre.hud{margin:0; padding:16px 14px; font-family:var(--mono); font-size:11.5px; line-height:1.42; white-space:pre}
+  .screen .ruler{font-family:var(--mono); font-size:9.5px; color:#33413c; padding:0 14px 10px; white-space:pre}
+  pre.hud .cur{color:#f0b429; font-weight:700}
+  pre.hud .warn{color:#f0b429}
+  pre.hud .bad{color:#e06c5a}
+  pre.hud .good{color:#7fd3bd}
+  pre.hud .dim{color:#5f736d}
+  pre.hud .off{color:#3b4a45}
+  pre.hud .tab{color:#6d7f79}
+  pre.hud .on{color:#04110d; background:#4fd1b0; font-weight:700}
+  .call{border-left:3px solid var(--accent); padding:10px 0 10px 14px; margin:18px 0; font-size:13.5px;
+        max-width:76ch; color:#c9d4ce}
+  .call b{color:var(--accent)}
+  .call.warn{border-color:var(--warn)} .call.warn b{color:var(--warn)}
+  code{font-family:var(--mono); font-size:12px; background:#1a2226; padding:1px 4px; color:#d7e0db}
+  .flags{display:flex; flex-wrap:wrap; gap:6px 18px; font-family:var(--mono); font-size:10.5px; color:var(--muted); margin-top:12px}
+  .scale{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:7px}
+  .scale div{padding:1.5px 0}
+  .scale b{color:var(--ink); font-weight:500}
+  .bar{position:fixed; left:0; right:0; bottom:0; display:flex; align-items:center; gap:14px; padding:10px 24px;
+       background:rgba(11,15,17,.94); border-top:1px solid var(--rule-strong);
+       font-family:var(--mono); font-size:11px; color:var(--muted); z-index:9; backdrop-filter:blur(6px)}
+  .bar .grow{flex:1} .bar #saved{color:var(--accent)}
+  button{font-family:var(--mono); font-size:11px; padding:6px 13px; background:var(--paper-hi);
+    border:1px solid var(--rule-strong); color:var(--ink); cursor:pointer}
+  button:hover{border-color:var(--accent); color:var(--accent)}
+  button.go{background:var(--accent); border-color:var(--accent); color:#04110d; font-weight:600}
+  button.go:hover{background:#3fc0a0; color:#04110d}
+  @media (max-width:900px){
+    .sheet{grid-template-columns:1fr; padding:0 20px 120px}
+    .rail{position:static; padding:14px 0; border-bottom:1px solid var(--rule)}
+    .rail a{display:inline-block; padding:3px 12px 3px 0; border:0; margin:0}
+    .mast{flex-direction:column; align-items:flex-start; gap:16px}
+    .meta{text-align:left}
+    section{grid-template-columns:1fr; gap:0}
+    .sn{padding-top:0}
+    .spec{grid-template-columns:1fr; gap:8px}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="mast">
+    <div>
+      <h1>HSR-lite — bảng thông số</h1>
+      <p class="sub">Terminal turn-based RPG. 4v4, sảnh đường 16 tầng, 9 nhân vật, 12 vũ khí, 8 bộ di vật, 16 kẻ địch, 2 boss, 5 kiểu chọn mục tiêu, 4 màn hình. Mọi con số ở đây sửa được và là nguồn số liệu duy nhất cho bản build.</p>
+    </div>
+    <div class="meta">
+      bản <b>0.9</b><br>
+      python <b>3.9 · stdlib</b><br>
+      khung <b>80×24</b><br>
+      <span id="meta-count"></span>
+    </div>
+  </header>
+
+  <nav class="rail" aria-label="Mục lục">
+    <div class="lbl">MỤC LỤC</div>
+    <a href="#s00"><span class="n">00</span>Tóm tắt</a>
+    <a href="#s01"><span class="n">01</span>Một run</a>
+    <a href="#s02"><span class="n">02</span>HUD trận</a>
+    <a href="#s03"><span class="n">03</span>Bốn màn hình</a>
+    <a href="#s04"><span class="n">04</span>Kiểu mục tiêu</a>
+    <a href="#s05"><span class="n">05</span>Hằng số</a>
+    <a href="#s06"><span class="n">06</span>Nhân vật</a>
+    <a href="#s07"><span class="n">07</span>Vũ khí</a>
+    <a href="#s08"><span class="n">08</span>Di vật</a>
+    <a href="#s09"><span class="n">09</span>Kẻ địch</a>
+    <a href="#s10"><span class="n">10</span>Sảnh đường 16 tầng</a>
+    <a href="#s11"><span class="n">11</span>Draft</a>
+    <a href="#s12"><span class="n">12</span>Mục tiêu cân bằng</a>
+    <a href="#s13"><span class="n">13</span>Ghi chú</a>
+  </nav>
+
+  <main>
+
+    <section id="s00">
+      <div class="sn">00</div>
+      <div class="sb">
+        <h2>Tóm tắt</h2>
+        <p class="lede">Một sảnh đường mười sáu tầng, không bản đồ, không cửa hàng. Mở lên, hiểu trong 60 giây, chơi hết 30–40 phút.</p>
+        <table>
+          <tr><th style="width:30%">Hạng mục</th><th>Chốt</th></tr>
+          <tr><td>Run</td><td>Chọn 4 trong 9 → 2 draft mở đầu → 16 tầng (1 draft sau mỗi tầng 1–15). <b>Hai boss: tầng 12 và 16.</b> Đổi đội ở mốc 5 / 9 / 13.</td></tr>
+          <tr><td>Quy mô</td><td>4 nhân vật vs 4 địch. Boss chiếm 1 ô.</td></tr>
+          <tr><td>Cơ chế</td><td>AV · Skill Point · Energy/Ult · CRIT · DoT · follow-up · shield · <b>field</b></td></tr>
+          <tr><td>Mục tiêu</td><td>single · blast · all · bounce · field — dùng cho cả hai phía.</td></tr>
+          <tr><td>Nội dung</td><td>9 nhân vật · 12 vũ khí · 8 bộ di vật · 16 kẻ địch (9 thường · 5 elite · 2 boss).</td></tr>
+          <tr><td>Vai</td><td>DPS · Support · Sustain. 3 nhân vật và 4 vũ khí mỗi vai.</td></tr>
+          <tr><td>Màn hình</td><td>4 tab: Battle · Codex · Team · Equip. Codex mở tự do cả trong trận.</td></tr>
+          <tr><td>Ngẫu nhiên</td><td>Draft (3 thẻ), CRIT, và <b>một ô địch mỗi tầng</b> rút từ nhóm 3 con. Seed in ở header — cùng seed thì cùng sảnh.</td></tr>
+          <tr><td>Năng lượng</td><td>Chỉ từ hành động của mình. <b>Bị đánh không hồi EN.</b></td></tr>
+          <tr><td>Không làm</td><td>Save/load, meta ngoài run, sprite, âm thanh, mạng, đa ngôn ngữ, animation, túi đồ.</td></tr>
+        </table>
+        <div class="call"><b>Nguyên tắc cắt:</b> giữ phần tạo quyết định, cắt phần tạo thời gian chơi. Substat, roll, cấp di vật, 6 slot, hệ nguyên tố đều là cày — không phải lựa chọn.</div>
+      </div>
+    </section>
+
+    <section id="s01">
+      <div class="sn">01</div>
+      <div class="sb">
+        <h2>Một run</h2>
+        <p class="lede">Sảnh đường mười sáu tầng, chia bốn band bốn tầng. Mỗi band nhân chỉ số gốc của địch lên — và mỗi band mở một thứ mới buộc phải đổi cách chơi, không chỉ tăng máu.</p>
+        <table>
+          <tr><th class="n" style="width:70px">Tầng</th><th style="width:78px">Band</th><th class="n" style="width:74px">Hệ số</th><th>Điều mới</th><th class="n" style="width:96px">Hành động</th></tr>
+          <tr><td class="n">mở đầu</td><td>—</td><td class="n">—</td><td>Chọn 4/9 ở tab Team. Hai draft trước tầng 1 — chưa có vũ khí, chưa có di vật.</td><td class="n">—</td></tr>
+          <tr><td class="n">1–4</td><td>I</td><td class="n">×1.00</td><td>AV, SP, shield. Chỉ địch thường.</td><td class="n">3–4</td></tr>
+          <tr><td class="n">5–8</td><td>II</td><td class="n">×1.15</td><td>DoT và bounce vào sân; elite đầu tiên; field đầu tiên. <b>Mốc đổi đội.</b></td><td class="n">4–5</td></tr>
+          <tr><td class="n">9–11</td><td>III</td><td class="n">×1.30</td><td>Hai elite cùng lúc. Build follow-up và DoT bắt đầu trả tiền. <b>Mốc đổi đội.</b></td><td class="n">5–6</td></tr>
+          <tr><td class="n">12</td><td>III</td><td class="n">×1.30</td><td><b>The Curator</b> — boss giữa sảnh: mỗi Ulti của bạn là một lần nó hồi máu.</td><td class="n">8–11</td></tr>
+          <tr><td class="n">13–15</td><td>IV</td><td class="n">×1.50</td><td>Ba elite. Không còn mục tiêu nào là sai. <b>Mốc đổi đội.</b></td><td class="n">5–7</td></tr>
+          <tr><td class="n">16</td><td>IV</td><td class="n">×1.50</td><td>The Overseer — ba phase, đổi nhịp hai lần. Đội hình cố định.</td><td class="n">12–16</td></tr>
+        </table>
+        <p class="fine">Hệ số nhân vào HP, ATK và DEF gốc của địch — <b>SPD không nhân</b>, vì nhân SPD sẽ làm hàng đợi đổi liên tục và người chơi mất cảm giác về nhịp. Trần hệ số là ×1.50: hai tầng boss khó vì đội hình địch và phase, không vì một con số nhân. Mục tiêu: 30–40 phút lần đầu, 20–25 phút khi đã biết luật.</p>
+        <h3>đổi đội giữa run</h3>
+        <table>
+          <tr><th class="n" style="width:30px">#</th><th style="width:150px">Luật</th><th>Chi tiết</th></tr>
+          <tr><td class="n">1</td><td>Mốc đổi đội</td><td>Đầu tầng <b>5, 9, 13</b> — tức mỗi khi sang band mới. Không có mốc nào khác.</td></tr>
+          <tr><td class="n">2</td><td>Chọn hay không</td><td>Một dòng hỏi duy nhất ở màn hình Team: <code>[enter] giữ đội</code> / <code>[r] đổi đội</code>. Giữ đội thì vào tầng ngay.</td></tr>
+          <tr><td class="n">3</td><td>Đổi thì tháo sạch</td><td>Chọn đổi: toàn bộ vũ khí và di vật của 4 nhân vật cũ được tháo ra, trả về kho. Không mất, không giảm bậc.</td></tr>
+          <tr><td class="n">4</td><td>Rồi chọn lại</td><td>Chọn 4 trong 9 như đầu run, sau đó lắp lại vũ khí và di vật từ kho cho 4 người mới.</td></tr>
+          <tr><td class="n">5</td><td>Không hoàn tác</td><td>Vào tầng là chốt. Muốn đổi nữa thì đợi mốc kế tiếp — nên đây là quyết định, không phải thao tác miễn phí.</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="s02">
+      <div class="sn">02</div>
+      <div class="sb">
+        <h2>HUD trận</h2>
+        <p class="lede">Năm vùng cố định, cộng thanh tab ở dòng 1. Không bao giờ đổi chỗ: địch · ta · field · hàng đợi · lệnh · nhật ký.</p>
+        <div class="screen">
+          <div class="cap"><span>khung chuẩn — <b>80 cột</b>, dòng 24 là prompt</span><span>tầng 3 / 16</span></div>
+          <pre class="hud" id="hud"></pre>
+          <div class="ruler" id="ruler"></div>
+        </div>
+        <h3>đọc khung</h3>
+        <table>
+          <tr><th class="n" style="width:30px">#</th><th style="width:200px">Quy tắc</th><th>Lý do</th></tr>
+          <tr><td class="n">1</td><td>Thanh tab ở dòng 1</td><td>Vị trí cố định. Tab đổi bằng <code>Ctrl+1..4</code> — số <code>1–4</code> để dành cho lệnh trong trận. Tab hiện hành đảo màu; tab bị khóa mờ đi.</td></tr>
+          <tr><td class="n">2</td><td>Mỗi cá thể một chữ cái in hoa</td><td><code>A–D</code> là địch theo thứ tự ô, <code>E–H</code> là ta theo thứ tự ô. Chữ cái là định danh duy nhất — dùng ở mọi nơi: HUD, hàng đợi, log, thông báo lỗi. Không dùng chữ thường, không dùng số.</td></tr>
+          <tr><td class="n">3</td><td>Địch trên, ta dưới, ngăn bằng dải <code>PARTY</code></td><td>Hai khối cùng một lưới cột nên so sánh được bằng mắt dọc.</td></tr>
+          <tr><td class="n">4</td><td>Sau ô máu là SPD rồi hiệu ứng</td><td>Địch: <code>S 98  DOT(2) ATK-(20%)</code>. Ta thêm thanh EN trước hiệu ứng. Hiệu ứng dài quá 24 ký tự thì cắt, không đẩy cột.</td></tr>
+          <tr><td class="n">5</td><td>Field là một dòng riêng, không thuộc về ai</td><td>Chỉ một field tồn tại trong trận; nó áp dụng cho cả hai đội, nên không được nằm trong dòng của ai.</td></tr>
+          <tr><td class="n">6</td><td>Hàng đợi nằm ngang, ngay trên vùng lệnh</td><td>Chữ cái + AV còn lại, sắp tăng dần. Mắt đi từ hàng đợi xuống lệnh mà không phải quét sang phải.</td></tr>
+          <tr><td class="n">7</td><td>Marker mục tiêu ở cột đầu dòng địch</td><td><code>&gt;</code> mục tiêu chính · <code>+</code> dính blast · <code>~</code> ứng viên bounce · <code>*</code> toàn bộ.</td></tr>
+          <tr><td class="n">8</td><td>Hai lần bấm mới ra đòn</td><td>Bấm <code>[2]</code> lần đầu: lệnh đảo màu, mục tiêu và damage hiện trước, dòng prompt đổi thành <code>[2] chốt · [esc] huỷ</code>. Bấm <code>[2]</code> lần nữa mới thực thi. Bấm phím khác thì đổi lựa chọn, không mất lượt.</td></tr>
+          <tr><td class="n">9</td><td>Lệnh không dùng được thì tô xám</td><td>Hết SP, chưa đầy EN, không có mục tiêu hợp lệ → lệnh chuyển màu xám và bấm vào không có gì xảy ra. Không giấu lệnh: người chơi phải thấy mình còn thiếu gì. Ví dụ <code>[3] Broadside</code> xám khi EN mới 60/100.</td></tr>
+          <tr><td class="n">10</td><td>Log 6 dòng, mới nhất ở dưới</td><td><code>E Rook     Broadside      &gt;all            34</code>. Đủ 6 hành động gần nhất của <b>cả hai đội</b>: đòn, DoT, buff/debuff, FUA, hồi máu, shield. Số căn phải ở cột 78.</td></tr>
+        </table>
+        <h3>hiệu ứng viết tắt</h3>
+        <table id="effects"></table>
+        <div class="call"><b>Bốn dạng, không hơn:</b> cộng dồn thì <code>TÊN(n)</code>, buff/debuff thì <code>CHỈ SỐ±(x%)</code>, shield thì <code>SHD[số]</code>, hiệu ứng riêng của một cá thể thì <code>CHỮ CÁI(n)</code> — chữ cái là người đã gắn nó, không phải người đang mang. Nhờ vậy đọc HUD là biết ai đang chịu gì và của ai.</div>
+        <h3>định dạng log</h3>
+        <table id="logcols"></table>
+        <div class="call"><b>Test bắt buộc:</b> khung 22 dòng, mọi dòng đúng 80 cột, viền đóng ở cột 0 và 79. Dòng 1 (tab) và dòng 24 (prompt) không có viền. Không có cột dọc giữa — hàng đợi đã chuyển lên ngang.</div>
+      </div>
+    </section>
+
+    <section id="s03">
+      <div class="sn">03</div>
+      <div class="sb">
+        <h2>Bốn màn hình</h2>
+        <p class="lede">Cùng một khung 80×24, chỉ đổi phần thân. Tab Battle và Codex mở mọi lúc — mở codex giữa trận không tốn lượt, không phạt gì. Tab Team và Equip chỉ mở giữa các tầng. Đổi tab bằng <code>Ctrl+1..4</code> để số <code>1–4</code> không đụng lệnh trong trận.</p>
+
+        <h3>2 · codex — tra cứu</h3>
+        <div class="screen"><div class="cap"><span>màn hình 2 — danh sách trái, chi tiết phải</span><span>đổi tab bằng Ctrl+1..4</span></div>
+          <pre class="hud" id="scr-codex"></pre></div>
+        <p class="fine">Bốn nhóm: characters · weapons · relics · enemies. <code>[ ]</code> đổi nhóm, <code>↑ ↓</code> cuộn, danh sách dài hơn 12 dòng thì cuộn chứ không cắt.</p>
+
+        <h3>3 · team — chọn 4 trong 9</h3>
+        <div class="screen"><div class="cap"><span>màn hình 3 — chỉ mở giữa các tầng, và ở mốc 5 / 9 / 13</span><span>cần đúng 4</span></div>
+          <pre class="hud" id="scr-team"></pre></div>
+        <p class="fine">Cảnh báo vai trò hiện ngay dưới danh sách: thiếu Sustain hoặc thiếu Support thì cảnh báo, không chặn. Người chơi được phép chọn đội sai.</p>
+
+        <h3>4 · equip — gắn vũ khí và di vật</h3>
+        <div class="screen"><div class="cap"><span>màn hình 4 — bảng người × ô, kho đồ bên dưới</span><span>set bonus hiện tại</span></div>
+          <pre class="hud" id="scr-equip"></pre></div>
+        <p class="fine">Ô trống hiện <code>—</code>. Di vật đang lắp hiện tên bộ + main stat; đủ 2 mảnh cùng bộ thì hiện <code>◆ trait</code> ngay trên dòng đó — người chơi thấy phần thưởng của việc ghép bộ mà không phải mở bảng khác.</p>
+      </div>
+    </section>
+
+    <section id="s04">
+      <div class="sn">04</div>
+      <div class="sb">
+        <h2>Năm kiểu chọn mục tiêu</h2>
+        <p class="lede">Một trường <code>target</code> trên mọi đòn đánh, của cả hai phía. Kiểu mục tiêu quyết định nhịp trận nhiều hơn hệ số sát thương.</p>
+        <table id="targets"></table>
+        <h3>luật chi tiết</h3>
+        <table>
+          <tr><th class="n" style="width:30px">#</th><th style="width:120px">Kiểu</th><th>Luật</th></tr>
+          <tr><td class="n">1</td><td>single</td><td>Một mục tiêu. Chọn bằng <code>[4] Retarget</code> hoặc bấm chữ cái của mục tiêu (<code>A–D</code>).</td></tr>
+          <tr><td class="n">2</td><td>blast</td><td>Mục tiêu chính 100%, hai bên 50%. Bên cạnh đã chết thì bỏ qua, không dồn sang mục tiêu khác.</td></tr>
+          <tr><td class="n">3</td><td>all</td><td>Mọi mục tiêu còn sống nhận đúng hệ số ghi trên đòn (hệ số đã được hạ sẵn).</td></tr>
+          <tr><td class="n">4</td><td>bounce</td><td>N lần đánh, mỗi lần chọn ngẫu nhiên một mục tiêu còn sống; được trúng lại mục tiêu cũ. Crit và shield tính riêng từng lần. Mục tiêu chết giữa chừng thì lần sau nhắm lại; hết mục tiêu thì lần đó mất.</td></tr>
+          <tr><td class="n">5</td><td>field</td><td>Không gây sát thương trực tiếp. Đặt một vùng ảnh hưởng lên <b>toàn sân đấu</b>: chỉ một field tồn tại trong trận, field mới xoá ngay field cũ, và hiệu ứng áp dụng cho <b>cả hai đội</b> — kể cả bên vừa đặt nó.</td></tr>
+        </table>
+        <h3>luật field</h3>
+        <table>
+          <tr><th class="n" style="width:30px">#</th><th style="width:150px">Luật</th><th>Chi tiết</th></tr>
+          <tr><td class="n">1</td><td>Một cái duy nhất</td><td>Không có "field của ta" và "field của địch". Cả trận chỉ tồn tại một field, bất kể ai đặt.</td></tr>
+          <tr><td class="n">2</td><td>Đè, không cộng dồn</td><td>Field mới xoá field cũ ngay khi đặt, kể cả field cùng tên. Không có hai field song song.</td></tr>
+          <tr><td class="n">3</td><td>Hai chiều</td><td>Hiệu ứng áp dụng cho mọi đơn vị còn sống ở cả hai đội. Đặt field là tự buff cho địch — quyết định nằm ở chỗ field đó có lợi cho ai nhiều hơn.</td></tr>
+          <tr><td class="n">4</td><td>Thời hạn</td><td>Đếm ngược ở đầu lượt của người đặt. Người đặt chết thì field mất ngay — đây là cách duy nhất xoá field mà không cần đặt field mới.</td></tr>
+          <tr><td class="n">5</td><td>Hiển thị</td><td>Một dòng <code>FIELD</code> riêng trong HUD: tên · người đặt · số lượt · hiệu ứng.</td></tr>
+        </table>
+        <h3>field có trong game</h3>
+        <table id="fields"></table>
+        <div class="call"><b>Vì sao 5 kiểu chứ không phải 1:</b> <code>single</code> dạy chọn mục tiêu, <code>blast</code> dạy vị trí, <code>all</code> dạy nhịp, <code>bounce</code> dạy chấp nhận rủi ro, <code>field</code> dạy thời điểm. Năm kiểu này là năm loại quyết định khác nhau, không phải năm hiệu ứng hình ảnh.</div>
+      </div>
+    </section>
+
+    <section id="s05">
+      <div class="sn">05</div>
+      <div class="sb">
+        <h2>Hằng số &amp; công thức</h2>
+        <p class="lede">Toàn bộ tinh chỉnh nằm ở đây. Bảng DEF tính lại ngay khi đổi K.</p>
+        <table>
+          <tr><th style="width:200px">Hằng số</th><th class="n" style="width:110px">Giá trị</th><th>Nghĩa</th></tr>
+          <tr><td>DEF K</td><td class="n" id="k-def"></td><td>Trong <code>K/(K+DEF)</code>. K cao → DEF ít quan trọng.</td></tr>
+          <tr><td>CRIT rate / dmg</td><td class="n" id="k-cr"></td><td>% gốc trước khi có di vật.</td></tr>
+          <tr><td>SP max / start</td><td class="n" id="k-sp"></td><td>Pool dùng chung cả đội.</td></tr>
+          <tr><td>EN max / start</td><td class="n" id="k-en"></td><td>Đầy thì Ult sẵn sàng.</td></tr>
+          <tr><td>EN mỗi thường / kỹ năng</td><td class="n" id="k-eng"></td><td>Chỉ khi <i>mình</i> hành động. Bị đánh không hồi.</td></tr>
+          <tr><td>Giá Ult</td><td class="n" id="k-ult"></td><td>Bằng EN max.</td></tr>
+          <tr><td>DoT stack tối đa / lượt</td><td class="n" id="k-dot"></td><td>Stack cộng dồn, thời hạn làm mới. DoT <b>chịu DEF và shield</b>, không crit.</td></tr>
+          <tr><td>Shield tồn tại</td><td class="n" id="k-shd"></td><td>Không cộng dồn — lấy giá trị lớn hơn.</td></tr>
+          <tr><td>Hồi sau tầng</td><td class="n" id="k-amb"></td><td>% max HP mỗi tầng thắng, trước draft.</td></tr>
+          <tr><td>Hồi từ thẻ draft</td><td class="n" id="k-dh"></td><td>% max HP.</td></tr>
+        </table>
+        <h3>đường cong DEF</h3>
+        <table id="defcurve"></table>
+        <h3>thứ tự giải</h3>
+        <table>
+          <tr><th class="n" style="width:30px">#</th><th style="width:150px">Bước</th><th>Luật</th></tr>
+          <tr><td class="n">1</td><td>Damage</td><td><code>ATK × mult × K/(K+DEF) × crit</code></td></tr>
+          <tr><td class="n">2</td><td>Shield</td><td>Hấp thụ trước, phần tràn vào HP mới bị giảm damage.</td></tr>
+          <tr><td class="n">3</td><td>DoT tick</td><td>Đầu lượt người mang: <code>ATK_người_gây × mult × stack × K/(K+DEF)</code>. <b>Chịu DEF, chịu shield, không crit.</b> DEF càng cao thì DoT càng nhỏ — DoT không còn là đường bỏ qua phòng thủ.</td></tr>
+          <tr><td class="n">4</td><td>Follow-up</td><td>Ngay sau hành động gốc. Không AV, không tick buff, tối đa 1 lần/hành động, không chain.</td></tr>
+          <tr><td class="n">5</td><td>Field</td><td>Tick đầu lượt người đặt. Field là duy nhất cho cả sân và áp dụng cho cả hai đội.</td></tr>
+          <tr><td class="n">6</td><td>Ulti</td><td>Không AV, dùng trong lượt của mình, không vào hàng đợi.</td></tr>
+          <tr><td class="n">7</td><td>Buff</td><td>Tính theo lượt người mang, trừ khi người mang kết thúc hành động.</td></tr>
+        </table>
+        <div class="call warn"><b>Đã bỏ:</b> hồi EN khi bị đánh. Năng lượng chỉ đến từ hành động của chính nhân vật.</div>
+        <div class="call"><b>DoT đổi luật:</b> trước đây DoT bỏ qua DEF và shield, khiến DEF vô nghĩa trước đội DoT. Nay DoT đi qua đúng công thức damage — nó vẫn mạnh vì cộng dồn nhiều stack, nhưng stack không còn là cách xuyên giáp.</div>
+      </div>
+    </section>
+
+    <section id="s06">
+      <div class="sn">06</div>
+      <div class="sb">
+        <h2>Nhân vật</h2>
+        <p class="lede">Chín người, ba mỗi vai, <b>liệt kê theo bảng chữ cái</b> để tìm tên không phải nhớ vai. Chỉ <b>Ulti</b> có tên riêng — Basic và Skill là hành động chung của mọi nhân vật. Chỉ số gốc được đẩy rộng có chủ ý: nhìn bảng số là thấy lối chơi, không cần đọc chiêu.</p>
+        <div class="specs" id="chars"></div>
+        <h3>chỉ số gốc nói gì</h3>
+        <table id="spread"></table>
+        <div class="call"><b>Vì sao giãn rộng:</b> ATK 58–152 (2.6×), HP 740–1620 (2.2×), DEF 68–196 (2.9×), SPD 82–130 (1.6×). Nếu mọi nhân vật cùng khung 900–1350 HP thì việc chọn ai chỉ còn là chọn chiêu, không phải chọn cách chơi. Giãn rộng khiến đội hình có điểm yếu thật: đội không có Sustain thì Vesper chết trong 4 lượt.</div>
+        <div class="call"><b>Ba người mới, ba cơ chế chưa có:</b> <b>Rook</b> đánh theo <i>vị trí</i> — blast càng đông càng mạnh, nên nó thưởng cho việc giữ địch sống. <b>Nyx</b> đánh vào <i>hàng đợi</i> — đẩy AV thay vì trừ máu, nên nó mạnh ở band cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — tiêu HP để hồi đội, nên nó là Sustain duy nhất có thể tự giết mình nếu đánh sai nhịp.</div>
+        <div class="flags"><span>mult = hệ số ATK</span><span>SP = thay đổi skill point</span><span>EN = năng lượng nhận</span><span>target = kiểu chọn mục tiêu</span></div>
+      </div>
+    </section>
+
+    <section id="s07">
+      <div class="sn">07</div>
+      <div class="sb">
+        <h2>Vũ khí</h2>
+        <p class="lede">Mười hai cây, bốn mỗi vai, dùng chung. Không có vũ khí signature. Mỗi cây cho 2 chỉ số scale + 1 nội tại đẩy một lối chơi — bốn cây cùng vai thì bốn lối khác nhau, không phải bốn mức mạnh.</p>
+        <div class="specs" id="cones"></div>
+        <div class="call">Chỉ số = <code>base + step × (bậc−1)</code>, bậc S1–S5. Dòng scale dưới mỗi cây in ra 5 giá trị để bạn chỉnh base và step, không phải chỉnh 5 số.</div>
+      </div>
+    </section>
+
+    <section id="s08">
+      <div class="sn">08</div>
+      <div class="sb">
+        <h2>Di vật</h2>
+        <p class="lede">Tám bộ, hai ô mỗi người, mỗi mảnh một main stat. Đủ hai mảnh cùng bộ mở <b>trait</b> — một luật có điều kiện, không phải số cộng thêm. Tám bộ phủ tám hướng: CRIT · Speed · DoT · Shield · Energy · Skill Point · Blast · Hút máu.</p>
+        <div class="specs" id="relics"></div>
+        <div class="call"><b>Cố ý không có:</b> substat, roll, cấp, phôi, túi đồ. Mảnh gắn thẳng vào người trong draft.</div>
+      </div>
+    </section>
+
+    <section id="s09">
+      <div class="sn">09</div>
+      <div class="sb">
+        <h2>Kẻ địch</h2>
+        <p class="lede">Mười sáu con, chia 9 thường · 5 elite · <b>2 boss</b>. Địch thường làm một việc. Elite đổi hình dạng trận đánh. Boss đổi nhịp hai lần. Không con nào lặp vai của con khác — mỗi con là một câu hỏi khác nhau.</p>
+        <h3>thường</h3>
+        <table id="enemies-normal"></table>
+        <h3>elite</h3>
+        <div class="specs" id="enemies-elite"></div>
+        <h3>boss</h3>
+        <div id="enemies-boss"></div>
+        <div class="call"><b>Hai boss, hai câu hỏi khác nhau:</b> <b>The Curator</b> ở tầng 12 phạt việc đốt Ulti — mỗi Ulti của bạn cho nó 5% max HP. <b>The Overseer</b> ở tầng 16 phạt việc đánh chậm — phase 3 tự hồi máu và đặt field. Con đầu dạy tiết kiệm tài nguyên; con sau dạy dồn tài nguyên đúng lúc.</div>
+      </div>
+    </section>
+
+    <section id="s10">
+      <div class="sn">10</div>
+      <div class="sb">
+        <h2>Sảnh đường 16 tầng</h2>
+        <p class="lede">Bốn tầng một band; sang band mới, toàn bộ chỉ số gốc của địch nhân lên. <b>Mỗi tầng có ba ô cố định và một ô ngẫu nhiên</b> — đủ để lần chơi thứ hai không giống lần đầu, nhưng không đủ để bạn mất dạy dỗ.</p>
+        <h3>hệ số theo band</h3>
+        <table id="bands"></table>
+        <h3>16 tầng</h3>
+        <table id="encounters"></table>
+        <p class="fine">Hệ số nhân vào HP, ATK, DEF gốc khai báo ở mục 09. SPD giữ nguyên. Muốn đổi nhịp leo thang thì sửa cột hệ số, không sửa từng con địch.</p>
+        <h3>ô ngẫu nhiên</h3>
+        <table>
+          <tr><th class="n" style="width:30px">#</th><th style="width:150px">Luật</th><th>Chi tiết</th></tr>
+          <tr><td class="n">1</td><td>Cái gì ngẫu nhiên</td><td>Đúng <b>một ô</b> mỗi tầng, rút từ nhóm 3 con cùng vai trò. Ba ô còn lại cố định — đội hình vẫn đọc được như một bài học.</td></tr>
+          <tr><td class="n">2</td><td>Roll lúc nào</td><td>Một lần, ở đầu run, trước tầng 1. Không roll lại giữa run, không roll lại sau khi chết.</td></tr>
+          <tr><td class="n">3</td><td>Seed</td><td>Run sinh một seed 4 ký tự hex, in ở header HUD: <code>SEED 7F2A</code>. Cùng seed + cùng lựa chọn = cùng sảnh; đổi seed = đổi cả 15 ô cùng lúc.</td></tr>
+          <tr><td class="n">4</td><td>Tầng 16 cố định</td><td>Boss cuối không có ô ngẫu nhiên. Bài kiểm tra cuối phải giống nhau cho mọi người.</td></tr>
+          <tr><td class="n">5</td><td>Không random trong trận</td><td>Ngoài ô này, chỉ CRIT và thứ tự bounce là ngẫu nhiên. Mục tiêu, hàng đợi, draft đều đã có luật riêng.</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="s11">
+      <div class="sn">11</div>
+      <div class="sb">
+        <h2>Draft</h2>
+        <p class="lede">Hai lần trước tầng 1, rồi một lần sau mỗi tầng 1–15 — mười bảy lần. Mỗi lần bày đúng <b>ba thẻ</b>; ngẫu nhiên nằm ở thứ được bày ra, không nằm ở kết quả.</p>
+        <table id="draft"></table>
+        <div class="call"><b>Ba thẻ, một lựa chọn:</b> thẻ di vật bày 5 mảnh, bạn chọn 2 — nhiều món nhưng ngẫu nhiên; thẻ vũ khí bày 3 cây và bạn lấy 1 — ít món nhưng trúng bậc; thẻ hồi máu cho 40% max HP toàn đội — không xây gì, nhưng cứu được một run. Không giới hạn số lần dùng thẻ hồi.</div>
+      </div>
+    </section>
+
+    <section id="s12">
+      <div class="sn">12</div>
+      <div class="sb">
+        <h2>Mục tiêu cân bằng</h2>
+        <p class="lede">Kiểm bằng harness <b>2.000 run</b>, không bằng cảm nhận. Ở 2.000 run, sai số của một tỉ lệ quanh 50% là ±2.2 điểm phần trăm — đủ để thấy lệch 5 điểm, không đủ để đuổi theo lệch 1 điểm. Muốn chắc hơn thì chạy lại 2.000 run với seed khác, đừng tăng lên 10.000.</p>
+        <table>
+          <tr><th style="width:300px">Chỉ số</th><th class="n" style="width:100px">Mục tiêu</th><th>Lệch thì sửa</th></tr>
+          <tr><td>Win-rate toàn run</td><td class="n">45–65%</td><td>HP địch trước, ATK địch sau.</td></tr>
+          <tr><td>Hành động / tầng thường</td><td class="n">3–5</td><td>Giảm HP địch, đừng tăng damage.</td></tr>
+          <tr><td>Hành động / boss giữa (tầng 12)</td><td class="n">8–11</td><td>Curator phải ngắn hơn Overseer nhưng dài hơn elite thường.</td></tr>
+          <tr><td>Hành động / boss cuối (tầng 16)</td><td class="n">12–16</td><td>Chỉnh HP boss và số địch phụ.</td></tr>
+          <tr><td>Hành động / band IV</td><td class="n">5–7</td><td>Nếu vượt, sửa đội hình địch chứ đừng nâng hệ số quá 1.50.</td></tr>
+          <tr><td>Damage share thấp nhất</td><td class="n">≥ 15%</td><td>Tăng mult hoặc giảm cost SP.</td></tr>
+          <tr><td>Damage share cao nhất</td><td class="n">≤ 45%</td><td>Giảm mult hoặc tăng cost SP.</td></tr>
+          <tr><td>DoT share trong đội có Kaine</td><td class="n">15–35%</td><td>DoT giờ chịu DEF — nếu share tụt dưới 15% thì tăng stack, đừng bỏ DEF.</td></tr>
+          <tr><td>Đội có Nyx: số lượt địch bị đẩy lùi / tầng</td><td class="n">2–4</td><td>Dưới 2 là Nyx vô dụng; trên 4 là hàng đợi mất nghĩa.</td></tr>
+          <tr><td>Đội có Wren: HP Wren tự tiêu / tầng</td><td class="n">≤ 60% max</td><td>Trên ngưỡng là Wren tự giết mình trước khi hồi đội.</td></tr>
+          <tr><td>Tỉ lệ chọn mỗi bộ</td><td class="n">≥ 8%</td><td>Dưới ngưỡng là bộ chết.</td></tr>
+          <tr><td>Tỉ lệ chọn mỗi vũ khí</td><td class="n">≥ 6%</td><td>Cùng ngưỡng.</td></tr>
+          <tr><td>Phân bố ô ngẫu nhiên</td><td class="n">33% ± 3</td><td>Ba lựa chọn phải đều. Lệch nghĩa là pool có con bị lỗi.</td></tr>
+          <tr><td>Tỉ lệ đổi đội ở mốc 5 / 9 / 13</td><td class="n">25–50%</td><td>Dưới 25% là mốc đổi đội vô nghĩa; trên 50% là đội đầu run quá yếu.</td></tr>
+          <tr><td>Chết ở tầng 1–4</td><td class="n">&lt; 5%</td><td>Mở đầu phải an toàn.</td></tr>
+          <tr><td>Chết ở tầng 13–15</td><td class="n">20–40%</td><td>Band IV phải làm rơi người, nhưng không phải bức tường.</td></tr>
+          <tr><td>Thêm 1 nhân vật</td><td class="n">&lt; 30 phút</td><td>Lâu hơn nghĩa là engine còn hardcode.</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="s13">
+      <div class="sn">13</div>
+      <div class="sb">
+        <h2>Ghi chú</h2>
+        <p class="lede">Chỗ tôi tự chốt và chỗ còn mở. Gõ vào ô dưới — nội dung được lưu và xuất kèm JSON.</p>
+        <table>
+          <tr><th style="width:80px">Trạng thái</th><th style="width:230px">Vấn đề</th><th>Chốt hiện tại</th></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>DoT chịu DEF và shield</td><td>DoT đi qua công thức damage, không crit. Không còn xuyên giáp.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Field</td><td>Một field duy nhất cho cả sân, field mới đè field cũ, hiệu ứng cho cả hai đội, hết hạn theo lượt người đặt, người đặt chết thì mất.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Sảnh đường 16 tầng</td><td>Bốn band × bốn tầng, hệ số ×1.00 / ×1.15 / ×1.30 / ×1.50 vào HP·ATK·DEF. Trần là 1.50.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>SPD địch không nhân hệ số</td><td>SPD giữ nguyên ở mọi band. Độ khó đến từ đội hình và phase, không từ hàng đợi bị bóp méo.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Chỉ Ulti có tên</td><td>Basic và Skill là hành động chung; chỉ Ulti mang tên riêng, và log ghi tên đó thay cho chữ “Ulti”.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Chữ cái in hoa A–Z</td><td>Mỗi cá thể một chữ in hoa: A–D là địch theo ô, E–H là ta theo ô. Dùng thống nhất ở HUD, hàng đợi, log.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Log 6 dòng</td><td>Sáu hành động gần nhất của cả hai đội: đòn, DoT, buff/debuff, FUA, hồi máu, shield. Mới nhất ở dưới.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Codex mở tự do</td><td>Mở giữa trận không tốn lượt, không phạt. Không có giới hạn số lần.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Đổi đội mỗi 4 tầng</td><td>Mốc 5 / 9 / 13. Chọn đổi thì tháo sạch vũ khí và di vật về kho, chọn lại 4/9, rồi lắp lại. Vào tầng là chốt.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>“2/5 mảnh”</td><td>Bày 5 mảnh ngẫu nhiên, người chơi <b>chọn 2</b>. Không phải nhận 2 mảnh mù.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Boss thứ hai</td><td><b>The Curator</b> ở tầng 12. Tổng 16 địch = 9 thường · 5 elite · 2 boss. Không cắt elite nào.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Lệnh không dùng được</td><td>Tô xám tại chỗ, không giấu. Người chơi thấy ngay mình thiếu SP, thiếu EN hay thiếu mục tiêu.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Hai lần bấm</td><td>Lần 1 hiện trước (đảo màu + dòng prompt đổi), lần 2 chốt. Bấm phím khác thì đổi lựa chọn; <code>esc</code> huỷ.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Thứ tự liệt kê</td><td>Nhân vật xếp theo bảng chữ cái ở mọi danh sách. Vũ khí và di vật vẫn xếp theo vai để bốn cây cùng vai nằm cạnh nhau; địch xếp theo tier để giữ đường dạy.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Ngẫu nhiên trong sảnh</td><td>Một ô địch mỗi tầng rút từ nhóm 3 con, roll một lần ở đầu run, seed in ở header. Tầng 16 cố định.</td></tr>
+          <tr><td><span class="tag warn">mở</span></td><td>Curator có quá phạt Ulti không</td><td>Mỗi Ulti cho nó 5% max HP. Nếu harness cho thấy đội nhiều Ulti thua quá 70% ở tầng 12 thì hạ xuống 3%.</td></tr>
+        </table>
+        <h3>ghi chú của bạn</h3>
+        <textarea class="f" id="notes" placeholder="Chỗ nào chưa ổn, số nào cần thử, cơ chế nào muốn thêm..."></textarea>
+        <div class="hint">Sửa số ở bất kỳ đâu → tự lưu vào trình duyệt. Copy JSON để đưa bản đã chỉnh cho agent.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="bar">
+  <span>sửa trực tiếp · tự lưu</span>
+  <span class="grow"></span>
+  <span id="saved"></span>
+  <button id="btn-json">Xuất JSON</button>
+  <button id="btn-reset">Khôi phục gốc</button>
+  <button class="go" id="btn-copy">Copy JSON</button>
+</div>
+
+<script>
+/* ============================================================ */
+const BASE = {
+  meta: { version: "0.9", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
+  constants: {
+    def_k: 200, crit_rate: 5, crit_dmg: 50, sp_max: 5, sp_start: 3,
+    en_max: 100, en_start: 50, en_basic: 20, en_skill: 30, ult_cost: 100,
+    dot_max: 5, dot_turns: 3, shield_turns: 2, heal_after_battle: 8, draft_heal: 40
+  },
+  bands: [
+    { label:"I",   floors:"1–4",   mult:1.00 },
+    { label:"II",  floors:"5–8",   mult:1.15 },
+    { label:"III", floors:"9–12",  mult:1.30 },
+    { label:"IV",  floors:"13–16", mult:1.50 }
+  ],
+  effects: [
+    { kind:"stack",  abbr:"DOT(2)",    full:"2 stack DoT đang chịu." },
+    { kind:"stack",  abbr:"BRN(1)",    full:"1 stack bỏng — DoT riêng của Bomber." },
+    { kind:"stat",   abbr:"ATK-(20%)", full:"giảm 20% ATK." },
+    { kind:"stat",   abbr:"DEF-(25%)", full:"giảm 25% DEF." },
+    { kind:"stat",   abbr:"SPD+(10%)", full:"tăng 10% SPD." },
+    { kind:"stat",   abbr:"DMG-(25%)", full:"giảm 25% sát thương gây ra." },
+    { kind:"shield", abbr:"SHD[120]",  full:"shield còn 120." },
+    { kind:"unique", abbr:"C(2)",      full:"2 stack hiệu ứng riêng của cá thể C — chữ cái là người đã gắn nó." }
+  ],
+  logCols: [
+    { col:"1–11",  name:"nguồn",     note:"chữ cái + tên ngắn. Địch A–D, ta E–H." },
+    { col:"12–27", name:"hành động", note:"Basic · Skill · tên riêng của Ulti · FUA · DoT · Heal · Shield · Field · SP · SYS" },
+    { col:"28",    name:">",         note:"dấu phân cách, luôn có." },
+    { col:"29–39", name:"mục tiêu",  note:"cùng dạng tên; không có mục tiêu thì ghi —" },
+    { col:"40–78", name:"số",        note:"căn phải ở cột 78; đòn nhiều lần ghi tổng dạng 6×9." }
+  ],
+  targets: [
+    { id:"single", rule:"1 mục tiêu", dmg:"100%", mark:">", note:"Mặc định của phần lớn đòn." },
+    { id:"blast",  rule:"mục tiêu + 2 bên", dmg:"chính 100% · bên 50%", mark:"> +", note:"Dính theo vị trí, không dính theo mục tiêu đang chọn." },
+    { id:"all",    rule:"toàn bộ địch", dmg:"100% hệ số cho mỗi mục tiêu", mark:"*", note:"Hệ số trên đòn đã được hạ sẵn cho nhiều mục tiêu." },
+    { id:"bounce", rule:"N lần ngẫu nhiên", dmg:"mỗi lần một hệ số riêng", mark:"~", note:"Được trúng lại một mục tiêu; crit và shield tính riêng từng lần." },
+    { id:"field",  rule:"vùng toàn sân", dmg:"không trực tiếp", mark:"FIELD", note:"Chỉ 1 field tồn tại; field mới xoá field cũ." }
+  ],
+  fields: [
+    { id:"grid", name:"Grid", turns:3, source:"Lumen — Ulti",
+      effect:"Cả hai đội +15% ATK và +10% SPD.", cost:"Tăng nhịp cho cả hai bên — ai nhiều đòn hơn thì hưởng nhiều hơn." },
+    { id:"rampart", name:"Rampart", turns:2, source:"Bastion — Ulti",
+      effect:"Cả hai đội nhận −15% sát thương.", cost:"Kéo dài trận; có lợi cho bên đang yếu hơn." },
+    { id:"signal", name:"Signal", turns:3, source:"Signal Tower — mỗi 2 hành động",
+      effect:"Cả hai đội +25% ATK.", cost:"Tower dùng nó để tự buff, nhưng bạn cũng được buff. Giết Tower thì field mất." },
+    { id:"protocol", name:"Final Protocol", turns:3, source:"The Overseer — phase III",
+      effect:"Đầu mỗi lượt, đơn vị đó nhận 1 stack DoT; DoT +25% sát thương.", cost:"Không ai tránh được, kể cả boss." }
+  ],
+  characters: [
+    { id:"vesper", name:"Vesper", role:"DPS", style:"CRIT / follow-up",
+      hp:820, atk:152, def:68, spd:114, crit:18, critdmg:60,
+      basic:{ mult:1.0, sp:1, en:20, target:"single" },
+      skill:{ mult:1.6, sp:-1, en:30, target:"single", desc:"Sát thương đơn mục tiêu." },
+      ult:{ name:"Final Cut", mult:0.55, hits:6, en:100, target:"bounce", desc:"6 lần đánh ngẫu nhiên, mỗi lần 0.55×." },
+      talent:{ name:"Momentum", text:"Mỗi CRIT cho 1 stack (tối đa 3). Đủ 3 stack: đòn kế tiếp kích follow-up 60% damage." } },
+    { id:"kaine", name:"Kaine", role:"DPS", style:"DoT",
+      hp:1010, atk:136, def:84, spd:101, crit:0, critdmg:50,
+      basic:{ mult:0.9, sp:1, en:20, target:"single" },
+      skill:{ mult:1.2, sp:-1, en:30, target:"single", desc:"1.2× và 2 stack DoT." },
+      ult:{ name:"Ashfall", mult:1.5, en:100, target:"all", desc:"Toàn bộ địch, mỗi mục tiêu 3 stack DoT." },
+      talent:{ name:"Corrosion", text:"Mỗi khi Kaine gây DoT, một địch khác ngẫu nhiên nhận thêm 1 stack." } },
+    { id:"lumen", name:"Lumen", role:"Support", style:"Energy",
+      hp:740, atk:72, def:74, spd:130, crit:5, critdmg:50,
+      basic:{ mult:0.9, sp:1, en:20, target:"single" },
+      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Đồng đội +25 EN và +15% ATK 2 lượt." },
+      ult:{ name:"Grid", mult:0, en:100, target:"field", desc:"Đặt field Grid 3 lượt." },
+      talent:{ name:"Conduit", text:"Đồng đội dùng Ulti: Lumen +10 EN." } },
+    { id:"sable", name:"Sable", role:"Support", style:"Debuff / SP",
+      hp:890, atk:98, def:90, spd:120, crit:5, critdmg:50,
+      basic:{ mult:0.95, sp:1, en:20, target:"single" },
+      skill:{ mult:1.3, sp:-1, en:30, target:"single", desc:"1.3× và −20% DEF mục tiêu 2 lượt." },
+      ult:{ name:"Blackout", mult:1.8, en:100, target:"blast", desc:"Chính 1.8×, hai bên 0.9×; mục tiêu chính −25% damage gây ra 2 lượt." },
+      talent:{ name:"Ledger", text:"Sau khi Sable dùng Skill, Skill kế tiếp của một đồng đội tốn 0 SP (1 lần/lượt)." } },
+    { id:"bastion", name:"Bastion", role:"Sustain", style:"Shield",
+      hp:1620, atk:58, def:196, spd:82, crit:0, critdmg:50,
+      basic:{ mult:0.9, sp:1, en:20, target:"single" },
+      skill:{ mult:0, sp:-1, en:30, target:"ally-all", desc:"Shield toàn đội 22% max HP của Bastion, 2 lượt." },
+      ult:{ name:"Rampart", mult:0, en:100, target:"field", desc:"Shield 30% max HP toàn đội + field Rampart 2 lượt." },
+      talent:{ name:"Ironclad", text:"Shield do Bastion tạo thêm −8% sát thương nhận." } },
+    { id:"mira", name:"Mira", role:"Sustain", style:"Heal / cleanse",
+      hp:1290, atk:80, def:128, spd:109, crit:5, critdmg:50,
+      basic:{ mult:0.85, sp:1, en:20, target:"single" },
+      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Hồi 20% max HP và xóa 1 debuff." },
+      ult:{ name:"Sanctuary", mult:0, en:100, target:"ally-all", desc:"Hồi 12% max HP toàn đội, xóa mọi debuff, +10% ATK 2 lượt." },
+      talent:{ name:"Triage", text:"Hồi máu cho người dưới 40% HP thì người đó +6 SPD 2 lượt." } },
+    { id:"rook", name:"Rook", role:"DPS", style:"Blast / vị trí",
+      hp:1080, atk:142, def:96, spd:96, crit:5, critdmg:50,
+      basic:{ mult:0.95, sp:1, en:20, target:"single" },
+      skill:{ mult:1.1, sp:-1, en:30, target:"blast", desc:"Chính 1.1×, hai bên 0.55×." },
+      ult:{ name:"Broadside", mult:1.0, en:100, target:"all", desc:"Toàn bộ địch 1.0×, cộng thêm 0.15× lên mục tiêu chính cho mỗi địch còn sống." },
+      talent:{ name:"Enfilade", text:"Đòn blast trúng cả 3 vị trí: +20% damage và +10 EN." } },
+    { id:"nyx", name:"Nyx", role:"Support", style:"AV / tốc độ",
+      hp:860, atk:66, def:82, spd:126, crit:5, critdmg:50,
+      basic:{ mult:0.9, sp:1, en:20, target:"single" },
+      skill:{ mult:0, sp:-1, en:30, target:"enemy-single", desc:"Đẩy lùi mục tiêu 25% AV và −10% SPD 2 lượt." },
+      ult:{ name:"Zero Hour", mult:0, en:100, target:"all", desc:"Đẩy lùi toàn bộ địch 15% AV; toàn đội ta +15% AV." },
+      talent:{ name:"Slipstream", text:"Đầu mỗi tầng, cá thể SPD cao nhất mỗi bên được +10% AV." } },
+    { id:"wren", name:"Wren", role:"Sustain", style:"Hút máu / hiến máu",
+      hp:1420, atk:86, def:110, spd:103, crit:5, critdmg:50,
+      basic:{ mult:0.9, sp:1, en:20, target:"single" },
+      skill:{ mult:0, sp:-1, en:30, target:"ally-all", desc:"Tiêu 15% HP hiện tại của Wren, hồi 18% max HP cho cả đội." },
+      ult:{ name:"Crimson Tithe", mult:0, en:100, target:"ally-all", desc:"Hồi 20% max HP toàn đội; 3 lượt tới mỗi đòn của Wren hồi máu cho đồng đội HP thấp nhất." },
+      talent:{ name:"Leech", text:"Sát thương Wren gây ra hồi cho cô 25% lượng đó; đồng đội dưới 30% HP nhận thêm 40%." } }
+  ],
+  cones: [
+    { id:"razorline", name:"Razorline", role:"DPS", play:"CRIT",
+      s1:{ name:"CRIT rate", base:6, step:1.5, unit:"%" }, s2:{ name:"CRIT dmg", base:12, step:3, unit:"%" },
+      passive:{ text:"Khi CRIT: đòn đó +X% damage và hồi 4 EN.", base:8, step:2, unit:"%" } },
+    { id:"slow_burn", name:"Slow Burn", role:"DPS", play:"DoT",
+      s1:{ name:"ATK", base:8, step:2, unit:"%" }, s2:{ name:"SPD", base:4, step:1, unit:"" },
+      passive:{ text:"DoT bạn gây ra +X% damage.", base:12, step:3, unit:"%" } },
+    { id:"echo_blade", name:"Echo Blade", role:"DPS", play:"Follow-up",
+      s1:{ name:"ATK", base:7, step:2, unit:"%" }, s2:{ name:"CRIT dmg", base:10, step:2.5, unit:"%" },
+      passive:{ text:"Follow-up +X% damage; mỗi follow-up hồi 5 EN.", base:15, step:4, unit:"%" } },
+    { id:"uplink", name:"Uplink", role:"Support", play:"Energy",
+      s1:{ name:"Energy regen", base:8, step:2, unit:"%" }, s2:{ name:"SPD", base:4, step:1, unit:"" },
+      passive:{ text:"Đồng đội dùng Ult: người đeo +X EN.", base:6, step:2, unit:"EN" } },
+    { id:"balance", name:"Balance", role:"Support", play:"Skill Point",
+      s1:{ name:"SPD", base:5, step:1.5, unit:"" }, s2:{ name:"HP", base:6, step:1.5, unit:"%" },
+      passive:{ text:"Mỗi đòn Đánh thường thứ 2 cho thêm +1 SP.", base:1, step:0, unit:"SP" } },
+    { id:"amplifier", name:"Amplifier", role:"Support", play:"Buff",
+      s1:{ name:"SPD", base:5, step:1.5, unit:"" }, s2:{ name:"HP", base:7, step:2, unit:"%" },
+      passive:{ text:"Buff bạn trao còn cho mục tiêu +X% ATK.", base:3, step:1, unit:"%" } },
+    { id:"phalanx", name:"Phalanx", role:"Sustain", play:"Shield",
+      s1:{ name:"DEF", base:9, step:2, unit:"%" }, s2:{ name:"HP", base:8, step:2, unit:"%" },
+      passive:{ text:"Shield bạn tạo +X% mạnh hơn.", base:10, step:2.5, unit:"%" } },
+    { id:"mercy", name:"Mercy", role:"Sustain", play:"Heal",
+      s1:{ name:"HP", base:9, step:2, unit:"%" }, s2:{ name:"Energy regen", base:6, step:1.5, unit:"%" },
+      passive:{ text:"Hồi máu +X%; 50% lượng hồi dư thành shield.", base:10, step:2.5, unit:"%" } },
+    { id:"vigil", name:"Vigil", role:"Sustain", play:"Giảm damage",
+      s1:{ name:"DEF", base:8, step:2, unit:"%" }, s2:{ name:"SPD", base:4, step:1, unit:"" },
+      passive:{ text:"Đồng đội dưới 30% HP nhận −X% sát thương.", base:10, step:2, unit:"%" } },
+    { id:"nightfall", name:"Nightfall", role:"DPS", play:"Bounce",
+      s1:{ name:"ATK", base:7, step:2, unit:"%" }, s2:{ name:"CRIT rate", base:5, step:1.2, unit:"%" },
+      passive:{ text:"Đòn bounce +X% damage; mỗi lần trúng lại một mục tiêu hồi 2 EN.", base:12, step:3, unit:"%" } },
+    { id:"relay", name:"Relay", role:"Support", play:"AV",
+      s1:{ name:"SPD", base:6, step:1.5, unit:"" }, s2:{ name:"HP", base:6, step:1.5, unit:"%" },
+      passive:{ text:"Đầu lượt: đồng đội AV cao nhất +X% AV.", base:8, step:2, unit:"%" } },
+    { id:"aegis", name:"Aegis", role:"Sustain", play:"Đỡ đòn",
+      s1:{ name:"DEF", base:10, step:2, unit:"%" }, s2:{ name:"HP", base:9, step:2, unit:"%" },
+      passive:{ text:"Khi đồng đội nhận đòn, người đeo nhận thay X% sát thương đó nếu còn trên 50% HP.", base:15, step:3, unit:"%" } }
+  ],
+  relics: [
+    { id:"edge", name:"Edge", dir:"CRIT", p1:{ stat:"CRIT rate", val:8, unit:"%" }, p2:{ stat:"CRIT dmg", val:16, unit:"%" },
+      trait:"Overrun", bonus:"Sát thương lên mục tiêu dưới 50% HP +20% CRIT dmg." },
+    { id:"tempo", name:"Tempo", dir:"Speed", p1:{ stat:"SPD", val:6, unit:"" }, p2:{ stat:"ATK", val:5, unit:"%" },
+      trait:"Opening", bonus:"Lượt đầu tiên mỗi tầng: +30% damage." },
+    { id:"ember", name:"Ember", dir:"DoT", p1:{ stat:"ATK", val:9, unit:"%" }, p2:{ stat:"SPD", val:5, unit:"" },
+      trait:"Kindle", bonus:"DoT bạn gây +15% damage và +1 lượt." },
+    { id:"palisade", name:"Palisade", dir:"Shield", p1:{ stat:"DEF", val:12, unit:"%" }, p2:{ stat:"HP", val:10, unit:"%" },
+      trait:"Barricade", bonus:"Shield bạn tạo +18% mạnh hơn." },
+    { id:"loop", name:"Loop", dir:"Energy", p1:{ stat:"Energy regen", val:10, unit:"%" }, p2:{ stat:"HP", val:120, unit:"" },
+      trait:"Feedback", bonus:"Dùng Ult: đồng đội thấp EN nhất +20 EN." },
+    { id:"thrift", name:"Thrift", dir:"Skill Point", p1:{ stat:"SPD", val:6, unit:"" }, p2:{ stat:"ATK", val:6, unit:"%" },
+      trait:"Double Time", bonus:"Đánh thường +2 SP thay vì +1, nhưng damage đánh thường −25%." },
+    { id:"vanguard", name:"Vanguard", dir:"Blast", p1:{ stat:"ATK", val:7, unit:"%" }, p2:{ stat:"DEF", val:8, unit:"%" },
+      trait:"Sweep", bonus:"Đòn blast +18% damage lên hai mục tiêu bên." },
+    { id:"siphon", name:"Siphon", dir:"Hút máu", p1:{ stat:"ATK", val:8, unit:"%" }, p2:{ stat:"HP", val:8, unit:"%" },
+      trait:"Transfusion", bonus:"Hồi máu vượt max HP chuyển thành shield." }
+  ],
+  enemies: [
+    { id:"scout", name:"Scout", tier:"normal", hp:150, atk:40, def:40, spd:118, target:"single",
+      behavior:"Đánh nhân vật HP thấp nhất.", teaches:"Tốc độ — giết trước hoặc mất người." },
+    { id:"grunt", name:"Grunt", tier:"normal", hp:220, atk:55, def:60, spd:98, target:"single",
+      behavior:"Đánh thường, 1.0× ATK.", teaches:"Áp lực cơ bản." },
+    { id:"sniper", name:"Sniper", tier:"normal", hp:180, atk:68, def:50, spd:106, target:"single",
+      behavior:"Đánh nhân vật ATK cao nhất.", teaches:"Carry của bạn không an toàn." },
+    { id:"warden", name:"Warden", tier:"normal", hp:260, atk:50, def:85, spd:96, target:"single",
+      behavior:"Đánh và tự tạo shield 8% max HP.", teaches:"Damage nhỏ không đủ." },
+    { id:"swarm", name:"Swarm", tier:"normal", hp:130, atk:36, def:35, spd:124, target:"bounce", hits:2,
+      behavior:"2 lần đánh ngẫu nhiên, mỗi lần 0.6× ATK.", teaches:"Nhiều đòn nhỏ phạt DEF thấp." },
+    { id:"hound", name:"Hound", tier:"normal", hp:170, atk:46, def:38, spd:128, target:"single",
+      behavior:"Đánh nhân vật HP thấp nhất. Mỗi khi một địch khác chết, +15% SPD.", teaches:"Đừng để ai tụt máu một mình." },
+    { id:"leech", name:"Leech", tier:"normal", hp:240, atk:44, def:55, spd:100, target:"single",
+      behavior:"Đánh thường 0.9× và hồi cho bản thân 50% sát thương gây ra.", teaches:"Damage nhỏ lên nó là damage hoàn lại." },
+    { id:"bomber", name:"Bomber", tier:"normal", hp:200, atk:52, def:45, spd:94, target:"ally-blast",
+      behavior:"Blast: mục tiêu chính 1.0×, hai bên 0.5×, và gắn BRN(1) lên mục tiêu chính.", teaches:"Đứng cạnh nhau thì cùng ăn đòn." },
+    { id:"cinder", name:"Cinder", tier:"normal", hp:190, atk:42, def:48, spd:108, target:"single",
+      behavior:"Sát thương trực tiếp thấp, nhưng gắn 2 stack DoT mỗi đòn.", teaches:"DoT chịu DEF — DEF thấp là chết chậm." },
+    { id:"engineer", name:"Iron Engineer", tier:"elite", hp:600, atk:70, def:90, spd:104, target:"single",
+      behavior:"Xen kẽ hai hành động. A: −20% ATK lên nhân vật ATK cao nhất trong 2 lượt. B: hồi 15% max HP cho địch mất máu nhiều nhất.",
+      teaches:"Chịu debuff, hoặc giết nhanh trước lần hồi thứ hai." },
+    { id:"tower", name:"Signal Tower", tier:"elite", hp:520, atk:45, def:110, spd:92, target:"field",
+      behavior:"Không tấn công. Mỗi hành động: +15% ATK cho toàn bộ địch, cộng dồn tối đa +45% (field Signal). Khi chết: địch mất mọi buff và nhận 8% max HP damage.",
+      teaches:"Nó là một cái đồng hồ. Bỏ qua là thua từ từ." },
+    { id:"bulwark_unit", name:"Bulwark Unit", tier:"elite", hp:700, atk:60, def:150, spd:88, target:"ally-blast",
+      behavior:"Khi còn sống, địch khác nhận −25% sát thương. Mỗi hành động thứ 3: shield 25% max HP cho bản thân và hai bên.",
+      teaches:"Thứ tự đánh. Mục tiêu rõ ràng thường là sai." },
+    { id:"chorister", name:"Chorister", tier:"elite", hp:560, atk:40, def:95, spd:100, target:"none",
+      behavior:"Không tấn công. Mỗi hành động: +20% ATK cho toàn bộ địch 2 lượt, cộng dồn tối đa 3 lần. Khi chết: địch mất buff ATK.",
+      teaches:"Một buffer không đánh ai vẫn là mối nguy lớn nhất trên sân." },
+    { id:"colossus", name:"Colossus", tier:"elite", hp:900, atk:96, def:170, spd:74, target:"single",
+      behavior:"Rất chậm, rất trâu. Mỗi hành động: 2.6× ATK vào một mục tiêu, bỏ qua 40% DEF. Mỗi 2 lượt tự hồi 10% max HP.",
+      teaches:"Nó đánh ít lần, nhưng mỗi lần là một mạng người." },
+    { id:"overseer", name:"The Overseer", tier:"boss", hp:2200, atk:98, def:120, spd:108, target:"varies",
+      behavior:"Ba phase. Mỗi lần mất 25% HP thì tự xóa 1 debuff trên bản thân.",
+      phases:[
+        { range:"100–60%", name:"Calibration", text:"Mỗi hành động thứ 3: all 1.0× ATK. Gắn 2 stack DoT lên nhân vật ATK cao nhất." },
+        { range:"60–25%", name:"Overclock", text:"Vào phase: +20% SPD và shield 20% max HP. Mỗi hành động thứ 2: single 2.2× ATK, bỏ qua 30% DEF." },
+        { range:"dưới 25%", name:"Final Protocol", text:"Vào phase: xóa mọi debuff của mình, đặt field Final Protocol 3 lượt. Mỗi lượt xen kẽ all 1.2× ATK và tự hồi 8% max HP." }
+      ] },
+    { id:"curator", name:"The Curator", tier:"boss", hp:1700, atk:86, def:105, spd:96, target:"single",
+      behavior:"Boss giữa sảnh. Mỗi lần một nhân vật của bạn dùng Ulti, nó hồi 5% max HP và gắn 1 stack MARK lên người vừa dùng.",
+      phases:[
+        { range:"100–55%", name:"Appraisal", text:"Mỗi lượt gắn MARK(1) lên nhân vật ATK cao nhất, tối đa 3 stack. Đòn đánh lên người có MARK +25% damage mỗi stack." },
+        { range:"55–20%", name:"Exhibit", text:"Vào phase: shield 25% max HP. Mỗi hành động thứ 2: blast 1.4× ATK. Khi shield vỡ: cả đội bạn nhận 6% max HP damage." },
+        { range:"dưới 20%", name:"Disperse", text:"Vào phase: +25% SPD, xoá mọi MARK trên người bạn — mỗi MARK bị xoá hồi cho nó 3% max HP. Đòn all 1.1× ATK." }
+      ],
+      teaches:"Ulti của bạn là tài nguyên của nó — đừng đốt Ulti chỉ để lấy số." }
+  ],
+  encounters: [
+    { n:1,  enemies:[["grunt",3]], roll:["scout","hound","swarm"],
+      note:"Làm quen AV và Skill Point. Ô thứ tư là một con nhanh ngẫu nhiên." },
+    { n:2,  enemies:[["grunt",2],["scout",1]], roll:["scout","hound","swarm"],
+      note:"Hai mối nhanh: phải chọn thứ tự." },
+    { n:3,  enemies:[["scout",2],["sniper",1]], roll:["grunt","warden","bomber"],
+      note:"Sniper phạt carry máu giấy." },
+    { n:4,  enemies:[["sniper",2],["warden",1]], roll:["scout","hound","swarm"],
+      note:"Shield xuất hiện: damage nhỏ hết hiệu quả." },
+    { n:5,  enemies:[["swarm",2],["hound",1]], roll:["warden","bomber","cinder"],
+      note:"Bounce và Hound cùng nhắm người yếu nhất. Band II bắt đầu." },
+    { n:6,  enemies:[["engineer",1],["grunt",1],["leech",1]], roll:["grunt","bomber","cinder"],
+      note:"Elite đầu tiên: hồi máu cho địch, hút máu cho mình." },
+    { n:7,  enemies:[["tower",1],["sniper",2]], roll:["warden","bomber","cinder"],
+      note:"Field đầu tiên: một cái đồng hồ sau hai cây súng." },
+    { n:8,  enemies:[["bulwark_unit",1],["bomber",1],["cinder",1]], roll:["cinder","leech","hound"],
+      note:"Giảm sát thương, blast và DoT cùng lúc. Sai thứ tự là thua." },
+    { n:9,  enemies:[["chorister",1],["hound",2]], roll:["cinder","bomber","warden"],
+      note:"Buffer đứng sau. Giết nó trước hay dọn đàn trước? Band III." },
+    { n:10, enemies:[["colossus",1],["sniper",2]], roll:["warden","bomber","cinder"],
+      note:"Một cú đấm 2.6×, hai cây súng, một cái khiên." },
+    { n:11, enemies:[["engineer",1],["bulwark_unit",1],["tower",1]], roll:["sniper","bomber","cinder"],
+      note:"Ba elite: hồi máu, giảm sát thương, field." },
+    { n:12, enemies:[["curator",1],["bulwark_unit",1],["bomber",1]], roll:["cinder","leech","hound"],
+      note:"BOSS giữa sảnh. Đừng đốt Ulti — mỗi lần Ulti là một lần nó hồi máu." },
+    { n:13, enemies:[["tower",1],["sniper",2]], roll:["engineer","bomber","cinder"],
+      note:"Band IV. Tower buff cả hai bên, nhưng địch hưởng nhiều hơn." },
+    { n:14, enemies:[["colossus",1],["bulwark_unit",1],["chorister",1]], roll:["warden","bomber","cinder"],
+      note:"Không có mục tiêu sai: mọi thứ đều đỡ đòn hoặc đang buff." },
+    { n:15, enemies:[["engineer",1],["colossus",1],["tower",1]], roll:["chorister","bomber","cinder"],
+      note:"Tầng khó nhất trước boss: bốn nguồn áp lực, không nguồn nào giết nhanh được." },
+    { n:16, enemies:[["overseer",1],["bulwark_unit",1],["chorister",1],["tower",1]], roll:null,
+      note:"Boss cuối, đội hình cố định: không có ô ngẫu nhiên để bạn học lại." }
+  ],
+  draft: [
+    { type:"Relic", desc:"Bày 5 mảnh ngẫu nhiên, chọn 2. Ghép đúng bộ 2 mảnh thì mở trait.", limit:"8 ô" },
+    { type:"Weapon", desc:"Bày 3 vũ khí ngẫu nhiên, lấy 1. Nếu đã có thì +1 bậc (S1–S5).", limit:"4 đang đeo · 5 bậc" },
+    { type:"Heal", desc:"Hồi 40% max HP cho toàn đội.", limit:"không giới hạn" }
+  ]
+};
+const KEY = "hsrlite-spec-v9";
+
+let DATA = JSON.parse(JSON.stringify(BASE));
+let NOTES = "";
+try { const raw = localStorage.getItem(KEY); if (raw) { const p = JSON.parse(raw); DATA = p.data || DATA; NOTES = p.notes || ""; } } catch (e) {}
+/* liệt kê luôn theo bảng chữ cái — thứ tự ô trong trận không đổi, chữ cái E–H vẫn theo ô */
+DATA.characters.sort((a, b) => a.name.localeCompare(b.name, "en"));
+
+const get = p => p.split(".").reduce((o, k) => o[k], DATA);
+const set = (p, v) => { const k = p.split("."), last = k.pop(); k.reduce((o, x) => o[x], DATA)[last] = v; };
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const F = (p, w = 54, cls = "") => `<input class="f ${cls}" data-p="${p}" value="${esc(get(p))}" style="width:${w}px">`;
+const FTXT = (p, w) => `<input class="f txt" data-p="${p}" value="${esc(get(p))}" style="width:${w}px">`;
+const FWIDE = p => `<input class="f wide" data-p="${p}" value="${esc(get(p))}">`;
+const FAREA = (p, rows = 2) => `<textarea class="f wide auto" data-p="${p}" rows="${rows}">${esc(get(p))}</textarea>`;
+const autosize = el => { el.style.height = "auto"; el.style.height = (el.scrollHeight + 2) + "px"; };
+const autosizeAll = () => {
+  if (typeof document.querySelectorAll !== "function") return;
+  document.querySelectorAll("textarea.f.auto").forEach(autosize);
+};
+const roleTag = r => `<span class="tag ${r === "DPS" ? "dps" : r === "Support" ? "sup" : "sus"}">${r}</span>`;
+const tgtTag = t => t && t !== "single" ? `<span class="tag tgt">${esc(t)}</span>` : "";
+const num = n => (Math.round(n * 10) / 10).toString();
+
+/* ---------- khung 80 cột ---------- */
+const W = 80, L = 47;
+const seg = (t, c) => c ? `<span class="${c}">${esc(t)}</span>` : esc(t);
+const padTo = (parts, w) => {
+  const raw = parts.map(p => p[0]).join("");
+  if (raw.length > w) throw new Error("overflow " + raw.length + "/" + w + ": " + raw);
+  return parts.map(([t, c]) => seg(t, c)).join("") + " ".repeat(w - raw.length);
+};
+const rowLR = (l, r, lw = L) => "│" + padTo(l, lw) + "│" + padTo(r, W - lw - 3) + "│";
+const fullRow = p => "│" + padTo(p, W - 2) + "│";
+const hline = (l = "├", m = "─", r = "┤", n = W - 2) => l + m.repeat(n) + r;
+const bar = (v, mx, n) => { const f = Math.max(0, Math.min(n, Math.round(v / mx * n))); return "█".repeat(f) + "░".repeat(n - f); };
+
+function tabBar(active){
+  const items = ["BATTLE","CODEX","TEAM","EQUIP"];
+  const plain = items.map((n, i) => `[^${i+1} ${n}]`).join(" ");
+  const right = "run 3/16";
+  const gap = W - plain.length - right.length;
+  let html = "", pos = 0;
+  items.forEach((n, i) => {
+    const s = `[^${i+1} ${n}]`;
+    html += i === active ? `<span class="on">${s}</span>` : `<span class="${i > 1 ? "dim" : "tab"}">${s}</span>`;
+    pos += s.length;
+    if (i < items.length - 1) { html += " "; pos += 1; }
+  });
+  return html + " ".repeat(gap) + `<span class="dim">${right}</span>`;
+}
+
+/* một dòng đơn vị: marker · chữ cái · tên · máu · SPD · [EN] · hiệu ứng */
+function unitRow(mark, letter, name, hp, mx, spd, en, eff){
+  const p = [[mark, "cur"], [letter, "cur"], [" "], [name.padEnd(10)], [bar(hp, mx, 10)],
+             [" "], [`${String(hp).padStart(3)}/${String(mx).padEnd(3)}`, hp / mx < .3 ? "bad" : null],
+             ["  S"], [String(spd).padStart(3), "dim"]];
+  if (en !== null) p.push(["  EN "], [bar(en, 100, 5)]);
+  if (eff) p.push(["  "], [eff, "warn"]);
+  return p;
+}
+
+function hallHead(){
+  const head = "┌─ HALL 3/16 ── ×1.00 ── SP 3/5 ── SEED " + DATA.meta.seed + " ── ENEMY ";
+  return head.padEnd(W - 1, "─") + "┐";
+}
+function buildBattle(){
+  /* cột: nguồn 11 · hành động 16 · > · mục tiêu 11 · số căn phải ở cột 78 */
+  const log = (src, act, tgt, val, cls) => {
+    const p = [[src.padEnd(11)], [act.padEnd(16), "dim"], [">"], [tgt.padEnd(11)]];
+    p.push([" ".repeat(78 - 39 - 6)]);
+    p.push([String(val).padStart(6), cls]);
+    return p;
+  };
+  const next = [
+    ["G", 0], ["A", 32], ["B", 45], ["H", 48], ["C", 52], ["F", 60], ["E", 71], ["D", 88]
+  ];
+  const nextParts = [[" NEXT  ", "dim"]];
+  next.forEach(([L, av], i) => {
+    if (i) nextParts.push(["   "]);
+    nextParts.push([L, i === 0 ? "cur" : null]);
+    nextParts.push([" "], [String(av).padStart(2), "dim"]);
+  });
+
+  const lines = [
+    tabBar(0),
+    hallHead(),
+    fullRow(unitRow(">","A","Grunt",142,220,98,null,"DOT(2) ATK-(20%)")),
+    fullRow(unitRow("+","B","Scout",96,150,118,null,"SHD[120]")),
+    fullRow(unitRow(" ","C","Cinder",190,190,108,null,null)),
+    fullRow(unitRow(" ","D","Sniper",61,180,106,null,"C(2)")),
+    "├─ PARTY ".padEnd(W - 1, "─") + "┤",
+    fullRow(unitRow(" ","E","Rook",940,1080,96,60,null)),
+    fullRow(unitRow(" ","F","Kaine",880,1010,101,100,null)),
+    fullRow(unitRow(" ","G","Lumen",620,740,130,40,null)),
+    fullRow(unitRow(" ","H","Bastion",1370,1620,82,100,"DEF-(25%)")),
+    fullRow([[" FIELD  ", "dim"], ["Grid", "good"], [" · Lumen · 3 lượt · cả hai đội +15% ATK, +10% SPD"]]),
+    fullRow(nextParts),
+    hline(),
+    fullRow([[" "], ["> Rook", "cur"], ["  [1] Basic 12  "], ["[2] Skill 34 blast", "on"],
+             ["  "], ["[3] Broadside", "off"], ["   [4] Retarget"]]),
+    hline(),
+    fullRow(log("E Rook","Broadside","all","34","warn")),
+    fullRow(log("F Kaine","DoT","C Cinder","21","warn")),
+    fullRow(log("G Lumen","ATK+(15%)","party","—","good")),
+    fullRow(log("H Bastion","Shield","party","297","good")),
+    fullRow(log("B Scout","Basic","E Rook","18","bad")),
+    fullRow(log("A Grunt","ATK-(20%)","E Rook","—","dim")),
+    "└" + "─".repeat(W - 2) + "┘",
+    promptRow()
+  ];
+  document.getElementById("hud").innerHTML = lines.join("\n");
+  document.getElementById("ruler").textContent = "0.........".repeat(8);
+}
+function promptRow(){
+  const left = "> [2] Skill → A Grunt + 2 bên";
+  const hint = "[2] chốt · [esc] huỷ · ^1-4 tab";
+  return seg(left, "cur") + " ".repeat(W - left.length - hint.length) + seg(hint, "dim");
+}
+
+/* ---------- ba màn hình còn lại ---------- */
+function screenBox(title, rows, width = W){
+  const top = "┌─ " + title + " " + "─".repeat(width - 5 - title.length) + "┐";
+  const bot = "└" + "─".repeat(width - 2) + "┘";
+  const mid = rows.map(r => {
+    if (r.length > width - 2) throw new Error("screen overflow " + r.length + "/" + (width - 2) + ": " + r);
+    return "│" + r.padEnd(width - 2) + "│";
+  });
+  return [top, ...mid, bot].join("\n");
+}
+function twoCol(left, right, lw = 22){
+  return " " + left.padEnd(lw) + "│ " + right;
+}
+function wrap(text, w){
+  const out = []; let line = "";
+  String(text).split(/\s+/).forEach(word => {
+    if ((line + " " + word).trim().length > w) { if (line) out.push(line); line = word; }
+    else line = (line ? line + " " : "") + word;
+  });
+  if (line) out.push(line);
+  return out;
+}
+function buildScreens(){
+  const c0 = DATA.characters[0];
+  const detail = [
+    `${c0.name.toUpperCase()} · ${c0.role} · ${c0.style}`,
+    `HP ${c0.hp}  ATK ${c0.atk}  DEF ${c0.def}  SPD ${c0.spd}  CRIT ${c0.crit}%`,
+    `Basic  ${c0.basic.mult}×  ${c0.basic.target.padEnd(11)} SP+${c0.basic.sp}  EN${c0.basic.en}`,
+    `Skill  ${c0.skill.mult}×  ${c0.skill.target.padEnd(11)} SP${c0.skill.sp}  EN${c0.skill.en}`,
+    `Ulti   ${c0.ult.name}  ${c0.ult.mult}×${c0.ult.hits ? " ×" + c0.ult.hits : ""}  ${c0.ult.target}  EN${c0.ult.en}`,
+    `Talent ${c0.talent.name}`
+  ].concat(wrap(c0.talent.text, 52).slice(0, 2));
+  const list = DATA.characters.map((c, i) => twoCol(
+    (i === 0 ? "> " : "  ") + c.name,
+    `${c.role.toUpperCase().padEnd(8)}HP ${String(c.hp).padStart(4)}  ATK ${String(c.atk).padStart(3)}  SPD ${String(c.spd).padStart(3)}`,
+    22));
+  document.getElementById("scr-codex").innerHTML = screenBox("CODEX — characters 1/9", [
+    " GROUP  ‹ characters ›   weapons   relics   enemies",
+    " " + "─".repeat(76),
+    ...list,
+    twoCol("", ""),
+    ...detail.map(d => twoCol("", d)),
+    twoCol("", "[ ] nhóm   ↑↓ chọn   ^1-4 đổi tab")
+  ]);
+
+  const lineup = ["Rook", "Kaine", "Lumen", "Bastion"];   // đội mẫu, khớp với HUD ở mục 02
+  const team = DATA.characters.map(c => {
+    const slot = lineup.indexOf(c.name);
+    const letter = slot >= 0 ? "EFGH"[slot] : "-";
+    const right = `${c.role.toUpperCase().padEnd(8)}HP ${String(c.hp).padStart(4)}  ATK ${String(c.atk).padStart(3)}  SPD ${String(c.spd).padStart(3)}   [${slot >= 0 ? "in" : "--"}]`;
+    return twoCol(`  ${letter}  ${c.name}`, right, 22);
+  });
+  const roleOf = n => (DATA.characters.find(c => c.name === n) || { role: "?" }).role;
+  const tally = r => lineup.filter(n => roleOf(n) === r).length;
+  const missing = ["DPS", "Support", "Sustain"].filter(r => tally(r) === 0);
+  const teamNote = missing.length
+    ? "lệch vai — thiếu " + missing.join(" · ")
+    : "cân bằng — không có cảnh báo";
+  document.getElementById("scr-team").innerHTML = screenBox("TEAM — chọn 4 / 9", [
+    ...team,
+    twoCol("", ""),
+    twoCol("", `Đội hiện tại: ${tally("DPS")} DPS · ${tally("Support")} Support · ${tally("Sustain")} Sustain`),
+    twoCol("", teamNote),
+    twoCol("", ""),
+    twoCol("", "[space] chọn/bỏ   [enter] vào tầng")
+  ]);
+  const eq = (who, weapon, body, boot) =>
+    " " + who.padEnd(11) + "│ " + weapon.padEnd(19) + "│ " + body.padEnd(21) + "│ " + boot;
+  const poolRow = (label, text) => " " + label.padEnd(11) + "│ " + text;
+  const eqTraits = [
+    " ◆ Ember 2/2 → Kindle: DoT +15% và +1 lượt",
+    " ◆ Loop 1/2 → chưa có trait",
+    " ◆ Palisade 2/2 → Barricade: shield +18%"
+  ];
+  document.getElementById("scr-equip").innerHTML = screenBox("EQUIP", [
+    eq("char", "weapon", "relic body", "relic boots"),
+    " " + "─".repeat(76),
+    eq("E Rook", "Razorline S3", "Edge +8% crit", "—"),
+    eq("F Kaine", "Slow Burn S1", "Ember +9% atk", "Ember +5 spd"),
+    eq("G Lumen", "Uplink S2", "Loop +10% en", "—"),
+    eq("H Bastion", "Aegis S1", "Palisade +12% def", "Palisade +10% hp"),
+    " " + "─".repeat(76),
+    ...eqTraits,
+    " " + "─".repeat(76),
+    poolRow("POOL", "Razorline S3 · Slow Burn S1 · Echo Blade S1 · Aegis S1"),
+    poolRow("", "Edge ×1 · Tempo ×2 · Ember ×1 · Palisade ×2 · Loop ×1"),
+    "",
+    " [enter] gắn   [x] tháo   [esc] quay lại"
+  ]);
+}
+
+/* ---------- các bảng ---------- */
+function renderConstants(){
+  const cells = {
+    "k-def": F("constants.def_k", 62),
+    "k-cr": F("constants.crit_rate", 44) + " / " + F("constants.crit_dmg", 44),
+    "k-sp": F("constants.sp_max", 44) + " / " + F("constants.sp_start", 44),
+    "k-en": F("constants.en_max", 44) + " / " + F("constants.en_start", 44),
+    "k-eng": F("constants.en_basic", 44) + " / " + F("constants.en_skill", 44),
+    "k-ult": F("constants.ult_cost", 62),
+    "k-dot": F("constants.dot_max", 44) + " / " + F("constants.dot_turns", 44),
+    "k-shd": F("constants.shield_turns", 62),
+    "k-amb": F("constants.heal_after_battle", 62),
+    "k-dh": F("constants.draft_heal", 62)
+  };
+  Object.entries(cells).forEach(([id, h]) => document.getElementById(id).innerHTML = h);
+  renderDefCurve();
+}
+function renderDefCurve(){
+  const K = DATA.constants.def_k;
+  document.getElementById("defcurve").innerHTML =
+    `<tr><th class="n">DEF</th><th class="n">hệ số</th><th class="n">damage còn lại</th><th>Ai đứng ở đây</th></tr>` +
+    [0,40,60,70,90,110,128,170,196,300].map(d => {
+      const m = K / (K + d);
+      const who = d === 0 ? "—" : d <= 40 ? "Scout, Hound, Swarm" : d <= 60 ? "Grunt, Sniper, Leech, Bomber, Cinder"
+        : d <= 70 ? "Vesper" : d <= 90 ? "Lumen, Nyx, Kaine, Warden, Sable, Iron Engineer"
+        : d <= 110 ? "Rook, Chorister, Signal Tower, Wren" : d <= 128 ? "Mira, The Overseer"
+        : d <= 170 ? "Bulwark Unit, Colossus" : d <= 196 ? "Bastion" : "di vật DEF cộng dồn";
+      return `<tr><td class="n">${d}</td><td class="n">${m.toFixed(3)}</td><td class="n">${(m*100).toFixed(1)}%</td><td class="dim fine">${esc(who)}</td></tr>`;
+    }).join("");
+}
+function renderTargets(){
+  document.getElementById("targets").innerHTML =
+    `<tr><th style="width:96px">Kiểu</th><th>Trúng ai</th><th>Sát thương</th><th style="width:80px">Marker</th><th>Dùng bởi</th></tr>` +
+    DATA.targets.map(t => `<tr>
+      <td><b>${esc(t.id)}</b></td><td>${esc(t.rule)}</td><td>${esc(t.dmg)}</td>
+      <td class="n">${esc(t.mark)}</td><td class="dim fine">${esc(t.note)}</td></tr>`).join("");
+}
+function renderFields(){
+  document.getElementById("fields").innerHTML =
+    `<tr><th style="width:100px">Field</th><th class="n" style="width:46px">Lượt</th><th style="width:160px">Nguồn</th><th>Hiệu ứng — cả hai đội</th><th>Đánh đổi</th></tr>` +
+    DATA.fields.map(f => `<tr>
+      <td><b>${esc(f.name)}</b></td>
+      <td class="n">${f.turns}</td><td class="dim fine">${esc(f.source)}</td>
+      <td>${esc(f.effect)}</td><td class="dim fine">${esc(f.cost)}</td></tr>`).join("");
+}
+function renderEffects(){
+  const kindName = { stack:"cộng dồn", stat:"buff / debuff", shield:"shield", unique:"hiệu ứng riêng" };
+  document.getElementById("effects").innerHTML =
+    `<tr><th style="width:96px">Dạng</th><th style="width:130px">Viết trên HUD</th><th>Nghĩa</th></tr>` +
+    DATA.effects.map(e => `<tr><td class="fine">${esc(kindName[e.kind] || e.kind)}</td>
+      <td><code>${esc(e.abbr)}</code></td><td>${esc(e.full)}</td></tr>`).join("");
+}
+function renderLogCols(){
+  document.getElementById("logcols").innerHTML =
+    `<tr><th style="width:80px">Cột</th><th style="width:110px">Trường</th><th>Luật</th></tr>` +
+    DATA.logCols.map(c => `<tr><td class="n">${esc(c.col)}</td><td><b>${esc(c.name)}</b></td><td>${esc(c.note)}</td></tr>`).join("");
+}
+function renderSpread(){
+  const keys = ["atk","hp","def","spd"];
+  const rank = (k, v) => 1 + DATA.characters.filter(c => c[k] > v).length;
+  const rows = DATA.characters.map(c => {
+    const marks = keys.map(k => {
+      const r = rank(k, c[k]);
+      const tag = r === 1 ? "nhất" : r === DATA.characters.length ? "bét" : "#" + r;
+      return `${k.toUpperCase()} ${tag}`;
+    }).join(" · ");
+    return `<tr><td><b>${esc(c.name)}</b></td>
+      <td class="n">${c.atk}</td><td class="n">${c.hp}</td><td class="n">${c.def}</td>
+      <td class="n">${c.spd}</td><td class="n">${c.crit}%</td>
+      <td class="dim fine">${esc(marks)}</td></tr>`;
+  }).join("");
+  document.getElementById("spread").innerHTML =
+    `<tr><th style="width:120px">Nhân vật</th><th class="n" style="width:64px">ATK</th><th class="n" style="width:64px">HP</th>
+      <th class="n" style="width:64px">DEF</th><th class="n" style="width:64px">SPD</th><th class="n" style="width:64px">CRIT</th>
+      <th>Thứ hạng trong 9 người — đọc là biết mạnh yếu ở đâu</th></tr>` + rows;
+}
+function renderChars(){
+  document.getElementById("chars").innerHTML = DATA.characters.map((c, i) => {
+    return `
+    <div class="spec">
+      <div class="who">${FWIDE("characters."+i+".name")}${roleTag(c.role)}<span class="dim fine">${esc(c.style)}</span></div>
+      <div>
+        <div class="statrow">
+          <span>HP <b>${F("characters."+i+".hp",48)}</b></span>
+          <span>ATK <b>${F("characters."+i+".atk",48)}</b></span>
+          <span>DEF <b>${F("characters."+i+".def",48)}</b></span>
+          <span>SPD <b>${F("characters."+i+".spd",48)}</b></span>
+          <span>CRIT% <b>${F("characters."+i+".crit",44)}</b></span>
+          <span>CDmg% <b>${F("characters."+i+".critdmg",44)}</b></span>
+        </div>
+        <div class="rule"><span class="k">basic</span>${F("characters."+i+".basic.mult",46)}× · SP ${F("characters."+i+".basic.sp",34)} · EN ${F("characters."+i+".basic.en",44)} ${tgtTag(c.basic.target)}</div>
+        <div class="rule"><span class="k">skill</span>${F("characters."+i+".skill.mult",46)}× · SP ${F("characters."+i+".skill.sp",34)} · EN ${F("characters."+i+".skill.en",44)} ${tgtTag(c.skill.target)}<div>${FAREA("characters."+i+".skill.desc",1)}</div></div>
+        <div class="rule"><span class="k">ulti</span>${F("characters."+i+".ult.mult",46)}× · EN ${F("characters."+i+".ult.en",44)} ${tgtTag(c.ult.target)} — <b>${FTXT("characters."+i+".ult.name", 130)}</b><div>${FAREA("characters."+i+".ult.desc",1)}</div></div>
+        <div class="talent"><div class="tn">TALENT · ${esc(c.talent.name)}</div>${FAREA("characters."+i+".talent.text",1)}</div>
+      </div>
+    </div>`;
+  }).join("");
+}
+function scaleRow(label, o){
+  const v = [1,2,3,4,5].map(r => num(o.base + o.step * (r - 1)));
+  return `<div><b>${esc(label)}</b> ${o.unit ? esc(o.unit) : ""} — ` +
+    v.map((x, i) => `<span class="dim">S${i+1}</span> ${x}`).join(" · ") + "</div>";
+}
+function scaleBlock(c){
+  return scaleRow(c.s1.name, c.s1) + scaleRow(c.s2.name, c.s2) + scaleRow("passive", c.passive);
+}
+function renderCones(){
+  document.getElementById("cones").innerHTML = DATA.cones.map((c, i) => `
+    <div class="spec">
+      <div class="who">${FWIDE("cones."+i+".name")}${roleTag(c.role)}<span class="dim fine">${esc(c.play)}</span></div>
+      <div>
+        <div class="rule">${FAREA("cones."+i+".passive.text",1)}</div>
+        <div class="statrow" style="margin-top:8px">
+          <span>${esc(c.s1.name)} base ${F("cones."+i+".s1.base",44)} + ${F("cones."+i+".s1.step",40)}/bậc</span>
+          <span>${esc(c.s2.name)} base ${F("cones."+i+".s2.base",44)} + ${F("cones."+i+".s2.step",40)}/bậc</span>
+          <span>nội tại ${F("cones."+i+".passive.base",44)} + ${F("cones."+i+".passive.step",40)}/bậc</span>
+        </div>
+        <div class="scale" id="scale-${i}">${scaleBlock(c)}</div>
+      </div>
+    </div>`).join("");
+}
+function renderRelics(){
+  document.getElementById("relics").innerHTML = DATA.relics.map((r, i) => `
+    <div class="spec">
+      <div class="who">${FWIDE("relics."+i+".name")}<span class="tag">${esc(r.dir)}</span></div>
+      <div>
+        <div class="statrow">
+          <span>Body — ${esc(r.p1.stat)} <b>${F("relics."+i+".p1.val",56)}</b>${esc(r.p1.unit)}</span>
+          <span>Boots — ${esc(r.p2.stat)} <b>${F("relics."+i+".p2.val",56)}</b>${esc(r.p2.unit)}</span>
+        </div>
+        <div class="talent"><div class="tn">TRAIT · ${esc(r.trait)}</div>${FAREA("relics."+i+".bonus",1)}</div>
+      </div>
+    </div>`).join("");
+}
+function renderEnemies(){
+  const pick = t => DATA.enemies.map((e, i) => ({ e, i })).filter(o => o.e.tier === t);
+  document.getElementById("enemies-normal").innerHTML =
+    `<tr><th>Tên</th><th class="n">HP</th><th class="n">ATK</th><th class="n">DEF</th><th class="n">SPD</th><th style="width:86px">Target</th><th>Hành vi</th><th style="width:170px">Dạy gì</th></tr>` +
+    pick("normal").map(({ e, i }) => `<tr>
+      <td>${FTXT("enemies."+i+".name", 108)}</td>
+      <td class="n">${F("enemies."+i+".hp",52)}</td><td class="n">${F("enemies."+i+".atk",50)}</td>
+      <td class="n">${F("enemies."+i+".def",50)}</td><td class="n">${F("enemies."+i+".spd",50)}</td>
+      <td class="dim fine">${esc(e.target)}</td>
+      <td>${FAREA("enemies."+i+".behavior",2)}</td><td class="dim fine">${esc(e.teaches)}</td></tr>`).join("");
+  document.getElementById("enemies-elite").innerHTML = pick("elite").map(({ e, i }) => `
+    <div class="spec">
+      <div class="who">${FWIDE("enemies."+i+".name")}<span class="tag warn">ELITE</span><span class="dim fine">target ${esc(e.target)}</span></div>
+      <div>
+        <div class="statrow">
+          <span>HP <b>${F("enemies."+i+".hp",54)}</b></span><span>ATK <b>${F("enemies."+i+".atk",50)}</b></span>
+          <span>DEF <b>${F("enemies."+i+".def",50)}</b></span><span>SPD <b>${F("enemies."+i+".spd",50)}</b></span>
+        </div>
+        <div class="rule">${FAREA("enemies."+i+".behavior",2)}</div>
+        <div class="dim fine" style="margin-top:6px">Dạy: ${esc(e.teaches)}</div>
+      </div>
+    </div>`).join("");
+  document.getElementById("enemies-boss").innerHTML = pick("boss").map(({ e, i }) => `
+    <div class="spec">
+      <div class="who">${FWIDE("enemies."+i+".name")}<span class="tag warn">BOSS</span><span class="dim fine">target ${esc(e.target)}</span></div>
+      <div>
+        <div class="statrow">
+          <span>HP <b>${F("enemies."+i+".hp",54)}</b></span><span>ATK <b>${F("enemies."+i+".atk",50)}</b></span>
+          <span>DEF <b>${F("enemies."+i+".def",50)}</b></span><span>SPD <b>${F("enemies."+i+".spd",50)}</b></span>
+        </div>
+        <div class="rule">${FAREA("enemies."+i+".behavior",2)}</div>
+        <table style="margin-top:10px">
+          <tr><th style="width:92px">Phase</th><th style="width:140px">Tên</th><th>Hành vi</th></tr>
+          ${e.phases.map((ph, j) => `<tr><td class="n">${esc(ph.range)}</td><td><b>${esc(ph.name)}</b></td>
+            <td>${FAREA("enemies."+i+".phases."+j+".text",2)}</td></tr>`).join("")}
+        </table>
+      </div>
+    </div>`).join("");
+}
+const bandOf = n => DATA.bands[Math.min(DATA.bands.length - 1, Math.floor((n - 1) / (DATA.meta.band || 4)))];
+function renderBands(){
+  document.getElementById("bands").innerHTML =
+    `<tr><th style="width:70px">Band</th><th class="n" style="width:90px">Tầng</th><th class="n" style="width:110px">Hệ số</th><th>Ý nghĩa</th></tr>` +
+    DATA.bands.map(b => `<tr><td><b>${esc(b.label)}</b></td><td class="n">${esc(b.floors)}</td>
+      <td class="n">×${b.mult.toFixed(2)}</td>
+      <td class="dim fine">HP · ATK · DEF của mọi địch trên tầng đó nhân với ${b.mult.toFixed(2)}. SPD giữ nguyên.</td></tr>`).join("");
+}
+function renderEncounters(){
+  const enemyOf = id => DATA.enemies.find(e => e.id === id) || { name: id, tier: "normal" };
+  const nameOf = id => enemyOf(id).name;
+  document.getElementById("encounters").innerHTML =
+    `<tr><th class="n" style="width:54px">Tầng</th><th class="n" style="width:44px">Band</th><th class="n" style="width:58px">Hệ số</th><th style="width:31%">Đội hình cố định</th><th style="width:26%">Ô ngẫu nhiên — 1 trong 3</th><th>Mục đích</th></tr>` +
+    DATA.encounters.map(e => {
+      const b = bandOf(e.n);
+      const isBoss = e.enemies.some(([id]) => enemyOf(id).tier === "boss");
+      const fixed = e.enemies.map(([id, c]) => `<b>${c}×</b> ${esc(nameOf(id))}`).join(" &nbsp; ");
+      const roll = (e.roll && e.roll.length)
+        ? `<span class="dim">1× ${e.roll.map(nameOf).map(esc).join(" / ")}</span>`
+        : `<span class="dim">—</span>`;
+      return `<tr><td class="n"><b>${e.n}</b>${isBoss ? " ★" : ""}</td>
+      <td class="n">${esc(b.label)}</td><td class="n">×${b.mult.toFixed(2)}</td>
+      <td class="fine" style="font-family:var(--mono)">${fixed}</td>
+      <td class="fine" style="font-family:var(--mono)">${roll}</td>
+      <td class="dim fine">${esc(e.note)}</td></tr>`;
+    }).join("");
+}
+function renderDraft(){
+  document.getElementById("draft").innerHTML =
+    `<tr><th style="width:130px">Thẻ</th><th>Nội dung</th><th style="width:180px">Trần</th></tr>` +
+    DATA.draft.map(d => `<tr><td><b>${esc(d.type)}</b></td><td>${esc(d.desc)}</td>
+      <td class="dim fine">${esc(d.limit)}</td></tr>`).join("");
+}
+
+/* ---------- lưu ---------- */
+let timer = null;
+function persist(){
+  localStorage.setItem(KEY, JSON.stringify({ data: DATA, notes: NOTES }));
+  const s = document.getElementById("saved");
+  s.textContent = "đã lưu"; clearTimeout(timer); timer = setTimeout(() => s.textContent = "", 1400);
+}
+document.addEventListener("input", e => {
+  const el = e.target;
+  if (el.id === "notes") { NOTES = el.value; persist(); return; }
+  const p = el.dataset.p;
+  if (!p) return;
+  const n = Number(el.value);
+  set(p, (el.value.trim() !== "" && !isNaN(n)) ? n : el.value);
+  if (p === "constants.def_k") renderDefCurve();
+  if (el.classList && el.classList.contains("auto")) autosize(el);
+  const cm = p.match(/^cones\.(\d+)\./);
+  if (cm) { const box = document.getElementById("scale-" + cm[1]); if (box) box.innerHTML = scaleBlock(DATA.cones[+cm[1]]); }
+  persist();
+});
+
+const payload = () => JSON.stringify({
+  meta: DATA.meta, constants: DATA.constants, notes: NOTES,
+  bands: DATA.bands, targets: DATA.targets, fields: DATA.fields,
+  effects: DATA.effects, logCols: DATA.logCols,
+  characters: DATA.characters, cones: DATA.cones, relics: DATA.relics,
+  enemies: DATA.enemies, encounters: DATA.encounters, draft: DATA.draft
+}, null, 2);
+
+document.getElementById("btn-json").onclick = () => {
+  const blob = new Blob([payload()], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "design.json"; a.click();
+  URL.revokeObjectURL(a.href);
+};
+document.getElementById("btn-copy").onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(payload());
+    const b = document.getElementById("btn-copy");
+    b.textContent = "Đã copy"; setTimeout(() => b.textContent = "Copy JSON", 1400);
+  } catch (err) { alert("Trình duyệt chặn clipboard — dùng Xuất JSON."); }
+};
+document.getElementById("btn-reset").onclick = () => {
+  if (!confirm("Khôi phục toàn bộ về bản gốc?")) return;
+  localStorage.removeItem(KEY); location.reload();
+};
+
+/* ---------- boot ---------- */
+buildBattle();
+buildScreens();
+renderConstants();
+renderTargets();
+renderFields();
+renderEffects();
+renderLogCols();
+renderChars();
+renderSpread();
+renderCones();
+renderRelics();
+renderEnemies();
+renderBands();
+renderEncounters();
+renderDraft();
+autosizeAll();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(autosizeAll);
+document.getElementById("notes").value = NOTES;
+document.getElementById("meta-count").textContent =
+  DATA.characters.length + " nhân vật · " + DATA.cones.length + " vũ khí · " + DATA.enemies.length + " địch";
+</script>
+</body>
+</html>
