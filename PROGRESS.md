@@ -22,10 +22,10 @@ Cập nhật lần cuối: phiên v0.17.
   chịu DoT** (5 địch = +50% lượt). `dot_rate` hạ 0,45 → **0,22** để bù việc stack không bao giờ rơi.
 - **Cycle**: mọi trận đều có cycle, đếm ở header (`C 3`). Từ **cycle 8**, ATK địch **+15% mỗi
   cycle**, cộng dồn, không trần.
-- Đo: tầng 16 với đội HUD mất **9 cycle / 36 hành động**, còn 1.817/4.450 HP. Đội 2 DPS có
-  single-target mất 7 cycle / 28 hành động (trong ngưỡng 24–32).
-- **Kaine giờ rất mạnh**: ở 5 địch × 5 stack, DoT một mình là **~516 damage/vòng** (DEF 90),
-  gấp ~2,5 lần một skill của Rook. DoT chiếm ~80% sản lượng của anh.
+- Đo (sau khi hạ `dot_rate` 0,22 → **0,15**): tầng 16 với đội HUD mất **12 cycle / 48 hành động**,
+  kết thúc còn **73/4.450 HP** — sát nút. Đội có Vesper: 9 cycle / 36 hành động, còn 1.874.
+- **Kaine**: ở 5 địch × 5 stack, DoT một mình ~**352 damage/vòng** (DEF 90), ngang một skill của
+  Rook (241) cộng chút; DoT chiếm ~73% sản lượng của anh.
 - **Đội 3 sustain vẫn bất tử**: Kaine + Mira + Wren + Bastion thắng ở cycle 9 với HP đầy — cycle
   8 chưa đủ dốc để phá đội hồi 623/vòng.
 
@@ -97,9 +97,9 @@ tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành đ�
 0. **Cycle chưa đủ phá đội 3 sustain.** Hồi 623/vòng so với sát thương vào 525 → cycle 8 (+15%)
    chỉ làm họ chậm, không làm họ chết. Nếu muốn phá: `cycle_step` 25%, hoặc giảm hồi nhận sau
    cycle 10, hoặc thêm trần hồi máu mỗi trận.
-1. **Kaine có thể quá mạnh**: ~2,5× DPS khác ở 5 mục tiêu. Nếu cần hạ: `dot_rate` 0,22 → 0,15
-   hoặc `dot_max` 5 → 3.
-2. **Tầng 16 dài 36 hành động** (HUD team) so với ngưỡng 24–32 — cần cắt ~12% HP nếu muốn khớp.
+1. **Kaine** đã hạ về 0,15; nếu vẫn thấy mạnh thì `dot_max` 5 → 3.
+2. **Tầng 16 dài 36–48 hành động** so với ngưỡng 24–32 — hoặc nới ngưỡng lên 32–44, hoặc cắt
+   ~15% HP (7.140 → ~6.100).
 3. Tầng 1–5 mất 2 cycle (8 hành động), trên ngưỡng 3–6 hành động.
 
 1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.

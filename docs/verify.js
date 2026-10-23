@@ -226,7 +226,7 @@ ok("Wren talent redirects 85%", /85%/.test(wren.talent.text));
 ok("DoT never expires", !("dot_turns" in DATA.constants));
 ok("Kaine talent gives SPD per DoT target", /\+10% SPD/.test(kaine.talent.text));
 ok("cycle enrage starts at 8, +15%", DATA.constants.cycle_from === 8 && DATA.constants.cycle_step === 15);
-ok("DoT has its own rate constant", DATA.constants.dot_rate === 0.22, String(DATA.constants.dot_rate));
+ok("DoT has its own rate constant", DATA.constants.dot_rate === 0.15, String(DATA.constants.dot_rate));
 ok("every character has a unique ult name",
   new Set(DATA.characters.map(c => c.ult.name)).size === DATA.characters.length);
 ok("every boss has 3 phases", DATA.enemies.filter(e => e.tier === "boss").every(e => (e.phases || []).length === 3));
