@@ -183,8 +183,8 @@ ok("Rook skill is 0.8 all", rook.skill.target === "all" && rook.skill.mult === 0
 ok("Rook ult is 1.2 all + 4 bounce 0.2", rook.ult.mult === 1.2 && rook.ult.target === "all" && rook.ult.bounces === 4 && rook.ult.bounceMult === 0.2);
 ok("Rook talent restores 3 EN per enemy hit", /3 EN/.test(rook.talent.text));
 const kaine = DATA.characters.find(c => c.id === "kaine");
-ok("Kaine skill is blast with 1 DoT stack", kaine.skill.target === "blast" && /1 stack/.test(kaine.skill.desc));
-ok("Kaine ult is all with 1 DoT stack", kaine.ult.target === "all" && /1 stack/.test(kaine.ult.desc));
+ok("Kaine skill is blast with 2 DoT stacks", kaine.skill.target === "blast" && /2 stack/.test(kaine.skill.desc));
+ok("Kaine ult is all with 2 DoT stacks", kaine.ult.target === "all" && /2 stack/.test(kaine.ult.desc));
 const vesper = DATA.characters.find(c => c.id === "vesper");
 ok("Vesper talent caps at 6 and fires every 3", /tối đa 6/.test(vesper.talent.text) && /3 stack/.test(vesper.talent.text));
 ok("Vesper ult can feed 6 stacks", /tối đa 6/.test(vesper.ult.desc));
@@ -223,7 +223,10 @@ const wren = DATA.characters.find(c => c.id === "wren");
 ok("Wren skill shields herself", /Shield cho bản thân/.test(wren.skill.desc) && wren.skill.target === "self");
 ok("Wren ult only heals", /Hồi 15% max HP toàn đội/.test(wren.ult.desc) && !/3 lượt/.test(wren.ult.desc));
 ok("Wren talent redirects 85%", /85%/.test(wren.talent.text));
-ok("DoT has its own rate constant", DATA.constants.dot_rate === 0.45, String(DATA.constants.dot_rate));
+ok("DoT never expires", !("dot_turns" in DATA.constants));
+ok("Kaine talent gives SPD per DoT target", /\+10% SPD/.test(kaine.talent.text));
+ok("cycle enrage starts at 8, +15%", DATA.constants.cycle_from === 8 && DATA.constants.cycle_step === 15);
+ok("DoT has its own rate constant", DATA.constants.dot_rate === 0.22, String(DATA.constants.dot_rate));
 ok("every character has a unique ult name",
   new Set(DATA.characters.map(c => c.ult.name)).size === DATA.characters.length);
 ok("every boss has 3 phases", DATA.enemies.filter(e => e.tier === "boss").every(e => (e.phases || []).length === 3));

@@ -224,7 +224,8 @@
           <tr><td class="n">7</td><td>Marker mục tiêu ở cột đầu dòng địch</td><td><code>&gt;</code> mục tiêu chính · <code>+</code> dính blast · <code>~</code> ứng viên bounce · <code>*</code> toàn bộ.</td></tr>
           <tr><td class="n">8</td><td>Hai lần bấm mới ra đòn</td><td>Bấm phím lệnh lần đầu: lệnh đảo màu, mục tiêu và damage hiện trước, dòng prompt đổi thành <code>[1] chốt · [esc] huỷ</code>. Bấm đúng phím đó lần nữa mới thực thi. Bấm phím khác thì đổi lựa chọn, không mất lượt.</td></tr>
           <tr><td class="n">9</td><td>Lệnh không dùng được thì tô xám</td><td>Hết SP, chưa đầy EN, không có mục tiêu hợp lệ → lệnh chuyển màu xám và bấm vào không có gì xảy ra. Không giấu lệnh: người chơi phải thấy mình còn thiếu gì. Ví dụ <code>[3] Broadside</code> xám khi EN mới 60/100.</td></tr>
-          <tr><td class="n">10</td><td>Log 6 dòng, mới nhất ở dưới</td><td><code>E Rook     Broadside      &gt;all            34</code>. Đủ 6 hành động gần nhất của <b>cả hai đội</b>: đòn, DoT, buff/debuff, FUA, hồi máu, shield. Số căn phải ở cột 78.</td></tr>
+          <tr><td class="n">10</td><td>Cycle đếm ở header</td><td><code>C 3</code> = vòng thứ 3. Một cycle là một vòng đủ mọi đơn vị còn sống hành động một lần. Từ cycle 8, địch +15% ATK mỗi cycle — header đổi sang màu cảnh báo.</td></tr>
+          <tr><td class="n">11</td><td>Log 6 dòng, mới nhất ở dưới</td><td><code>E Rook     Broadside      &gt;all            34</code>. Đủ 6 hành động gần nhất của <b>cả hai đội</b>: đòn, DoT, buff/debuff, FUA, hồi máu, shield. Số căn phải ở cột 78.</td></tr>
         </table>
         <h3>hiệu ứng viết tắt</h3>
         <table id="effects"></table>
@@ -302,8 +303,10 @@
           <tr><td>EN max / start</td><td class="n" id="k-en"></td><td>Đầy thì Ult sẵn sàng.</td></tr>
           <tr><td>EN mỗi thường / kỹ năng</td><td class="n" id="k-eng"></td><td>Chỉ khi <i>mình</i> hành động. Bị đánh không hồi.</td></tr>
           <tr><td>Giá Ult</td><td class="n" id="k-ult"></td><td>Bằng EN max.</td></tr>
-          <tr><td>DoT stack tối đa / lượt</td><td class="n" id="k-dot"></td><td>Stack cộng dồn, thời hạn làm mới. DoT <b>chịu DEF và shield</b>, không crit.</td></tr>
+          <tr><td>DoT stack tối đa</td><td class="n" id="k-dot"></td><td>Stack cộng dồn, <b>không bao giờ hết hạn</b> — chỉ bị xoá khi có hiệu ứng giải. DoT <b>chịu DEF và shield</b>, không crit.</td></tr>
           <tr><td>DoT mỗi stack</td><td class="n" id="k-dotr"></td><td>% ATK của người gây, mỗi stack, mỗi lượt. Đây là núm cân bằng DoT — đừng sửa vào từng chiêu.</td></tr>
+          <tr><td>Cycle bắt đầu phạt</td><td class="n" id="k-cyc"></td><td>Từ cycle này, địch bắt đầu mạnh lên mỗi cycle.</td></tr>
+          <tr><td>Mỗi cycle sau đó</td><td class="n" id="k-cys"></td><td>+% ATK địch, cộng dồn. Đây là đồng hồ của mọi trận.</td></tr>
           <tr><td>Shield tồn tại</td><td class="n">vô hạn</td><td><b>Không giới hạn lượt</b> — chỉ mất khi vỡ. Shield mới thay shield cũ nếu lớn hơn; không cộng dồn.</td></tr>
           <tr><td>Hồi sau tầng</td><td class="n" id="k-amb"></td><td>% max HP mỗi tầng thắng, trước draft.</td></tr>
           <tr><td>Hồi từ thẻ draft</td><td class="n" id="k-dh"></td><td>% max HP.</td></tr>
@@ -316,11 +319,12 @@
           <tr><td class="n">1</td><td>Damage</td><td><code>ATK × mult × K/(K+DEF) × crit</code></td></tr>
           <tr><td class="n">2</td><td>Chuyển sát thương</td><td>Hiệu ứng chuyển đòn chia damage <b>trước DEF</b>: 15% vào mục tiêu, tính bằng <b>DEF của mục tiêu</b>; 85% vào Wren, tính bằng <b>DEF của Wren</b>. Hai phần là hai lần tính độc lập, rồi mỗi phần đi qua shield của người nhận. Vũ khí Aegis theo đúng luật này: phần chuyển sang người đeo tính bằng DEF của người đeo.</td></tr>
           <tr><td class="n">3</td><td>Shield</td><td>Hấp thụ trước, phần tràn vào HP. <b>Không giới hạn lượt</b> — shield chỉ mất khi vỡ, shield mới thay shield cũ nếu lớn hơn.</td></tr>
-          <tr><td class="n">4</td><td>DoT tick</td><td>Đầu lượt người mang: <code>ATK_người_gây × dot_rate × stack × K/(K+DEF)</code>, tối đa <code>dot_max</code> stack. <b>Chịu DEF, chịu shield, không crit.</b> Không nhân theo mult của chiêu đã gắn nó — stack mới là thứ quyết định.</td></tr>
+          <tr><td class="n">4</td><td>DoT tick</td><td>Đầu lượt người mang: <code>ATK_người_gây × dot_rate × stack × K/(K+DEF)</code>, tối đa <code>dot_max</code> stack. <b>Chịu DEF, chịu shield, không crit.</b> Stack <b>không hết hạn</b>: chỉ mất khi có hiệu ứng giải. Không nhân theo mult của chiêu đã gắn nó — stack mới là thứ quyết định.</td></tr>
           <tr><td class="n">5</td><td>Follow-up</td><td>Ngay sau hành động gốc. Không AV, không tick buff, tối đa 1 lần/hành động, không chain.</td></tr>
           <tr><td class="n">6</td><td>Field</td><td>Tick đầu lượt người đặt. Field là duy nhất cho cả sân và áp dụng cho cả hai đội.</td></tr>
           <tr><td class="n">7</td><td>Ulti</td><td>Không AV, dùng trong lượt của mình, không vào hàng đợi.</td></tr>
           <tr><td class="n">8</td><td>Buff</td><td>Tính theo lượt người mang, trừ khi người mang kết thúc hành động.</td></tr>
+          <tr><td class="n">9</td><td>Cycle</td><td>Một cycle là một vòng đủ mọi đơn vị còn sống hành động một lần; đếm từ 1. Từ cycle <code>cycle_from</code>, ATK địch +<code>cycle_step</code>% mỗi cycle, cộng dồn. Không có trần.</td></tr>
         </table>
         <div class="call warn"><b>Đã bỏ:</b> hồi EN khi bị đánh. Năng lượng chỉ đến từ hành động của chính nhân vật.</div>
         <div class="call"><b>DoT đổi luật:</b> trước đây DoT bỏ qua DEF và shield, khiến DEF vô nghĩa trước đội DoT. Nay DoT đi qua đúng công thức damage — nó vẫn mạnh vì cộng dồn nhiều stack, nhưng stack không còn là cách xuyên giáp.</div>
@@ -421,10 +425,11 @@
           <tr><td>Hành động / boss (tầng 10, 13)</td><td class="n">10–14</td><td>Curator và Overseer phải dài hơn elite thường, ngắn hơn trận hai boss.</td></tr>
           <tr><td>Hành động / tầng 16</td><td class="n">24–32</td><td>Đo với đội có ít nhất 1 DPS single-target. Đội toàn AoE chậm hơn ~40% — đó là bài học đội hình, không phải lỗi số.</td></tr>
           <tr><td>Hành động / tầng 13–15</td><td class="n">9–12</td><td>Tầng 3 elite dài hơn tầng thường cùng bậc; đừng ép về 5–7.</td></tr>
+          <tr><td>Cycle trung bình mỗi trận</td><td class="n">3–7</td><td>Từ cycle 8 địch +15% ATK mỗi cycle, không trần. Trận nào chạm 10 là trận sai thiết kế.</td></tr>
           <tr><td>Sustain / sát thương nhận mỗi vòng</td><td class="n">1,2–1,6×</td><td>Dưới 1,0 là đội không thể sống; trên 2,0 là không thể chết. Đây là chỉ số quan trọng nhất của bản cân bằng này.</td></tr>
           <tr><td>Damage share thấp nhất</td><td class="n">≥ 15%</td><td>Tăng mult hoặc giảm cost SP.</td></tr>
           <tr><td>Damage share cao nhất</td><td class="n">≤ 45%</td><td>Giảm mult hoặc tăng cost SP.</td></tr>
-          <tr><td>DoT share trong đội có Kaine</td><td class="n">50–70%</td><td>DoT là nguồn chính; damage trực tiếp chỉ mở đường. Chỉnh <code>dot_rate</code>, đừng tăng stack.</td></tr>
+          <tr><td>DoT share trong đội có Kaine</td><td class="n">70–85%</td><td>DoT là nguồn chính; damage trực tiếp chỉ mở đường. Chỉnh <code>dot_rate</code>, đừng tăng stack.</td></tr>
           <tr><td>Đội có Nyx: số lượt địch bị đẩy lùi / tầng</td><td class="n">2–4</td><td>Dưới 2 là Nyx vô dụng; trên 4 là hàng đợi mất nghĩa.</td></tr>
           <tr><td>Đội có Wren: sát thương Wren gánh / tầng</td><td class="n">40–60%</td><td>Trên 60% là Wren chết trước khi kịp hồi; dưới 40% là talent vô dụng.</td></tr>
           <tr><td>Tỉ lệ chọn mỗi bộ</td><td class="n">≥ 8%</td><td>Dưới ngưỡng là bộ chết.</td></tr>
@@ -479,6 +484,9 @@
           <tr><td><span class="tag">đã chốt</span></td><td>Shield không giới hạn lượt</td><td>Shield chỉ mất khi vỡ. Shield mới thay shield cũ nếu lớn hơn, không cộng dồn. Hằng số <code>shield_turns</code> đã bỏ.</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Không còn field của người chơi</td><td>Rampart bỏ khi Bastion đổi Ulti; Grid bỏ khi Lumen đổi Ulti thành buff đội. Còn 2 field, đều do địch đặt: Signal · Final Protocol. Field giờ là cơ chế của địch, không phải lựa chọn của bạn.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Rook bị hạ</td><td>Skill 1.0× → <b>0.8×</b>, Ulti 1.5× → <b>1.2×</b>. Ở tầng 5 ô cậu ấy vẫn dẫn đầu nhưng không còn một mình gánh 60% damage đội.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>DoT không hết hạn</td><td>Stack chỉ mất khi có hiệu ứng giải. Vì vậy Kaine gắn <b>2 stack</b> mỗi lần (skill và Ulti), và <code>dot_rate</code> hạ 0,45 → <b>0,22</b> để bù.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Kaine ăn theo DoT</td><td>Mỗi kẻ địch đang chịu DoT: Kaine <b>+10% SPD</b>. Năm địch = +50% số lượt.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Cycle</td><td>Mọi trận đều có cycle. Từ <b>cycle 8</b>, ATK địch <b>+15% mỗi cycle</b>, cộng dồn, không trần. Đây là thứ trừng phạt đội chậm.</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Nyx có cần trần SPD không</td><td>Talent cộng dồn không giới hạn. Nếu harness cho thấy Nyx vượt 200 SPD ở tầng 12+ thì chặn ở +40 SPD hoặc đổi thành "tối đa 10 stack".</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Công thức DoT sau khi giảm stack</td><td>Đã tách <code>dot_rate</code> = 0.45 × ATK mỗi stack. Cần harness đo lại DoT share (mục tiêu 15–35%) rồi mới chốt con số này.</td></tr>
         </table>
@@ -503,11 +511,11 @@
 <script>
 /* ============================================================ */
 const BASE = {
-  meta: { version: "0.16", floors: 16, tiers: 8, starters: 2, runs: 2000, letters: "A–E · F–I", seed: "7F2A" },
+  meta: { version: "0.17", floors: 16, tiers: 8, starters: 2, runs: 2000, letters: "A–E · F–I", seed: "7F2A" },
   constants: {
     def_k: 200, crit_rate: 5, crit_dmg: 50, sp_max: 5, sp_start: 3,
     en_max: 100, en_start: 50, en_basic: 20, en_skill: 30, ult_cost: 100,
-    dot_max: 5, dot_turns: 3, dot_rate: 0.45, heal_after_battle: 8, draft_heal: 40
+    dot_max: 5, dot_rate: 0.22, cycle_from: 8, cycle_step: 15, heal_after_battle: 8, draft_heal: 40
   },
   bands: [
     { label:"I",    floors:"1",     from:1,  to:1,  mult:1.00, atk:1.00 },
@@ -559,9 +567,9 @@ const BASE = {
     { id:"kaine", name:"Kaine", role:"DPS", style:"DoT",
       hp:1010, atk:136, def:84, spd:101, crit:0, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
-      skill:{ mult:0.7, sp:-1, en:30, target:"blast", desc:"Chính 0.7×, hai bên 0.35×; mỗi mục tiêu trúng +1 stack DoT." },
-      ult:{ name:"Ashfall", mult:0.8, en:100, target:"all", desc:"Toàn bộ địch 0.8×; mỗi mục tiêu +1 stack DoT." },
-      talent:{ text:"Mỗi khi Kaine gây DoT, một địch khác ngẫu nhiên nhận thêm 1 stack." } },
+      skill:{ mult:0.7, sp:-1, en:30, target:"blast", desc:"Chính 0.7×, hai bên 0.35×; mỗi mục tiêu trúng +2 stack DoT." },
+      ult:{ name:"Ashfall", mult:0.8, en:100, target:"all", desc:"Toàn bộ địch 0.8×; mỗi mục tiêu +2 stack DoT." },
+      talent:{ text:"Mỗi kẻ địch đang chịu DoT: Kaine +10% SPD." } },
     { id:"lumen", name:"Lumen", role:"Support", style:"Energy",
       hp:740, atk:72, def:74, spd:130, crit:5, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
@@ -816,7 +824,7 @@ function unitRow(mark, letter, name, hp, mx, spd, en, eff){
 function hallHead(){
   const b3 = DATA.bands[0];
   const head = "┌─ HALL 3/16 ── HP×" + b3.mult.toFixed(2) + " ATK×" + b3.atk.toFixed(2) +
-    " ── SP 3/5 ── SEED " + DATA.meta.seed + " ── ENEMY ";
+    " ── SP 3/5 ── C 3 ── SEED " + DATA.meta.seed + " ── ENEMY ";
   return head.padEnd(W - 1, "─") + "┐";
 }
 function buildBattle(){
@@ -973,7 +981,9 @@ function renderConstants(){
     "k-en": F("constants.en_max", 44) + " / " + F("constants.en_start", 44),
     "k-eng": F("constants.en_basic", 44) + " / " + F("constants.en_skill", 44),
     "k-ult": F("constants.ult_cost", 62),
-    "k-dot": F("constants.dot_max", 44) + " / " + F("constants.dot_turns", 44),
+    "k-dot": F("constants.dot_max", 62),
+    "k-cyc": F("constants.cycle_from", 62),
+    "k-cys": F("constants.cycle_step", 62) + " %",
     "k-dotr": F("constants.dot_rate", 62),
     "k-amb": F("constants.heal_after_battle", 62),
     "k-dh": F("constants.draft_heal", 62)

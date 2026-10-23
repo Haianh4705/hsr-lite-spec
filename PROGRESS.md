@@ -1,6 +1,6 @@
 # PROGRESS — HSR-lite spec
 
-Cập nhật lần cuối: phiên v0.16.
+Cập nhật lần cuối: phiên v0.17.
 Đọc `AGENTS.md` trước file này.
 
 ---
@@ -9,11 +9,25 @@ Cập nhật lần cuối: phiên v0.16.
 
 | Hạng mục | Giá trị |
 |---|---|
-| Bản đặc tả | `docs/design.html` — **v0.16** |
+| Bản đặc tả | `docs/design.html` — **v0.17** |
 | Trạng thái | Đặc tả hoàn chỉnh, harness xanh (`ALL CHECKS PASSED`) |
 | Game | **Chưa build, chưa chạy** — đúng như yêu cầu |
-| localStorage key | `hsrlite-spec-v16` |
+| localStorage key | `hsrlite-spec-v17` |
 | Kiểm tra | `node docs/verify.js` |
+
+## Vừa xong (v0.17) — DoT vĩnh viễn + cycle
+
+- **DoT không hết hạn**: stack chỉ mất khi có hiệu ứng giải. Bỏ `dot_turns`.
+- **Kaine**: skill và Ulti gắn **2 stack** mỗi mục tiêu; talent đổi thành **+10% SPD mỗi địch đang
+  chịu DoT** (5 địch = +50% lượt). `dot_rate` hạ 0,45 → **0,22** để bù việc stack không bao giờ rơi.
+- **Cycle**: mọi trận đều có cycle, đếm ở header (`C 3`). Từ **cycle 8**, ATK địch **+15% mỗi
+  cycle**, cộng dồn, không trần.
+- Đo: tầng 16 với đội HUD mất **9 cycle / 36 hành động**, còn 1.817/4.450 HP. Đội 2 DPS có
+  single-target mất 7 cycle / 28 hành động (trong ngưỡng 24–32).
+- **Kaine giờ rất mạnh**: ở 5 địch × 5 stack, DoT một mình là **~516 damage/vòng** (DEF 90),
+  gấp ~2,5 lần một skill của Rook. DoT chiếm ~80% sản lượng của anh.
+- **Đội 3 sustain vẫn bất tử**: Kaine + Mira + Wren + Bastion thắng ở cycle 9 với HP đầy — cycle
+  8 chưa đủ dốc để phá đội hồi 623/vòng.
 
 ## Vừa xong (v0.16) — tầng 16 thành bài kiểm tra thật
 
@@ -80,12 +94,13 @@ tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành đ�
 
 ## Việc tiếp theo (theo thứ tự)
 
-0. **Quyết định về "đồng hồ" cho tầng 16 (chưa làm).** Không có giới hạn lượt thì đội 3 sustain
-   luôn thắng, chỉ chậm. Ba lựa chọn: (a) boss cuối vào trạng thái cuồng nộ sau N vòng, (b) mỗi
-   vòng boss +5% ATK cộng dồn, (c) để nguyên và chấp nhận "chậm nhưng chắc" là một chiến thuật.
-1. **Rook sau khi hạ** vẫn có thể vượt trần 45% ở tầng 5 ô — đo lại khi có harness thật.
-2. **Kaine** trong đội 2 sustain chỉ chiếm ~20% damage; DoT share 56% nhưng tổng damage thấp.
-3. Tầng 1–5 vẫn ~2,6–3,0 hành động (mục tiêu 3–6); tầng 13 và 15 nhỉnh 2–5% trên ngưỡng.
+0. **Cycle chưa đủ phá đội 3 sustain.** Hồi 623/vòng so với sát thương vào 525 → cycle 8 (+15%)
+   chỉ làm họ chậm, không làm họ chết. Nếu muốn phá: `cycle_step` 25%, hoặc giảm hồi nhận sau
+   cycle 10, hoặc thêm trần hồi máu mỗi trận.
+1. **Kaine có thể quá mạnh**: ~2,5× DPS khác ở 5 mục tiêu. Nếu cần hạ: `dot_rate` 0,22 → 0,15
+   hoặc `dot_max` 5 → 3.
+2. **Tầng 16 dài 36 hành động** (HUD team) so với ngưỡng 24–32 — cần cắt ~12% HP nếu muốn khớp.
+3. Tầng 1–5 mất 2 cycle (8 hành động), trên ngưỡng 3–6 hành động.
 
 1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.
    Cần harness đo DoT share; mục tiêu 15–35%.
@@ -130,6 +145,7 @@ tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành đ�
 
 ## Changelog
 
+- **0.17** — DoT vĩnh viễn, Kaine 2 stack + SPD theo DoT, cycle enrage từ cycle 8.
 - **0.16** — tầng 16 thêm 3 elite ngẫu nhiên; Rook hạ còn 0.8× / 1.2×; test chiến thuật
   Kaine + 2 sustain.
 - **0.15** — 5 ô địch, 8 bậc, boss 10/13/16, đổi đội sau 5 và 9, Vesper CRIT 35, Kaine
