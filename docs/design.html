@@ -123,7 +123,7 @@
       <p class="sub">Terminal turn-based RPG. 4v4, sảnh đường 16 tầng, 9 nhân vật, 12 vũ khí, 8 bộ di vật, 16 kẻ địch, 2 boss, 5 kiểu chọn mục tiêu, 4 màn hình. Mọi con số ở đây sửa được và là nguồn số liệu duy nhất cho bản build.</p>
     </div>
     <div class="meta">
-      bản <b>0.10</b><br>
+      bản <b>0.11</b><br>
       python <b>3.9 · stdlib</b><br>
       khung <b>80×24</b><br>
       <span id="meta-count"></span>
@@ -333,7 +333,7 @@
         <h3>chỉ số gốc nói gì</h3>
         <table id="spread"></table>
         <div class="call"><b>Vì sao giãn rộng:</b> ATK 58–152 (2.6×), HP 740–1620 (2.2×), DEF 68–196 (2.9×), SPD 82–130 (1.6×). Nếu mọi nhân vật cùng khung 900–1350 HP thì việc chọn ai chỉ còn là chọn chiêu, không phải chọn cách chơi. Giãn rộng khiến đội hình có điểm yếu thật: đội không có Sustain thì Vesper chết trong 4 lượt.</div>
-        <div class="call"><b>Ba người mới, ba cơ chế chưa có:</b> <b>Rook</b> đánh theo <i>độ lan</i> — Basic blast, Skill all, Ulti all cộng bounce, và mỗi kẻ địch trúng đều hồi EN, nên nó càng đông địch càng nhanh có Ulti. <b>Nyx</b> đánh vào <i>hàng đợi</i> — đẩy AV thay vì trừ máu, nên nó mạnh ở band cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — tiêu HP để hồi đội, nên nó là Sustain duy nhất có thể tự giết mình nếu đánh sai nhịp.</div>
+        <div class="call"><b>Ba người mới, ba cơ chế chưa có:</b> <b>Rook</b> đánh theo <i>độ lan</i> — Basic blast, Skill all, Ulti all cộng bounce, và mỗi kẻ địch trúng đều hồi EN, nên nó càng đông địch càng nhanh có Ulti. <b>Nyx</b> đánh vào <i>hàng đợi</i> — giảm SPD một mục tiêu, cả sân đổi AV bằng Ulti; nó mạnh ở band cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — tiêu HP để hồi đội, nên nó là Sustain duy nhất có thể tự giết mình nếu đánh sai nhịp.</div>
         <div class="flags"><span>mult = hệ số ATK</span><span>SP = thay đổi skill point</span><span>EN = năng lượng nhận</span><span>target = kiểu chọn mục tiêu</span></div>
       </div>
     </section>
@@ -459,6 +459,10 @@
           <tr><td><span class="tag">đã chốt</span></td><td>Vesper</td><td>Talent: mỗi CRIT +1 stack, tối đa 6; đủ 3 stack thì tiêu 3 và tung follow-up 60%. Ulti 6 lần đánh có thể nạp đủ 6 stack — 2 follow-up.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Kaine</td><td>Skill blast 1.2× / 0.6×, +1 stack DoT mỗi mục tiêu. Ulti all 1.5×, +1 stack mỗi mục tiêu. Talent: mỗi lần gây DoT, một địch ngẫu nhiên +1 stack.</td></tr>
           <tr><td><span class="tag">đã chốt</span></td><td>Rook</td><td>Basic blast 0.8× / 0.4×. Skill all 1.0×. Ulti all 1.5× rồi 4 bounce 0.2×. Talent: mỗi kẻ địch trúng đòn +3 EN.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Lumen</td><td>Skill: +15% SPD và +20% ATK 2 lượt cho một đồng đội. Ulti: field Grid 3 lượt, cả hai đội +20% hồi EN. Talent: đồng đội dùng Ulti, Lumen +5 EN.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Nyx</td><td>Skill: −25% SPD một địch 2 lượt. Ulti: đẩy lùi 20% AV toàn bộ địch, cả đội ta +20% AV. Talent: mỗi đánh thường của đồng đội, Nyx +1 SPD cộng dồn.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Sable</td><td>Skill: 1 lượt, 100% đòn đơn mục tiêu của địch dồn vào một đồng đội, người đó +20% ATK. Ulti: toàn bộ địch −25% DEF 3 lượt. Talent: lần đầu mỗi tầng, một đòn chí tử lên đồng đội gây 0 damage.</td></tr>
+          <tr><td><span class="tag warn">mở</span></td><td>Nyx có cần trần SPD không</td><td>Talent cộng dồn không giới hạn. Nếu harness cho thấy Nyx vượt 200 SPD ở tầng 12+ thì chặn ở +40 SPD hoặc đổi thành "tối đa 10 stack".</td></tr>
           <tr><td><span class="tag warn">mở</span></td><td>Công thức DoT sau khi giảm stack</td><td>Đã tách <code>dot_rate</code> = 0.45 × ATK mỗi stack. Cần harness đo lại DoT share (mục tiêu 15–35%) rồi mới chốt con số này.</td></tr>
         </table>
         <h3>ghi chú của bạn</h3>
@@ -482,7 +486,7 @@
 <script>
 /* ============================================================ */
 const BASE = {
-  meta: { version: "0.10", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
+  meta: { version: "0.11", floors: 16, band: 4, starters: 2, runs: 2000, letters: "A–H", seed: "7F2A" },
   constants: {
     def_k: 200, crit_rate: 5, crit_dmg: 50, sp_max: 5, sp_start: 3,
     en_max: 100, en_start: 50, en_basic: 20, en_skill: 30, ult_cost: 100,
@@ -520,7 +524,7 @@ const BASE = {
   ],
   fields: [
     { id:"grid", name:"Grid", turns:3, source:"Lumen — Ulti",
-      effect:"Cả hai đội +15% ATK và +10% SPD.", cost:"Tăng nhịp cho cả hai bên — ai nhiều đòn hơn thì hưởng nhiều hơn." },
+      effect:"Cả hai đội +20% hồi năng lượng.", cost:"Ai đánh nhiều thì hưởng nhiều — kể cả địch. Đặt field này là mở Ulti cho cả hai bên." },
     { id:"rampart", name:"Rampart", turns:2, source:"Bastion — Ulti",
       effect:"Cả hai đội nhận −15% sát thương.", cost:"Kéo dài trận; có lợi cho bên đang yếu hơn." },
     { id:"signal", name:"Signal", turns:3, source:"Signal Tower — mỗi 2 hành động",
@@ -544,15 +548,15 @@ const BASE = {
     { id:"lumen", name:"Lumen", role:"Support", style:"Energy",
       hp:740, atk:72, def:74, spd:130, crit:5, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
-      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Đồng đội +25 EN và +15% ATK 2 lượt." },
-      ult:{ name:"Grid", mult:0, en:100, target:"field", desc:"Đặt field Grid 3 lượt." },
-      talent:{ text:"Đồng đội dùng Ulti: Lumen +10 EN." } },
-    { id:"sable", name:"Sable", role:"Support", style:"Debuff / SP",
+      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"Đồng đội +15% SPD và +20% ATK trong 2 lượt." },
+      ult:{ name:"Grid", mult:0, en:100, target:"field", desc:"Đặt field Grid 3 lượt: cả hai đội +20% hồi EN." },
+      talent:{ text:"Đồng đội dùng Ulti: Lumen +5 EN." } },
+    { id:"sable", name:"Sable", role:"Support", style:"Debuff / taunt",
       hp:890, atk:98, def:90, spd:120, crit:5, critdmg:50,
       basic:{ mult:0.95, sp:1, en:20, target:"single" },
-      skill:{ mult:1.3, sp:-1, en:30, target:"single", desc:"1.3× và −20% DEF mục tiêu 2 lượt." },
-      ult:{ name:"Blackout", mult:1.8, en:100, target:"blast", desc:"Chính 1.8×, hai bên 0.9×; mục tiêu chính −25% damage gây ra 2 lượt." },
-      talent:{ text:"Sau khi Sable dùng Skill, Skill kế tiếp của một đồng đội tốn 0 SP (1 lần/lượt)." } },
+      skill:{ mult:0, sp:-1, en:30, target:"ally-single", desc:"1 lượt: 100% đòn đơn mục tiêu của địch dồn vào người này; người đó +20% ATK." },
+      ult:{ name:"Blackout", mult:0, en:100, target:"all", desc:"Toàn bộ địch −25% DEF trong 3 lượt." },
+      talent:{ text:"Lần đầu mỗi tầng một đồng đội nhận đòn chí tử: đòn đó gây 0 damage." } },
     { id:"bastion", name:"Bastion", role:"Sustain", style:"Shield",
       hp:1620, atk:58, def:196, spd:82, crit:0, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
@@ -574,9 +578,9 @@ const BASE = {
     { id:"nyx", name:"Nyx", role:"Support", style:"AV / tốc độ",
       hp:860, atk:66, def:82, spd:126, crit:5, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
-      skill:{ mult:0, sp:-1, en:30, target:"enemy-single", desc:"Đẩy lùi mục tiêu 25% AV và −10% SPD 2 lượt." },
-      ult:{ name:"Zero Hour", mult:0, en:100, target:"all", desc:"Đẩy lùi toàn bộ địch 15% AV; toàn đội ta +15% AV." },
-      talent:{ text:"Đầu mỗi tầng, cá thể SPD cao nhất mỗi bên được +10% AV." } },
+      skill:{ mult:0, sp:-1, en:30, target:"enemy-single", desc:"−25% SPD mục tiêu trong 2 lượt." },
+      ult:{ name:"Zero Hour", mult:0, en:100, target:"all", desc:"Đẩy lùi toàn bộ địch 20% AV; toàn đội ta +20% AV." },
+      talent:{ text:"Mỗi lần một đồng đội đánh thường: Nyx +1 SPD, cộng dồn đến hết trận." } },
     { id:"wren", name:"Wren", role:"Sustain", style:"Hút máu / hiến máu",
       hp:1420, atk:86, def:110, spd:103, crit:5, critdmg:50,
       basic:{ mult:0.9, sp:1, en:20, target:"single" },
@@ -730,7 +734,7 @@ const BASE = {
     { type:"Heal", desc:"Hồi 40% max HP cho toàn đội.", limit:"không giới hạn" }
   ]
 };
-const KEY = "hsrlite-spec-v10";
+const KEY = "hsrlite-spec-v11";
 
 let DATA = JSON.parse(JSON.stringify(BASE));
 let NOTES = "";
@@ -826,7 +830,7 @@ function buildBattle(){
     fullRow(unitRow(" ","F","Kaine",880,1010,101,100,null)),
     fullRow(unitRow(" ","G","Lumen",620,740,130,40,null)),
     fullRow(unitRow(" ","H","Bastion",1370,1620,82,100,"DEF-(25%)")),
-    fullRow([[" FIELD  ", "dim"], ["Grid", "good"], [" · Lumen · 3 lượt · cả hai đội +15% ATK, +10% SPD"]]),
+    fullRow([[" FIELD  ", "dim"], ["Grid", "good"], [" · Lumen · 3 lượt · cả hai đội +20% hồi EN"]]),
     fullRow(nextParts),
     hline(),
     fullRow([[" "], ["> Rook", "cur"], ["  "], ["[1] Basic 92 blast", "on"],
@@ -834,7 +838,7 @@ function buildBattle(){
     hline(),
     fullRow(log("E Rook","Broadside","all","172","warn")),
     fullRow(log("F Kaine","DoT","C Cinder","49","warn")),
-    fullRow(log("G Lumen","ATK+(15%)","party","—","good")),
+    fullRow(log("G Lumen","SPD+(15%)","H Bastion","—","good")),
     fullRow(log("H Bastion","Shield","party","297","good")),
     fullRow(log("B Scout","Basic","G Lumen","18","bad")),
     fullRow(log("A Grunt","ATK-(20%)","E Rook","—","dim")),

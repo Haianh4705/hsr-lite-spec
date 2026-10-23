@@ -188,6 +188,18 @@ ok("Kaine ult is all with 1 DoT stack", kaine.ult.target === "all" && /1 stack/.
 const vesper = DATA.characters.find(c => c.id === "vesper");
 ok("Vesper talent caps at 6 and fires every 3", /tối đa 6/.test(vesper.talent.text) && /3 stack/.test(vesper.talent.text));
 ok("Vesper ult can feed 6 stacks", /tối đa 6/.test(vesper.ult.desc));
+const lumen = DATA.characters.find(c => c.id === "lumen");
+ok("Lumen skill gives SPD and ATK", /SPD/.test(lumen.skill.desc) && /ATK/.test(lumen.skill.desc) && !/EN/.test(lumen.skill.desc));
+ok("Lumen ult field is +20% energy regen", /20% hồi EN/.test(lumen.ult.desc) && /20% hồi năng lượng/.test(DATA.fields.find(f => f.id === "grid").effect));
+ok("Lumen talent is +5 EN", /\+5 EN/.test(lumen.talent.text));
+const nyx = DATA.characters.find(c => c.id === "nyx");
+ok("Nyx skill only slows SPD", /−25% SPD/.test(nyx.skill.desc) && !/AV/.test(nyx.skill.desc));
+ok("Nyx ult is 20% AV both ways", /20% AV/.test(nyx.ult.desc) && !/15% AV/.test(nyx.ult.desc));
+ok("Nyx talent is +1 SPD per ally basic", /\+1 SPD/.test(nyx.talent.text) && /đánh thường/.test(nyx.talent.text));
+const sable = DATA.characters.find(c => c.id === "sable");
+ok("Sable skill redirects 100% single-target hits", sable.skill.target === "ally-single" && /100%/.test(sable.skill.desc) && /20% ATK/.test(sable.skill.desc));
+ok("Sable ult is a 3-turn DEF debuff on all", sable.ult.target === "all" && sable.ult.mult === 0 && /−25% DEF/.test(sable.ult.desc) && /3 lượt/.test(sable.ult.desc));
+ok("Sable talent negates the first lethal hit each floor", /0 damage/.test(sable.talent.text) && /mỗi tầng/.test(sable.talent.text));
 ok("DoT has its own rate constant", DATA.constants.dot_rate === 0.45, String(DATA.constants.dot_rate));
 ok("every character has a unique ult name",
   new Set(DATA.characters.map(c => c.ult.name)).size === DATA.characters.length);
@@ -257,7 +269,7 @@ const fire = (p, value) => listeners.input({ target: { dataset: { p }, value, id
 fire("constants.def_k", "120");
 ok("DEF K written to DATA", DATA.constants.def_k === 120, String(DATA.constants.def_k));
 ok("DEF curve re-rendered on edit", /<td class="n">128<\/td><td class="n">0\.484<\/td>/.test(store.defcurve));
-ok("edit persisted to localStorage", /"def_k":120/.test(localStorage.getItem("hsrlite-spec-v10") || ""));
+ok("edit persisted to localStorage", /"def_k":120/.test(localStorage.getItem("hsrlite-spec-v11") || ""));
 fire("constants.def_k", "200");
 const k0 = store["scale-3"];
 fire("cones.3.s1.base", "12");
@@ -268,7 +280,7 @@ ok("character stat is numeric, not string", DATA.characters[0].hp === 999, JSON.
 fire("characters.0.hp", "820");
 const notesHandler = listeners.input;
 notesHandler({ target: { id: "notes", value: "ghi chú thử", dataset: {} } });
-ok("notes captured", JSON.parse(localStorage.getItem("hsrlite-spec-v10")).notes === "ghi chú thử");
+ok("notes captured", JSON.parse(localStorage.getItem("hsrlite-spec-v11")).notes === "ghi chú thử");
 
 console.log("\n== payload ==");
 const p = JSON.parse(payload());

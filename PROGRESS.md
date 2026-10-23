@@ -1,6 +1,6 @@
 # PROGRESS — HSR-lite spec
 
-Cập nhật lần cuối: phiên v0.10.
+Cập nhật lần cuối: phiên v0.11.
 Đọc `AGENTS.md` trước file này.
 
 ---
@@ -9,26 +9,21 @@ Cập nhật lần cuối: phiên v0.10.
 
 | Hạng mục | Giá trị |
 |---|---|
-| Bản đặc tả | `docs/design.html` — **v0.10** |
+| Bản đặc tả | `docs/design.html` — **v0.11** |
 | Trạng thái | Đặc tả hoàn chỉnh, harness xanh (`ALL CHECKS PASSED`) |
 | Game | **Chưa build, chưa chạy** — đúng như yêu cầu |
-| localStorage key | `hsrlite-spec-v10` |
+| localStorage key | `hsrlite-spec-v11` |
 | Kiểm tra | `node docs/verify.js` |
 
-## Vừa xong (v0.10)
+## Vừa xong (v0.11)
 
-1. **Curator hồi 3%** max HP mỗi Ulti của người chơi (hạ từ 5%).
-2. **Bỏ tên riêng của phase boss và thiên phú.** Phase giờ đánh số 1–2–3 trong bảng
-   `# / Mốc HP / Hành vi`; thiên phú chỉ còn nhãn `TALENT`. Ulti vẫn là thứ duy nhất có tên riêng.
-3. **Vesper** — talent: mỗi CRIT +1 stack, tối đa 6; đủ 3 stack thì tiêu 3 và tung follow-up 60%.
-   Ulti 6 lần đánh có thể nạp đủ 6 stack → 2 follow-up.
-4. **Kaine** — Skill đổi sang blast 1.2× / 0.6×, +1 stack DoT mỗi mục tiêu; Ulti all 1.5×, +1
-   stack mỗi mục tiêu; talent giữ nguyên (mỗi lần gây DoT, một địch ngẫu nhiên +1 stack).
-5. **Rook** — Basic blast 0.8× / 0.4×; Skill all 1.0×; Ulti all 1.5× rồi 4 bounce 0.2×;
-   talent: mỗi kẻ địch trúng đòn +3 EN.
-6. **Công thức DoT tách biến.** Thêm `constants.dot_rate = 0.45`; tick =
-   `ATK × dot_rate × stack × K/(K+DEF)`, không nhân theo mult của chiêu gắn nó. Đây là núm cân
-   bằng duy nhất khi Kaine chỉ còn 1 stack mỗi mục tiêu.
+1. **Lumen** — Skill: đồng đội +15% SPD và +20% ATK trong 2 lượt (bỏ hồi EN). Ulti: field Grid
+   +20% hồi EN cho **cả hai đội**, 3 lượt. Talent: đồng đội dùng Ulti → Lumen +5 EN (từ 10).
+2. **Nyx** — Skill: −25% SPD một địch trong 2 lượt (bỏ đẩy AV). Ulti: 20% AV cả hai chiều (từ 15%).
+   Talent: mỗi đánh thường của đồng đội → Nyx +1 SPD, cộng dồn.
+3. **Sable** — Skill: 1 lượt, 100% đòn đơn mục tiêu của địch dồn vào một đồng đội, người đó +20%
+   ATK. Ulti: toàn bộ địch −25% DEF trong 3 lượt (bỏ damage). Talent: lần đầu mỗi tầng, một đòn
+   chí tử lên đồng đội gây 0 damage.
 
 ## Việc tiếp theo (theo thứ tự)
 
@@ -38,14 +33,19 @@ Cập nhật lần cuối: phiên v0.10.
    vượt trần damage share 45% ở §12.
 3. **Rook hồi EN theo số mục tiêu trúng** — Ulti 8 lần trúng = 24 EN. Cần kiểm tra vòng EN có bị
    tự nuôi (Ulti → đầy EN → Ulti) không.
-4. **Soát bằng mắt §10 và §12** sau khi band table tách dòng 9–11 / 12 / 13–15 / 16.
-5. **Mở rộng verify.js** nếu thêm luật mới: harness hiện phủ hình học HUD, số lượng nội dung,
+4. **Trần SPD của Nyx.** Talent cộng dồn không giới hạn; 4 người × ~10 lượt thường/tầng là +40 SPD
+   mỗi tầng. Xem §13 hàng "mở".
+5. **Sable taunt** — luật "100% đòn đơn mục tiêu dồn vào một người" phải chốt được với địch có
+   `target: single`; địch `all`/`blast`/`bounce` vẫn đánh bình thường. Cần viết rõ trong bản build.
+6. **Soát bằng mắt §10 và §12** sau khi band table tách dòng 9–11 / 12 / 13–15 / 16.
+7. **Mở rộng verify.js** nếu thêm luật mới: harness hiện phủ hình học HUD, số lượng nội dung,
    thứ tự ABC, pool ngẫu nhiên, boss tầng 12/16, hai lần bấm, lệnh xám, talent/phase không tên,
-   bộ chiêu mới của Vesper/Kaine/Rook, `dot_rate`.
+   bộ chiêu mới của Vesper/Kaine/Rook/Lumen/Nyx/Sable, `dot_rate`.
 
 ## Việc còn mở (chưa chốt)
 
-- `dot_rate` = 0.45 (xem §13 hàng "mở" duy nhất còn lại).
+- `dot_rate` = 0.45 (xem §13).
+- Có nên chặn trần cộng dồn SPD của Nyx không (xem §13).
 - Chưa có quyết định về việc có nên có thêm field riêng cho boss 12 hay không.
 
 ## Nhật ký quyết định (đã chốt, không mở lại)
@@ -68,6 +68,7 @@ Cập nhật lần cuối: phiên v0.10.
 
 ## Changelog
 
+- **0.11** — viết lại Lumen / Nyx / Sable; field Grid đổi sang hồi EN; Sable thành taunt + debuff.
 - **0.10** — Curator 3%; bỏ tên phase boss và tên thiên phú; viết lại Vesper / Kaine / Rook;
   tách `dot_rate` khỏi mult chiêu.
 - **0.9** — trạng thái lệnh + hai lần bấm; ABC cho nhân vật; ô ngẫu nhiên + seed; boss 12
