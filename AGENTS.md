@@ -56,6 +56,7 @@ Không có test nào khác. Không có build step. Không có git hook.
 | `docs/verify.js` | Harness node: stub DOM, chạy script trong spec, assert hình học + số lượng |
 | `PROGRESS.md` | Trạng thái phiên, việc đang làm, việc còn mở, changelog |
 | `AGENTS.md` | File này — luật và cách làm |
+| `skills/ambition-booster/` | Bản sao skill OpenCode cùng tên — dùng khi muốn nâng một task/prompt lên mức tham vọng hơn. Không liên quan cú pháp spec; đừng sửa để "khớp" với game |
 
 ## Khi bắt đầu phiên mới
 

@@ -69,14 +69,16 @@ Cập nhật lần cuối: phiên v0.9.
 ## Changelog
 
 - **0.9** — trạng thái lệnh + hai lần bấm; ABC cho nhân vật; ô ngẫu nhiên + seed; boss 12
-  (The Curator); chốt 2/5; dọn mock (đội mẫu, HP quái, chữ cái Equip).
+  (The Curator); chốt 2/5; dọn mock (đội mẫu, HP quái, chữ cái Equip). Repo chuyển public,
+  kèm bản sao skill `ambition-booster` trong `skills/`.
 - **0.8** — 9 nhân vật / 12 vũ khí / 8 di vật / 15 địch; hệ số band hạ còn 1.50; chữ cái A–H;
   6 dòng log; draft 3 thẻ; codex tự do; đổi đội mỗi 4 tầng; harness 2.000 run.
 - **0.7** — bản đầu đủ 6 / 9 / 6 / 9, band 1.00–1.90.
 
 ## Ghi chú kỹ thuật
 
-- Repo: `github.com/Haianh4705/hsr-lite-spec` (private), nhánh `main`. Mỗi thay đổi spec nên là một commit có mô tả luật đã đổi.
+- Repo: `github.com/Haianh4705/hsr-lite-spec` (**public**), nhánh `main`. Mỗi thay đổi spec nên là một commit có mô tả luật đã đổi.
+- `skills/ambition-booster/` là bản sao skill OpenCode, không phải một phần của game. Đừng sửa nội dung skill khi đang sửa spec.
 - `store['scale-N']` trong harness luôn rỗng — phần tử nằm trong `innerHTML` của cha, không phải lỗi.
 - Mọi ô mô tả dài dùng `textarea.f.auto` + `autosizeAll()`; nếu thêm ô dài mới thì dùng `FAREA`,
   đừng dùng `FWIDE` (input 1 dòng sẽ cắt chữ).
