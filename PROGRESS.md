@@ -76,7 +76,7 @@ Cập nhật lần cuối: phiên v0.9.
 
 ## Ghi chú kỹ thuật
 
-- Không phải git repo ở thời điểm viết (xem lịch sử commit nếu đã init).
+- Repo: `github.com/Haianh4705/hsr-lite-spec` (private), nhánh `main`. Mỗi thay đổi spec nên là một commit có mô tả luật đã đổi.
 - `store['scale-N']` trong harness luôn rỗng — phần tử nằm trong `innerHTML` của cha, không phải lỗi.
 - Mọi ô mô tả dài dùng `textarea.f.auto` + `autosizeAll()`; nếu thêm ô dài mới thì dùng `FAREA`,
   đừng dùng `FWIDE` (input 1 dòng sẽ cắt chữ).
