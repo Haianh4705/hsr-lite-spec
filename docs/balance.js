@@ -63,14 +63,14 @@ BASE.encounters.forEach(e => {
   const m = bandOf(e.n).mult;
   const list = floorEnemies(e);
   const hp = list.reduce((a, x) => a + x.hp * m, 0);
-  const atk = list.reduce((a, x) => a + x.atk * m, 0);
+  const atk = list.reduce((a, x) => a + x.atk * bandOf(e.n).atk, 0);
   const def = (list.reduce((a, x) => a + x.def * m, 0) / list.length);
   const out = teamRound(def);
   const rounds = hp / out;
   const incoming = atk * defF(avgAllyDef) * 0.9; // 0.9: có đòn không phải damage
   rows.push({ n: e.n, hp, atk, def, rounds, incoming, out });
   console.log(
-    String(e.n).padStart(4), " ", bandOf(e.n).label.padEnd(3), ("×" + m.toFixed(2)).padEnd(5),
+    String(e.n).padStart(4), " ", bandOf(e.n).label.padEnd(3), ("×" + m.toFixed(2) + "/" + bandOf(e.n).atk.toFixed(2)).padEnd(11),
     num(hp).padStart(7), num(atk).padStart(7), num(def).padStart(6),
     num(rounds).padStart(10), num(incoming).padStart(10)
   );
@@ -79,11 +79,11 @@ BASE.encounters.forEach(e => {
 // ---- sustain mỗi vòng ----
 const b = chars.bastion, mi = chars.mira, w = chars.wren;
 const perRound = {
-  "Bastion talent (shield)": b.hp * 0.12,
-  "Bastion ult (1944 / 5 vòng)": b.hp * 0.30 * 4 / 5,
-  "Mira talent (3% × 4 đòn)": mi.hp * 0.03 * 4,
-  "Mira skill (1 skill/vòng)": mi.hp * 0.18,
-  "Wren ult (nếu có Wren, /5 vòng)": w.hp * 0.20 * 4 / 5
+  "Bastion talent (shield)": b.hp * 0.04,
+  "Bastion ult (15% × 4 / 5 vòng)": b.hp * 0.15 * 4 / 5,
+  "Mira talent (1% × 4 đòn)": mi.hp * 0.01 * 4,
+  "Mira skill (1 skill/vòng)": mi.hp * 0.10,
+  "Wren ult (nếu có Wren, /5 vòng)": w.hp * 0.15 * 4 / 5
 };
 console.log("\n== SUSTAIN PER ROUND (đội HUD có Bastion + Mira) ==");
 let total = 0;
@@ -142,7 +142,7 @@ rows.forEach(r => {
 });
 
 // ---- 8. chẩn đoán ----
-const sustainCore = b.hp * 0.12 + b.hp * 0.30 * 4 / 5 + mi.hp * 0.03 * 4 + mi.hp * 0.18;
+const sustainCore = b.hp * 0.04 + b.hp * 0.15 * 4 / 5 + mi.hp * 0.01 * 4 + mi.hp * 0.10;
 const partyHP = TEAM.reduce((a, id) => a + chars[id].hp, 0);
 console.log("\n== CHẨN ĐOÁN ==");
 console.log("HP cả đội HUD:", partyHP);
@@ -162,3 +162,23 @@ console.log("Rook AoE/skill so Vesper:", num(401.5 / 185.8) + "×;", "single-tar
   num(100.4 / 185.8) + "×");
 const fua = 0.6 * chars.vesper.atk * defF(90) * critMul(chars.vesper);
 console.log("giá trị 1 FUA của Vesper:", num(fua), "so với basic", num(hit(chars.vesper, 1.0, 90)));
+
+// ---- 9. so sánh đội 2 DPS vs 3 DPS ở tầng 16 ----
+const B2 = ["rook", "kaine", "vesper", "bastion"];
+const roundOf = ids => {
+  const [a, b2, c, d] = ids.map(id => chars[id]);
+  const dps = [a, b2, c].filter(x => x.role === "DPS");
+  const skillSum = dps.reduce((n, x) => n + hit(x, x.skill.mult, 178) * (x.skill.target === "all" ? 4 : x.skill.target === "blast" ? 1.6 : 1), 0);
+  const basicSum = dps.reduce((n, x) => n + hit(x, x.basic.mult, 178), 0);
+  const util = ids.map(id => chars[id]).filter(x => x.role !== "DPS").reduce((n, x) => n + hit(x, x.basic.mult, 178), 0);
+  const ult = dps.reduce((n, x) => n + (x.ult.target === "all"
+    ? (hit(x, x.ult.mult, 178) * 4 + hit(x, x.ult.bounceMult || 0, 178) * (x.ult.bounces || 0))
+    : hit(x, (x.ult.mult || 0) * (x.ult.hits || 1), 178)) * 0.25, 0);
+  return (skillSum + basicSum + util + ult) * 1.25;
+};
+console.log("\n== TẦNG 16: 2 DPS vs 3 DPS ==");
+for (const t of [TEAM, B2]) {
+  const r = roundOf(t);
+  console.log(t.join("+").padEnd(34), "out/vòng", num(r).padStart(7), "→ hành động", num(rows[15].hp / r * 4).padStart(5));
+  console.log("   HP cần cho 16 hành động:", num(r * 4));
+}

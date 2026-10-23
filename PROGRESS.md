@@ -1,6 +1,6 @@
 # PROGRESS — HSR-lite spec
 
-Cập nhật lần cuối: phiên v0.13.
+Cập nhật lần cuối: phiên v0.14.
 Đọc `AGENTS.md` trước file này.
 
 ---
@@ -9,11 +9,26 @@ Cập nhật lần cuối: phiên v0.13.
 
 | Hạng mục | Giá trị |
 |---|---|
-| Bản đặc tả | `docs/design.html` — **v0.13** |
+| Bản đặc tả | `docs/design.html` — **v0.14** |
 | Trạng thái | Đặc tả hoàn chỉnh, harness xanh (`ALL CHECKS PASSED`) |
 | Game | **Chưa build, chưa chạy** — đúng như yêu cầu |
-| localStorage key | `hsrlite-spec-v13` |
+| localStorage key | `hsrlite-spec-v14` |
 | Kiểm tra | `node docs/verify.js` |
+
+## Vừa xong (v0.14) — cân bằng đợt 1 (gói A + B)
+
+- **ATK có đường cong riêng**, tách khỏi HP·DEF: HP·DEF ×1.00 / 1.15 / 1.30 / 1.50;
+  **ATK ×1.00 / 1.35 / 1.75 / 2.25**. SPD vẫn không nhân. Trần 1.50 giờ chỉ áp cho HP·DEF.
+- **Cắt sustain:** Mira skill 18% → 10%, Mira talent 3% → 1%, Bastion Ulti 30% → 15%,
+  Bastion talent 12% → 4%, Wren Ulti 20% → 15%.
+- **Tầng 16 gọn lại:** Overseer 1900, Bulwark 450, Chorister 350, Tower 300 → 4.500 HP sau hệ số
+  (trước 5.970). Kéo theo tầng 11 / 14 / 15 cũng ngắn lại.
+- **Lumen Ulti thành buff đội:** toàn đội +20% hồi EN 3 lượt, **không còn tạo field**. Field Grid
+  biến mất → còn 2 field, đều do địch đặt (Signal · Final Protocol).
+- **Wren:** đòn bị tách 15/85 tính là **hai lần nhận sát thương**; talent Mira kích hai lần.
+
+Đo lại (`node docs/balance.js`): sustain 970 → **440/vòng**; sát thương vào tầng 16 **210 → 315**;
+tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành động**.
 
 ## Vừa xong (v0.13)
 
@@ -41,8 +56,9 @@ Cập nhật lần cuối: phiên v0.13.
 
 ## Việc tiếp theo (theo thứ tự)
 
-0. **Chờ duyệt báo cáo cân bằng v0.13.** Ba gói đề xuất: A (cắt sustain), B (tăng sát thương địch
-   theo band), C (sửa nhịp tầng 11/13/14/15/16). Chưa áp dụng gói nào.
+0. **Đợt cân bằng 2 (chưa duyệt).** Còn lệch sau đợt 1: tầng 1–5 chỉ ~2 hành động (mục tiêu 3–5);
+   tầng 10 ~6,8 (mục tiêu 3–5); talent Vesper vẫn gần như không kích; Curator 3%/Ulti vẫn quá nhẹ;
+   chưa có field của người chơi.
 
 1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.
    Cần harness đo DoT share; mục tiêu 15–35%.
@@ -87,6 +103,8 @@ Cập nhật lần cuối: phiên v0.13.
 
 ## Changelog
 
+- **0.14** — cân bằng đợt 1: ATK curve riêng, cắt sustain ~55%, tầng 16 gọn lại, Lumen bỏ field,
+  Wren hai lần nhận sát thương.
 - **0.12** — viết lại Bastion / Mira / Wren; shield vô hạn lượt; thêm bước chuyển sát thương;
   Sable sửa thành ưu tiên hành động; bỏ field Rampart.
 - **0.11** — viết lại Lumen / Nyx / Sable; field Grid đổi sang hồi EN.
