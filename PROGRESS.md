@@ -15,6 +15,17 @@ Cập nhật lần cuối: phiên v0.17.
 | localStorage key | `hsrlite-spec-v17` |
 | Kiểm tra | `node docs/verify.js` |
 
+## Dọn file (v0.17, cùng phiên)
+
+- Bảng §13 viết lại: 19 dòng trạng thái hiện hành, bỏ 13 dòng changelog chồng chéo
+  (có 4 dòng mâu thuẫn với luật hiện tại: Kaine 1 stack, Rook 1.0×/1.5×, Curator 3%, "tầng 16 cố định").
+- Bỏ số bản cứng ở masthead: `bản <b id="ver">` lấy từ `meta.version`.
+- Xoá hai call box lỗi thời ở §05 (mốc DoT share 15–35%, "Kaine 1 stack").
+- §06 bỏ chữ "ba người mới"; §09 sửa Overseer "tầng 16" → "tầng 13 và 16".
+- Xoá code chết: `rowLR()` và hằng `L`.
+- §12 và cột "Hành động" ở §01 chỉnh lại theo số đo thật (3–6 / 6–10 / 8–14 / 10–16 / 20–28).
+- `balance.js`: sửa lỗi truyền `slots = 0` khiến AoE bị tính bằng 0.
+
 ## Vừa xong (v0.17) — DoT vĩnh viễn + cycle
 
 - **DoT không hết hạn**: stack chỉ mất khi có hiệu ứng giải. Bỏ `dot_turns`.
@@ -22,8 +33,9 @@ Cập nhật lần cuối: phiên v0.17.
   chịu DoT** (5 địch = +50% lượt). `dot_rate` hạ 0,45 → **0,22** để bù việc stack không bao giờ rơi.
 - **Cycle**: mọi trận đều có cycle, đếm ở header (`C 3`). Từ **cycle 8**, ATK địch **+15% mỗi
   cycle**, cộng dồn, không trần.
-- Đo (sau khi hạ `dot_rate` 0,22 → **0,15**): tầng 16 với đội HUD mất **12 cycle / 48 hành động**,
-  kết thúc còn **73/4.450 HP** — sát nút. Đội có Vesper: 9 cycle / 36 hành động, còn 1.874.
+- Đo (sau khi hạ `dot_rate` 0,22 → **0,15**): tầng 16 với đội HUD mất **6 cycle / 24 hành động**,
+  còn 2.853/4.450 HP; đội Kaine + 2 sustain mất 10 cycle / 40 hành động.
+  *Số cũ 48 hành động là do lỗi model: AoE được truyền `slots = 0`; đã sửa.*
 - **Kaine**: ở 5 địch × 5 stack, DoT một mình ~**352 damage/vòng** (DEF 90), ngang một skill của
   Rook (241) cộng chút; DoT chiếm ~73% sản lượng của anh.
 - **Đội 3 sustain vẫn bất tử**: Kaine + Mira + Wren + Bastion thắng ở cycle 9 với HP đầy — cycle
@@ -98,8 +110,7 @@ tỉ lệ sustain/vào **6,7× → 1,4×**; tầng 16 **25,4 → 16,5 hành đ�
    chỉ làm họ chậm, không làm họ chết. Nếu muốn phá: `cycle_step` 25%, hoặc giảm hồi nhận sau
    cycle 10, hoặc thêm trần hồi máu mỗi trận.
 1. **Kaine** đã hạ về 0,15; nếu vẫn thấy mạnh thì `dot_max` 5 → 3.
-2. **Tầng 16 dài 36–48 hành động** so với ngưỡng 24–32 — hoặc nới ngưỡng lên 32–44, hoặc cắt
-   ~15% HP (7.140 → ~6.100).
+2. **Tầng 16 = 24 hành động** với đội 2 DPS (ngưỡng 20–28) — đã khớp, không cần cắt HP.
 3. Tầng 1–5 mất 2 cycle (8 hành động), trên ngưỡng 3–6 hành động.
 
 1. **Chốt `dot_rate`.** 0.45 là ước lượng: Kaine ATK 136, DEF địch 60 → ~49 mỗi stack mỗi lượt.

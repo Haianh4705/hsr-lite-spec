@@ -123,7 +123,7 @@
       <p class="sub">Terminal turn-based RPG. 4 đấu 4–5, sảnh đường 16 tầng, 9 nhân vật, 12 vũ khí, 8 bộ di vật, 16 kẻ địch, 2 boss, 5 kiểu chọn mục tiêu, 4 màn hình. Mọi con số ở đây sửa được và là nguồn số liệu duy nhất cho bản build.</p>
     </div>
     <div class="meta">
-      bản <b>0.14</b><br>
+      bản <b id="ver"></b><br>
       python <b>3.9 · stdlib</b><br>
       khung <b>80×24</b><br>
       <span id="meta-count"></span>
@@ -159,12 +159,12 @@
           <tr><th style="width:30%">Hạng mục</th><th>Chốt</th></tr>
           <tr><td>Run</td><td>Chọn 4 trong 9 → 2 draft mở đầu → 16 tầng (1 draft sau mỗi tầng 1–15). <b>Boss ở tầng 10, 13, và tầng 16 có hai boss.</b> Đổi đội sau tầng 5 và tầng 9.</td></tr>
           <tr><td>Quy mô</td><td>4 nhân vật, <b>2–5 địch</b> tuỳ tầng: thường 4–5, tầng 16 chỉ có 2 boss.</td></tr>
-          <tr><td>Cơ chế</td><td>AV · Skill Point · Energy/Ult · CRIT · DoT · follow-up · shield · <b>field</b></td></tr>
+          <tr><td>Cơ chế</td><td>AV · Skill Point · Energy/Ult · CRIT · DoT · follow-up · shield · field · <b>cycle</b></td></tr>
           <tr><td>Mục tiêu</td><td>single · blast · all · bounce · field — dùng cho cả hai phía.</td></tr>
           <tr><td>Nội dung</td><td>9 nhân vật · 12 vũ khí · 8 bộ di vật · 16 kẻ địch (9 thường · 5 elite · 2 boss).</td></tr>
           <tr><td>Vai</td><td>DPS · Support · Sustain. 3 nhân vật và 4 vũ khí mỗi vai.</td></tr>
           <tr><td>Màn hình</td><td>4 tab: Battle · Codex · Team · Equip. Codex mở tự do cả trong trận.</td></tr>
-          <tr><td>Ngẫu nhiên</td><td>Draft (3 thẻ), CRIT, và <b>một ô địch mỗi tầng</b> rút từ nhóm 3 con. Seed in ở header — cùng seed thì cùng sảnh.</td></tr>
+          <tr><td>Ngẫu nhiên</td><td>Draft (3 thẻ), CRIT, <b>một ô địch mỗi tầng</b> (tầng 16: 3 elite), và <b>cycle</b> từ vòng 8. Seed in ở header — cùng seed thì cùng sảnh.</td></tr>
           <tr><td>Năng lượng</td><td>Chỉ từ hành động của mình. <b>Bị đánh không hồi EN.</b></td></tr>
           <tr><td>Không làm</td><td>Save/load, meta ngoài run, sprite, âm thanh, mạng, đa ngôn ngữ, animation, túi đồ.</td></tr>
         </table>
@@ -180,14 +180,14 @@
         <table>
           <tr><th class="n" style="width:70px">Tầng</th><th style="width:64px">Bậc</th><th class="n" style="width:74px">HP·DEF</th><th class="n" style="width:58px">ATK</th><th>Điều mới</th><th class="n" style="width:96px">Hành động</th></tr>
           <tr><td class="n">mở đầu</td><td>—</td><td class="n">—</td><td class="n">—</td><td>Chọn 4/9 ở tab Team. Hai draft trước tầng 1 — chưa có vũ khí, chưa có di vật.</td><td class="n">—</td></tr>
-          <tr><td class="n">1</td><td>I</td><td class="n">×1.00</td><td class="n">×1.00</td><td>Bốn ô. AV, SP, shield. Chỉ địch thường.</td><td class="n">3–5</td></tr>
-          <tr><td class="n">2–3</td><td>II</td><td class="n">×1.08</td><td class="n">×1.12</td><td>Năm ô lần đầu; Bomb và Swarm vào sân.</td><td class="n">4–6</td></tr>
-          <tr><td class="n">4–5</td><td>III</td><td class="n">×1.15</td><td class="n">×1.30</td><td>Shield và bounce. <b>Sau tầng 5: đổi đội.</b></td><td class="n">5–7</td></tr>
-          <tr><td class="n">6–7</td><td>IV</td><td class="n">×1.22</td><td class="n">×1.50</td><td>Elite đầu tiên; field Signal; Hound săn người yếu.</td><td class="n">5–7</td></tr>
-          <tr><td class="n">8–9</td><td>V</td><td class="n">×1.30</td><td class="n">×1.75</td><td>Hai elite cùng lúc; Chorister buff cả hàng. <b>Sau tầng 9: đổi đội.</b></td><td class="n">6–8</td></tr>
-          <tr><td class="n">10–12</td><td>VI</td><td class="n">×1.38</td><td class="n">×1.95</td><td><b>The Curator</b> ở tầng 10; tầng 11–12 là tường elite năm ô.</td><td class="n">8–11</td></tr>
-          <tr><td class="n">13–15</td><td>VII</td><td class="n">×1.45</td><td class="n">×2.15</td><td><b>The Overseer</b> ở tầng 13; 14–15 dồn ba elite.</td><td class="n">9–12</td></tr>
-          <tr><td class="n">16</td><td>VIII</td><td class="n">×1.50</td><td class="n">×2.30</td><td><b>Hai boss + ba elite ngẫu nhiên</b> — Overseer, Curator, và 3 trong 5 elite. Không đội hình nào là đủ.</td><td class="n">24–32</td></tr>
+          <tr><td class="n">1</td><td>I</td><td class="n">×1.00</td><td class="n">×1.00</td><td>Bốn ô. AV, SP, shield. Chỉ địch thường.</td><td class="n">3–6</td></tr>
+          <tr><td class="n">2–3</td><td>II</td><td class="n">×1.08</td><td class="n">×1.12</td><td>Năm ô lần đầu; Bomb và Swarm vào sân.</td><td class="n">3–6</td></tr>
+          <tr><td class="n">4–5</td><td>III</td><td class="n">×1.15</td><td class="n">×1.30</td><td>Shield và bounce. <b>Sau tầng 5: đổi đội.</b></td><td class="n">6–10</td></tr>
+          <tr><td class="n">6–7</td><td>IV</td><td class="n">×1.22</td><td class="n">×1.50</td><td>Elite đầu tiên; field Signal; Hound săn người yếu.</td><td class="n">6–10</td></tr>
+          <tr><td class="n">8–9</td><td>V</td><td class="n">×1.30</td><td class="n">×1.75</td><td>Hai elite cùng lúc; Chorister buff cả hàng. <b>Sau tầng 9: đổi đội.</b></td><td class="n">6–10</td></tr>
+          <tr><td class="n">10–12</td><td>VI</td><td class="n">×1.38</td><td class="n">×1.95</td><td><b>The Curator</b> ở tầng 10; tầng 11–12 là tường elite năm ô.</td><td class="n">8–14</td></tr>
+          <tr><td class="n">13–15</td><td>VII</td><td class="n">×1.45</td><td class="n">×2.15</td><td><b>The Overseer</b> ở tầng 13; 14–15 dồn ba elite.</td><td class="n">10–16</td></tr>
+          <tr><td class="n">16</td><td>VIII</td><td class="n">×1.50</td><td class="n">×2.30</td><td><b>Hai boss + ba elite ngẫu nhiên</b> — Overseer, Curator, và 3 trong 5 elite. Không đội hình nào là đủ.</td><td class="n">20–28</td></tr>
         </table>
         <p class="fine">Hai hệ số độc lập: <b>HP · DEF</b> dừng ở ×1.50, còn <b>ATK</b> lên tới ×2.30. Lý do: nếu ATK cũng chỉ ×1.50 thì cuối sảnh địch đánh không đau bằng đội hồi máu, và trận chỉ dài ra chứ không căng. <b>SPD không nhân</b> — nhân SPD sẽ làm hàng đợi đổi liên tục và người chơi mất cảm giác về nhịp. Mục tiêu: 30–40 phút lần đầu, 20–25 phút khi đã biết luật.</p>
         <h3>đổi đội giữa run</h3>
@@ -327,8 +327,7 @@
           <tr><td class="n">9</td><td>Cycle</td><td>Một cycle là một vòng đủ mọi đơn vị còn sống hành động một lần; đếm từ 1. Từ cycle <code>cycle_from</code>, ATK địch +<code>cycle_step</code>% mỗi cycle, cộng dồn. Không có trần.</td></tr>
         </table>
         <div class="call warn"><b>Đã bỏ:</b> hồi EN khi bị đánh. Năng lượng chỉ đến từ hành động của chính nhân vật.</div>
-        <div class="call"><b>DoT đổi luật:</b> trước đây DoT bỏ qua DEF và shield, khiến DEF vô nghĩa trước đội DoT. Nay DoT đi qua đúng công thức damage — nó vẫn mạnh vì cộng dồn nhiều stack, nhưng stack không còn là cách xuyên giáp.</div>
-        <div class="call warn"><b>Cân bằng lại ở v0.10:</b> Kaine giờ gắn 1 stack mỗi mục tiêu (trước là 2–3), nên mỗi stack phải đáng hơn. <code>dot_rate</code> là biến duy nhất để chỉnh: tăng thì DoT mạnh lên ở mọi nguồn, giảm thì ngược lại. Mốc kiểm tra: DoT share trong đội Kaine phải nằm trong 15–35%.</div>
+        <div class="call"><b>DoT là đường chậm:</b> nó đi qua DEF và shield như mọi damage khác, không crit, và <b>không hết hạn</b> — chỉ mất khi có hiệu ứng giải. Vì stack không bao giờ rơi, mỗi stack phải rẻ: <code>dot_rate</code> là núm duy nhất để chỉnh, và mốc kiểm tra là DoT share 70–85% trong đội Kaine.</div>
       </div>
     </section>
 
@@ -341,7 +340,7 @@
         <h3>chỉ số gốc nói gì</h3>
         <table id="spread"></table>
         <div class="call"><b>Vì sao giãn rộng:</b> ATK 58–152 (2.6×), HP 740–1620 (2.2×), DEF 68–196 (2.9×), SPD 82–130 (1.6×). Nếu mọi nhân vật cùng khung 900–1350 HP thì việc chọn ai chỉ còn là chọn chiêu, không phải chọn cách chơi. Giãn rộng khiến đội hình có điểm yếu thật: đội không có Sustain thì Vesper chết trong 4 lượt.</div>
-        <div class="call"><b>Ba người mới, ba cơ chế chưa có:</b> <b>Rook</b> đánh theo <i>độ lan</i> — Basic blast, Skill all, Ulti all cộng bounce, và mỗi kẻ địch trúng đều hồi EN, nên nó càng đông địch càng nhanh có Ulti. <b>Nyx</b> đánh vào <i>hàng đợi</i> — giảm SPD một mục tiêu, cả sân đổi AV bằng Ulti; nó mạnh ở band cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — gánh 85% sát thương của cả đội, nên nó là Sustain duy nhất chết thay người khác, và cũng là người dễ chết nhất nếu không được shield.</div>
+        <div class="call"><b>Ba cơ chế không trùng ai:</b> <b>Rook</b> đánh theo <i>độ lan</i> — Basic blast, Skill all, Ulti all cộng bounce, mỗi kẻ địch trúng hồi EN, nên càng đông địch càng nhanh có Ulti. <b>Nyx</b> đánh vào <i>hàng đợi</i> — giảm SPD một mục tiêu, cả sân đổi AV bằng Ulti; mạnh ở bậc cao nơi một lượt địch thừa là mất người. <b>Wren</b> đánh vào <i>chính mình</i> — gánh 85% sát thương của cả đội, nên là Sustain duy nhất chết thay người khác.</div>
         <div class="flags"><span>mult = hệ số ATK</span><span>SP = thay đổi skill point</span><span>EN = năng lượng nhận</span><span>target = kiểu chọn mục tiêu</span></div>
       </div>
     </section>
@@ -377,7 +376,7 @@
         <div class="specs" id="enemies-elite"></div>
         <h3>boss</h3>
         <div id="enemies-boss"></div>
-        <div class="call"><b>Hai boss, hai câu hỏi khác nhau:</b> <b>The Curator</b> ở tầng 10 (và lần nữa ở tầng 16) phạt việc đốt Ulti — mỗi Ulti của bạn cho nó 6% max HP. <b>The Overseer</b> ở tầng 16 phạt việc đánh chậm — phase 3 tự hồi máu và đặt field. Con đầu dạy tiết kiệm tài nguyên; con sau dạy dồn tài nguyên đúng lúc.</div>
+        <div class="call"><b>Hai boss, hai câu hỏi khác nhau:</b> <b>The Curator</b> ở tầng 10 (và lần nữa ở tầng 16) phạt việc đốt Ulti — mỗi Ulti của bạn cho nó 6% max HP. <b>The Overseer</b> ở tầng 13 và 16 phạt việc đánh chậm — phase 3 tự hồi máu và đặt field. Con đầu dạy tiết kiệm tài nguyên; con sau dạy dồn tài nguyên đúng lúc.</div>
       </div>
     </section>
 
@@ -421,10 +420,10 @@
         <table>
           <tr><th style="width:300px">Chỉ số</th><th class="n" style="width:100px">Mục tiêu</th><th>Lệch thì sửa</th></tr>
           <tr><td>Win-rate toàn run</td><td class="n">45–65%</td><td>HP địch trước, ATK địch sau.</td></tr>
-          <tr><td>Hành động / tầng thường</td><td class="n">3–6</td><td>Giảm HP địch, đừng tăng damage.</td></tr>
-          <tr><td>Hành động / boss (tầng 10, 13)</td><td class="n">10–14</td><td>Curator và Overseer phải dài hơn elite thường, ngắn hơn trận hai boss.</td></tr>
-          <tr><td>Hành động / tầng 16</td><td class="n">24–32</td><td>Đo với đội có ít nhất 1 DPS single-target. Đội toàn AoE chậm hơn ~40% — đó là bài học đội hình, không phải lỗi số.</td></tr>
-          <tr><td>Hành động / tầng 13–15</td><td class="n">9–12</td><td>Tầng 3 elite dài hơn tầng thường cùng bậc; đừng ép về 5–7.</td></tr>
+          <tr><td>Hành động / tầng thường</td><td class="n">3–8</td><td>Giảm HP địch, đừng tăng damage.</td></tr>
+          <tr><td>Hành động / boss (tầng 10, 13)</td><td class="n">12–18</td><td>Curator và Overseer phải dài hơn elite thường, ngắn hơn trận hai boss.</td></tr>
+          <tr><td>Hành động / tầng 16</td><td class="n">20–28</td><td>Đo với đội có ít nhất 1 DPS single-target. Đội toàn AoE chậm hơn ~40% — đó là bài học đội hình, không phải lỗi số.</td></tr>
+          <tr><td>Hành động / tầng 13–15</td><td class="n">10–16</td><td>Tầng 3 elite dài hơn tầng thường cùng bậc; đừng ép về 5–7.</td></tr>
           <tr><td>Cycle trung bình mỗi trận</td><td class="n">3–7</td><td>Từ cycle 8 địch +15% ATK mỗi cycle, không trần. Trận nào chạm 10 là trận sai thiết kế.</td></tr>
           <tr><td>Sustain / sát thương nhận mỗi vòng</td><td class="n">1,2–1,6×</td><td>Dưới 1,0 là đội không thể sống; trên 2,0 là không thể chết. Đây là chỉ số quan trọng nhất của bản cân bằng này.</td></tr>
           <tr><td>Damage share thấp nhất</td><td class="n">≥ 15%</td><td>Tăng mult hoặc giảm cost SP.</td></tr>
@@ -450,45 +449,26 @@
         <h2>Ghi chú</h2>
         <p class="lede">Chỗ tôi tự chốt và chỗ còn mở. Gõ vào ô dưới — nội dung được lưu và xuất kèm JSON.</p>
         <table>
-          <tr><th style="width:80px">Trạng thái</th><th style="width:230px">Vấn đề</th><th>Chốt hiện tại</th></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>DoT chịu DEF và shield</td><td>DoT đi qua công thức damage, không crit. Không còn xuyên giáp.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Field</td><td>Một field duy nhất cho cả sân, field mới đè field cũ, hiệu ứng cho cả hai đội, hết hạn theo lượt người đặt, người đặt chết thì mất.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Sảnh đường 16 tầng</td><td>Tám bậc theo cụm tầng 1 · 2–3 · 4–5 · 6–7 · 8–9 · 10–12 · 13–15 · 16. HP·DEF ×1.00 → ×1.50; <b>ATK riêng</b> ×1.00 → ×2.30. SPD không nhân.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>SPD địch không nhân hệ số</td><td>SPD giữ nguyên ở mọi bậc. Độ khó đến từ đội hình và phase, không từ hàng đợi bị bóp méo.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Chỉ Ulti có tên riêng</td><td>Basic, Skill là hành động chung; phase boss đánh số 1–2–3; thiên phú chỉ ghi “TALENT”, không đặt tên. Ulti vẫn có tên riêng và log ghi tên đó thay cho chữ “Ulti”.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Chữ cái in hoa A–Z</td><td>Mỗi cá thể một chữ in hoa: A–E là địch theo ô, F–I là ta theo ô. Dùng thống nhất ở HUD, hàng đợi, log.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Log 6 dòng</td><td>Sáu hành động gần nhất của cả hai đội: đòn, DoT, buff/debuff, FUA, hồi máu, shield. Mới nhất ở dưới.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Codex mở tự do</td><td>Mở giữa trận không tốn lượt, không phạt. Không có giới hạn số lần.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Đổi đội sau tầng 5 và 9</td><td>Hai mốc. Chọn đổi thì tháo sạch vũ khí và di vật về kho, chọn lại 4/9, rồi lắp lại. Vào tầng là chốt.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>“2/5 mảnh”</td><td>Bày 5 mảnh ngẫu nhiên, người chơi <b>chọn 2</b>. Không phải nhận 2 mảnh mù.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Ba trận boss</td><td>Curator ở tầng 10, Overseer ở tầng 13; tầng 16 là <b>hai boss + 3 elite ngẫu nhiên</b> (5 ô). Tổng 16 địch = 9 thường · 5 elite · 2 boss.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Tối đa 5 ô địch</td><td>4–5 ô tuỳ tầng, không còn 4v4 đều. 10/16 tầng có 5 ô. HUD vẫn 80×24: thêm một dòng địch thì bỏ một dòng kẻ ngăn.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Tám bậc thay bốn band</td><td>1 · 2–3 · 4–5 · 6–7 · 8–9 · 10–12 · 13–15 · 16. HP·DEF ×1.00→×1.50; ATK ×1.00→×2.30. Bậc dài ngắn khác nhau nên nhịp không còn đều.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Vesper: CRIT 35%</td><td>Tăng từ 18% để talent có đất sống: 3 stack ≈ 8,6 đòn, thay vì 16,7.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Kaine: DoT là nguồn chính</td><td>Skill 1.2× → <b>0.7×</b>, Ulti 1.5× → <b>0.8×</b>. Địch không có giải hiệu ứng nên DoT tích luỹ là áp lực chính; damage trực tiếp chỉ để mở đường.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Curator mạnh lên</td><td>ATK 86→<b>105</b>, DEF 105→<b>120</b>, SPD 96→102; thuế Ulti 3%→<b>6%</b>; MARK tối đa 3→5 stack. HP 1700→1600, và Overseer 1900→1600: trận hai boss ở tầng 16 không thể dài hơn 24 hành động nếu mỗi con còn 1.900 HP.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Lệnh không dùng được</td><td>Tô xám tại chỗ, không giấu. Người chơi thấy ngay mình thiếu SP, thiếu EN hay thiếu mục tiêu.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Hai lần bấm</td><td>Lần 1 hiện trước (đảo màu + dòng prompt đổi), lần 2 chốt. Bấm phím khác thì đổi lựa chọn; <code>esc</code> huỷ.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Thứ tự liệt kê</td><td>Nhân vật xếp theo bảng chữ cái ở mọi danh sách. Vũ khí và di vật vẫn xếp theo vai để bốn cây cùng vai nằm cạnh nhau; địch xếp theo tier để giữ đường dạy.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Ngẫu nhiên trong sảnh</td><td>Một ô địch mỗi tầng rút từ nhóm 3 con, roll một lần ở đầu run, seed in ở header. Tầng 16 cố định.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Curator phạt Ulti bao nhiêu</td><td>3% max HP mỗi Ulti (hạ từ 5%). Đủ để Ulti phải có lý do, không đủ để cấm Ulti.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Vesper</td><td>Talent: mỗi CRIT +1 stack, tối đa 6; đủ 3 stack thì tiêu 3 và tung follow-up 60%. Ulti 6 lần đánh có thể nạp đủ 6 stack — 2 follow-up.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Kaine</td><td>Skill blast 1.2× / 0.6×, +1 stack DoT mỗi mục tiêu. Ulti all 1.5×, +1 stack mỗi mục tiêu. Talent: mỗi lần gây DoT, một địch ngẫu nhiên +1 stack.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Rook</td><td>Basic blast 0.8× / 0.4×. Skill all 1.0×. Ulti all 1.5× rồi 4 bounce 0.2×. Talent: mỗi kẻ địch trúng đòn +3 EN.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Lumen</td><td>Skill: +15% SPD và +20% ATK 2 lượt cho một đồng đội. Ulti: toàn đội +20% hồi EN trong 3 lượt (bỏ field). Talent: đồng đội dùng Ulti, Lumen +5 EN.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Nyx</td><td>Skill: −25% SPD một địch 2 lượt. Ulti: đẩy lùi 20% AV toàn bộ địch, cả đội ta +20% AV. Talent: mỗi đánh thường của đồng đội, Nyx +1 SPD cộng dồn.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Sable</td><td>Skill: đồng đội <b>hành động ngay sau lượt này</b> (ưu tiên 100%) và +20% ATK 1 lượt. Ulti: toàn bộ địch −25% DEF 3 lượt. Talent: lần đầu mỗi tầng, một đòn chí tử lên đồng đội gây 0 damage.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Bastion</td><td>Skill: đồng đội nhận phản đòn 2 lượt — mỗi lần người đó bị đánh, Bastion gây 6% max HP của mình lên kẻ đánh. Ulti: shield toàn đội <b>15%</b> max HP của Bastion. Talent: đầu lượt, đồng minh ít shield nhất nhận shield <b>4%</b> max HP của Bastion.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Mira</td><td>Skill: hồi <b>10%</b> max HP của Mira, xóa 1 debuff. Ulti: hồi 12% max HP toàn đội, xóa 1 debuff mỗi người, +10% ATK 2 lượt. Talent: mỗi khi đồng đội nhận sát thương, hồi <b>1%</b> max HP của Mira.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Wren</td><td>Skill: shield bản thân 25% max HP. Ulti: hồi <b>15%</b> max HP toàn đội. Talent: 15% vào mục tiêu theo DEF mục tiêu, 85% sang Wren theo DEF Wren — <b>hai lần nhận sát thương</b>, nên hiệu ứng “khi đồng đội nhận đòn” kích hai lần.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Shield không giới hạn lượt</td><td>Shield chỉ mất khi vỡ. Shield mới thay shield cũ nếu lớn hơn, không cộng dồn. Hằng số <code>shield_turns</code> đã bỏ.</td></tr>
-          <tr><td><span class="tag warn">mở</span></td><td>Không còn field của người chơi</td><td>Rampart bỏ khi Bastion đổi Ulti; Grid bỏ khi Lumen đổi Ulti thành buff đội. Còn 2 field, đều do địch đặt: Signal · Final Protocol. Field giờ là cơ chế của địch, không phải lựa chọn của bạn.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Rook bị hạ</td><td>Skill 1.0× → <b>0.8×</b>, Ulti 1.5× → <b>1.2×</b>. Ở tầng 5 ô cậu ấy vẫn dẫn đầu nhưng không còn một mình gánh 60% damage đội.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>DoT không hết hạn</td><td>Stack chỉ mất khi có hiệu ứng giải. Vì vậy Kaine gắn <b>2 stack</b> mỗi lần (skill và Ulti), và <code>dot_rate</code> hạ 0,45 → <b>0,22</b> để bù.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Kaine ăn theo DoT</td><td>Mỗi kẻ địch đang chịu DoT: Kaine <b>+10% SPD</b>. Năm địch = +50% số lượt.</td></tr>
-          <tr><td><span class="tag">đã chốt</span></td><td>Cycle</td><td>Mọi trận đều có cycle. Từ <b>cycle 8</b>, ATK địch <b>+15% mỗi cycle</b>, cộng dồn, không trần. Đây là thứ trừng phạt đội chậm.</td></tr>
-          <tr><td><span class="tag warn">mở</span></td><td>Nyx có cần trần SPD không</td><td>Talent cộng dồn không giới hạn. Nếu harness cho thấy Nyx vượt 200 SPD ở tầng 12+ thì chặn ở +40 SPD hoặc đổi thành "tối đa 10 stack".</td></tr>
-          <tr><td><span class="tag warn">mở</span></td><td>Công thức DoT sau khi giảm stack</td><td>Đã tách <code>dot_rate</code> = 0.45 × ATK mỗi stack. Cần harness đo lại DoT share (mục tiêu 15–35%) rồi mới chốt con số này.</td></tr>
+          <tr><th style="width:80px">Trạng thái</th><th style="width:220px">Luật</th><th>Chốt hiện tại</th></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Sảnh 16 tầng, tám bậc</td><td>Bậc theo cụm tầng 1 · 2–3 · 4–5 · 6–7 · 8–9 · 10–12 · 13–15 · 16. HP·DEF ×1,00 → ×1,50; ATK riêng ×1,00 → ×2,30. <b>SPD không nhân.</b></td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Boss</td><td>Curator ở tầng 10, Overseer ở tầng 13, cả hai cùng lúc ở tầng 16 — kèm <b>3 elite ngẫu nhiên</b>.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>4–5 ô địch</td><td>13/16 tầng có 5 ô. HUD vẫn 80×24: thêm một dòng địch thì bỏ một dòng kẻ ngăn.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Ngẫu nhiên</td><td>Một ô mỗi tầng rút từ nhóm 3 con; riêng tầng 16 rút 3 elite khác nhau. Roll một lần ở đầu run, seed in ở header.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Cycle</td><td>Mọi trận đều đếm cycle. Từ <b>cycle 8</b>, ATK địch <b>+15% mỗi cycle</b>, cộng dồn, không trần.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Đổi đội</td><td>Sau tầng 5 và tầng 9. Chọn đổi thì tháo sạch vũ khí và di vật về kho, chọn lại 4/9, rồi lắp lại.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Draft</td><td>3 thẻ: bày 5 mảnh chọn 2 · bày 3 vũ khí chọn 1 · hồi 40% max HP toàn đội.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>DoT</td><td>Chịu DEF và shield, không crit, <b>không hết hạn</b> — chỉ mất khi có hiệu ứng giải. <code>dot_rate</code> là núm cân bằng duy nhất.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Shield</td><td>Không giới hạn lượt; shield mới thay shield cũ nếu lớn hơn, không cộng dồn.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Field</td><td>Một field duy nhất cho cả sân, đè field cũ, áp cho cả hai đội, hết hạn theo lượt người đặt. Còn 2 field, đều do địch đặt: Signal · Final Protocol.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Tên riêng</td><td>Chỉ Ulti có tên. Phase boss đánh số 1–2–3; thiên phú chỉ ghi “TALENT”.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Chữ cái</td><td>In hoa, theo ô: địch <b>A–E</b>, ta <b>F–I</b>. Dùng thống nhất ở HUD, hàng đợi, log.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Log</td><td>6 dòng, mới nhất ở dưới, gồm cả hai đội. Ulti ghi tên riêng thay cho chữ “Ulti”.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Vùng lệnh</td><td>Lệnh không dùng được tô xám. Chọn hai lần: lần đầu hiện trước, lần hai chốt; <code>esc</code> huỷ.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Codex</td><td>Mở tự do giữa trận, không tốn lượt, không giới hạn số lần.</td></tr>
+          <tr><td><span class="tag">đã chốt</span></td><td>Thứ tự liệt kê</td><td>Nhân vật theo bảng chữ cái; vũ khí theo vai; di vật theo hướng; địch theo tier.</td></tr>
+          <tr><td><span class="tag warn">mở</span></td><td>Trần SPD của Nyx</td><td>Talent cộng dồn không giới hạn. Nếu vượt 200 SPD ở bậc VII thì chặn ở +40.</td></tr>
+          <tr><td><span class="tag warn">mở</span></td><td>Đội 3 sustain</td><td>Cycle 8 (+15%/vòng) chưa đủ phá đội hồi 623/vòng — họ thắng ở cycle 9 với HP đầy. Cần quyết: tăng bước cycle, hay chấp nhận “chậm mà chắc”.</td></tr>
+          <tr><td><span class="tag warn">mở</span></td><td>Tầng 16 dài</td><td>Model đọc 24 hành động với đội 2 DPS; ngưỡng đang là 20–28. Chưa cần sửa, nhưng nếu harness thật ra 30+ thì cắt HP.</td></tr>
         </table>
         <h3>ghi chú của bạn</h3>
         <textarea class="f" id="notes" placeholder="Chỗ nào chưa ổn, số nào cần thử, cơ chế nào muốn thêm..."></textarea>
@@ -784,14 +764,13 @@ const tgtTag = t => t && t !== "single" ? `<span class="tag tgt">${esc(t)}</span
 const num = n => (Math.round(n * 10) / 10).toString();
 
 /* ---------- khung 80 cột ---------- */
-const W = 80, L = 47;
+const W = 80;
 const seg = (t, c) => c ? `<span class="${c}">${esc(t)}</span>` : esc(t);
 const padTo = (parts, w) => {
   const raw = parts.map(p => p[0]).join("");
   if (raw.length > w) throw new Error("overflow " + raw.length + "/" + w + ": " + raw);
   return parts.map(([t, c]) => seg(t, c)).join("") + " ".repeat(w - raw.length);
 };
-const rowLR = (l, r, lw = L) => "│" + padTo(l, lw) + "│" + padTo(r, W - lw - 3) + "│";
 const fullRow = p => "│" + padTo(p, W - 2) + "│";
 const hline = (l = "├", m = "─", r = "┤", n = W - 2) => l + m.repeat(n) + r;
 const bar = (v, mx, n) => { const f = Math.max(0, Math.min(n, Math.round(v / mx * n))); return "█".repeat(f) + "░".repeat(n - f); };
@@ -1249,6 +1228,7 @@ renderDraft();
 autosizeAll();
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(autosizeAll);
 document.getElementById("notes").value = NOTES;
+document.getElementById("ver").textContent = DATA.meta.version;
 document.getElementById("meta-count").textContent =
   DATA.characters.length + " nhân vật · " + DATA.cones.length + " vũ khí · " + DATA.enemies.length + " địch";
 </script>

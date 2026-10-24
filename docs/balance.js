@@ -45,15 +45,15 @@ function floorEnemies(e) {
 }
 
 // đội: mỗi người một hành động/vòng; DPS dùng skill, còn lại đánh thường.
-function teamBase(ids) {
+function teamBase(ids, slots) {
   const team = ids.map(id => chars[id]);
   const avgDef = team.reduce((a, c) => a + c.def, 0) / team.length;
   const partyHP = team.reduce((a, c) => a + c.hp, 0);
   let dmg = 0, ult = 0, heal = 0, kaine = null;
   for (const c of team) {
     if (c.role === "DPS") {
-      dmg += hit(c, totalMult(c.skill, 0), 0); // hệ số thô, nhân DEF sau
-      ult += hit(c, totalMult(c.ult, 0), 0) * 0.25;
+      dmg += hit(c, totalMult(c.skill, slots), 0); // hệ số thô, nhân DEF sau
+      ult += hit(c, totalMult(c.ult, slots), 0) * 0.25;
       if (c.id === "kaine") kaine = c;
     } else {
       dmg += hit(c, c.basic.mult, 0);
@@ -72,7 +72,7 @@ function simulate(floor, ids) {
   const ehp0 = list.reduce((a, x) => a + x.hp * b.mult, 0);
   const atk = list.reduce((a, x) => a + x.atk * b.atk, 0);
   const def = list.reduce((a, x) => a + x.def * b.mult, 0) / slots;
-  const t = teamBase(ids);
+  const t = teamBase(ids, slots);
   const incoming = atk * defF(t.avgDef) * 0.9;
   const dmg = (t.dmgBase * defF(def) * GEAR) + (t.ultBase * defF(def) * GEAR);
   const tick = t.kaine ? t.kaine.atk * C.dot_rate * defF(def) * GEAR : 0;
